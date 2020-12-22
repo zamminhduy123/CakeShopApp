@@ -1,2 +1,0 @@
-# CakeShopApp
- WPF - .Net Application
