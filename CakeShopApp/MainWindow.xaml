@@ -13,54 +13,86 @@
          TextOptions.TextRenderingMode="Auto"
             
         Background="White"
+        WindowStartupLocation="CenterScreen"
+        
+        DataContext="{StaticResource MVM}"
 
     mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="CakeShopApp" Height="850" Width="1200">
+    <Window.Resources>
+        <!--<DataTemplate DataType="{x:Type viewmodels:DetailUCViewModel}">
+            <uc:DetailUC DataContext="{Binding}"/>
+            --><!-- This is a UserControl --><!--
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewmodels:HomeUCViewModel}">
+            <uc:HomeUC DataContext="{Binding}"/>
+            --><!-- This is a UserControl --><!--
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewmodels:PlacesUCViewModel}">
+            <uc:PlacesUC DataContext="{Binding}"/>
+            --><!-- This is a UserControl --><!--
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewmodels:MembersUCViewModel}">
+            <uc:MemebersUC DataContext="{Binding}"/>
+            --><!-- This is a UserControl --><!--
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewmodels:ThemeUCViewModel}">
+            <uc:ThemeUC DataContext="{Binding}"/>
+            --><!-- This is a UserControl --><!--
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewmodels:AboutUCViewModel}">
+            <uc:AboutUC DataContext="{Binding}"/>
+            --><!-- This is a UserControl --><!--
+        </DataTemplate>-->
+        <ObjectDataProvider x:Key="Global"
+                      ObjectType="{x:Type local:Global}"
+                      MethodName="GetInstance" />
+    </Window.Resources>
     <DockPanel LastChildFill="True">
         <DockPanel DockPanel.Dock="Left">
-            <StackPanel DockPanel.Dock="Top" Height="auto" Width="75" Orientation="Vertical" Margin="5">
+            <StackPanel DockPanel.Dock="Top" Height="auto" Width="110" Orientation="Vertical" Margin="5">
                 <!--icon-->
-                <Image Source="/Assets/Artboard 10.png" RenderOptions.BitmapScalingMode="Fant" Width="60"/>
+                <Image Source="/Assets/Icon.png" RenderOptions.BitmapScalingMode="Fant" Width="70"/>
                 <!--Home button-->
-                <Button Margin="10 20 10 10" Padding="0" Background="{x:Null}" BorderBrush="{x:Null}"  Width="50" Height="50">
-                    <Border CornerRadius="15" Margin="0"  Background="#87431d"   Width="50" Height="50">
+                <Button Margin="10 30 10 10" Padding="0" Background="{x:Null}" BorderBrush="{x:Null}"  Width="90" Height="90" Command="{Binding HomeCommand}">
+                    <Border CornerRadius="15" Margin="0"  Background="{Binding Source={StaticResource Global},Path=HomeColor}" Width="90" Height="90">
                         <StackPanel Orientation="Vertical" VerticalAlignment="Center">
-                            <materialDesign:PackIcon Kind="StorefrontOutline" Width="30" Height="30" HorizontalAlignment="Center"  Foreground="White"/>
-                            <TextBlock Text="Home" Foreground="White" FontSize="10" FontWeight="Medium" HorizontalAlignment="Center"></TextBlock>
+                            <materialDesign:PackIcon Kind="StorefrontOutline" Width="50" Height="50" HorizontalAlignment="Center"  Foreground="{Binding Source={StaticResource Global},Path=HomeTextColor}"/>
+                            <TextBlock Text="Home" Foreground="{Binding Source={StaticResource Global},Path=HomeTextColor}" FontSize="20" FontWeight="Medium" HorizontalAlignment="Center"></TextBlock>
                         </StackPanel>
                     </Border>
                 </Button>
                 <!--Checkout button-->
-                <Button Margin="10 5 10 10" Padding="0" Background="{x:Null}" BorderBrush="{x:Null}"  Width="50" Height="50">
-                    <Border CornerRadius="15" Margin="0"  Background="White" Width="50" Height="50">
+                <Button Margin="10 5 10 10" Padding="0" Background="{x:Null}" BorderBrush="{x:Null}"  Width="90" Height="90" Command="{Binding CheckOutCommand}">
+                    <Border CornerRadius="15" Margin="0"  Background="{Binding Source={StaticResource Global},Path=CheckOutColor}" Width="90" Height="90">
                         <StackPanel Orientation="Vertical" VerticalAlignment="Center">
-                            <materialDesign:PackIcon Kind="cart" Width="30" Height="30" HorizontalAlignment="Center"  Foreground="Gray"/>
-                            <TextBlock Text="Checkout" Foreground="Gray" FontSize="9" FontWeight="Medium" HorizontalAlignment="Center"></TextBlock>
+                            <materialDesign:PackIcon Kind="cart" Width="50" Height="50" HorizontalAlignment="Center"  Foreground="{Binding Source={StaticResource Global},Path=CheckOutTextColor}"/>
+                            <TextBlock Text="Checkout" Foreground="{Binding Source={StaticResource Global},Path=CheckOutTextColor}" FontSize="19" FontWeight="Medium" HorizontalAlignment="Center"></TextBlock>
                         </StackPanel>
                     </Border>
                 </Button>
                 <!--Statistic button-->
-                <Button Margin="10 5 10 10" Padding="0" Background="{x:Null}" BorderBrush="{x:Null}" Width="50" Height="50">
-                    <Border CornerRadius="15"  Background="White">
+                <Button Margin="10 5 10 10" Padding="0" Background="{x:Null}" BorderBrush="{x:Null}" Width="90" Height="90" Command="{Binding StatisticCommand}">
+                    <Border CornerRadius="15"  Background="{Binding Source={StaticResource Global},Path=StatisticColor}"  Width="90" Height="90">
                         <StackPanel Orientation="Vertical" VerticalAlignment="Center">
-                            <materialDesign:PackIcon Kind="ChartLine" Width="30" Height="30" HorizontalAlignment="Center"  Foreground="Gray"/>
-                            <TextBlock Text="Statistic" Foreground="Gray" FontSize="9" FontWeight="Medium" HorizontalAlignment="Center"></TextBlock>
+                            <materialDesign:PackIcon Kind="ChartLine" Width="50" Height="50" HorizontalAlignment="Center"  Foreground="{Binding Source={StaticResource Global},Path=StatisticTextColor}" />
+                            <TextBlock Text="Statistic" Foreground="{Binding Source={StaticResource Global},Path=StatisticTextColor}"  FontSize="19" FontWeight="Medium" HorizontalAlignment="Center"></TextBlock>
                         </StackPanel>
                     </Border>
                 </Button>
                 <!--Setting button-->
-                <Button Margin="10 5 10 10" Padding="0" Background="{x:Null}" BorderBrush="{x:Null}" Width="50" Height="50">
-                    <Border CornerRadius="15"  Background="White">
+                <Button Margin="10 5 10 10" Padding="0" Background="{x:Null}" BorderBrush="{x:Null}" Width="90" Height="90" Command="{Binding SettingCommand}">
+                    <Border CornerRadius="15"  Background="{Binding Source={StaticResource Global},Path=SettingColor}"  Width="90" Height="90"> 
                         <StackPanel Orientation="Vertical" VerticalAlignment="Center">
-                            <materialDesign:PackIcon Kind="CogOutline" Width="30" Height="30" HorizontalAlignment="Center"  Foreground="Gray"/>
-                            <TextBlock Text="Setting" Foreground="Gray" FontSize="9" FontWeight="Medium" HorizontalAlignment="Center"></TextBlock>
+                            <materialDesign:PackIcon Kind="CogOutline" Width="50" Height="50" HorizontalAlignment="Center"  Foreground="{Binding Source={StaticResource Global},Path=SettingTextColor}" />
+                            <TextBlock Text="Setting" Foreground="{Binding Source={StaticResource Global},Path=SettingTextColor}"  FontSize="19" FontWeight="Medium" HorizontalAlignment="Center"></TextBlock>
                         </StackPanel>
                     </Border>
                 </Button>
             </StackPanel>
             <StackPanel DockPanel.Dock="Bottom" Height="30" VerticalAlignment="Bottom" Orientation="Horizontal" HorizontalAlignment="Center">
-                <TextBlock FontSize="10" Foreground="Gray">Version: </TextBlock>
-                <TextBlock FontSize="10" Text="{Binding AppVersion}"></TextBlock>
+                <TextBlock FontSize="15" Foreground="Gray" Text="Version: "></TextBlock>
+                <TextBlock FontSize="15" Foreground="Gray" Text="{Binding VersionTextBlock}"></TextBlock>
             </StackPanel>
         </DockPanel>
 

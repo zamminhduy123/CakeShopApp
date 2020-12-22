@@ -1,0 +1,95 @@
+﻿<Window x:Class="CakeShopApp.SplashScreen"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:local="clr-namespace:CakeShopApp"
+
+          xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="13"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+        Background="Transparent"
+        AllowsTransparency="True"
+        FontFamily="{DynamicResource MaterialDesignFont}"
+        
+        mc:Ignorable="d"
+        
+        DataContext="{StaticResource SSVM}"
+        Title="SplashScreen" Height="600" Width="900" WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize" WindowStyle="None" 
+        Name="SplashScreenWindow">
+    <Window.Resources>
+        <!--<ObjectDataProvider x:Key="themeColor"
+                      ObjectType="{x:Type local:Global}"
+                      MethodName="GetInstance" />
+        <model:BytesToBitMapConverter x:Key="ImageConverter" />-->
+    </Window.Resources>
+    <!--<i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding LoadedWindowCommand}" CommandParameter="{Binding ElementName=SplashScreenWindow}"></i:InvokeCommandAction>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>-->
+    
+    <Border VerticalAlignment="Bottom" HorizontalAlignment="Center"
+                        CornerRadius="50" Height="600" Width="900"  RenderOptions.BitmapScalingMode="HighQuality">
+        <!--<Border.Background>
+            --><!--<ImageBrush Stretch="Fill" RenderOptions.BitmapScalingMode="HighQuality" --><!--ImageSource="{Binding ImageCover , Converter={StaticResource ImageConverter}}"--><!-->
+                <ImageBrush.RelativeTransform>
+                    <RotateTransform CenterX="0.5" CenterY="0.5" Angle="0" />
+                </ImageBrush.RelativeTransform>
+            </ImageBrush>--><!--
+        </Border.Background>-->
+        
+        <Grid Background="{x:Null}">
+            <!--Middle Frame-->
+            <DockPanel>
+                <DockPanel.Effect>
+                    <DropShadowEffect BlurRadius="10" ShadowDepth="7"/>
+                </DockPanel.Effect>
+                <StackPanel Orientation="Vertical" DockPanel.Dock="Top">
+                    <Image Source="/Assets/Icon.png" Width="100" Height="100" VerticalAlignment="Top" Margin="0 20 0 0"/>
+                    <TextBlock FontWeight="Bold" Text="Cake Shop" HorizontalAlignment="Center" Margin="0 20" VerticalAlignment="Top"  Foreground="White" FontSize="50"/>
+                    <!--Location description-->
+                    <!--<TextBlock Text="{Binding LocationName}" FontSize="25" FontWeight="Medium" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    <Border HorizontalAlignment="Center" Width="400"  Height="210" CornerRadius="20" BorderThickness="2" Background="#010203" Padding="5">
+                        <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                            <TextBlock  FontWeight="Medium" Text="{Binding LocationDescription}" TextAlignment="Center"  Foreground="White" FontSize="17" TextWrapping="WrapWithOverflow"/>
+                        </ScrollViewer>
+                    </Border>-->
+                </StackPanel>
+                <StackPanel Height="70" Margin="0 10 0 10" HorizontalAlignment="Center" DockPanel.Dock="Bottom">
+                    <Border Background="#1c1c1c" Opacity="1" Height="50" CornerRadius="25"  Width="275" HorizontalAlignment="Center" Margin="0 0 0 5">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock FontSize="15" FontWeight="Medium" Foreground="White" Text="Không hiện cửa sổ này lần sau" Margin="12,18,5,16"/>
+                            <ToggleButton
+                    Background="SaddleBrown"
+                    BorderBrush="SaddleBrown"
+                    Name="IsCloseSplashScreen"
+                    IsChecked="False"
+                    Command="{Binding ChangeShow}"
+                  Style="{StaticResource MaterialDesignActionToggleButton}"
+                  ToolTip="Click to change the option">
+                                <materialDesign:ToggleButtonAssist.OnContent>
+                                    <materialDesign:PackIcon 
+                                                   Kind="Check" />
+                                </materialDesign:ToggleButtonAssist.OnContent>
+                                <materialDesign:PackIcon 
+                                                         Kind="WindowClose" />
+                            </ToggleButton>
+
+                        </StackPanel>
+                    </Border>
+                    <ProgressBar x:Name ="timeProgessBar" Height="10" VerticalAlignment="Bottom" Width="300" Margin="0,0,0,50" Value="{Binding ProgressBarValue}" Maximum="3000" Minimum="0" Background="White" BorderBrush="Black" Foreground="SaddleBrown" >
+                        <ProgressBar.Effect>
+                            <DropShadowEffect BlurRadius="10" ShadowDepth="5"></DropShadowEffect>
+                        </ProgressBar.Effect>
+                    </ProgressBar>
+                </StackPanel>
+            </DockPanel>
+        </Grid>
+    </Border>
+</Window>
