@@ -22,36 +22,36 @@
                 <!--icon-->
                 <Image Source="/Assets/Artboard 10.png" RenderOptions.BitmapScalingMode="Fant" Width="60"/>
                 <!--Home button-->
-                <Button Margin="10 20 10 10" Padding="0" Background="{x:Null}" BorderBrush="{x:Null}">
-                    <Border CornerRadius="15" Margin="0"  Background="#87431d" Padding="5"  Width="50">
-                        <StackPanel Orientation="Vertical">
+                <Button Margin="10 20 10 10" Padding="0" Background="{x:Null}" BorderBrush="{x:Null}"  Width="50" Height="50">
+                    <Border CornerRadius="15" Margin="0"  Background="#87431d"   Width="50" Height="50">
+                        <StackPanel Orientation="Vertical" VerticalAlignment="Center">
                             <materialDesign:PackIcon Kind="StorefrontOutline" Width="30" Height="30" HorizontalAlignment="Center"  Foreground="White"/>
                             <TextBlock Text="Home" Foreground="White" FontSize="10" FontWeight="Medium" HorizontalAlignment="Center"></TextBlock>
                         </StackPanel>
                     </Border>
                 </Button>
                 <!--Checkout button-->
-                <Button Margin="10 5 10 10" Padding="0" Background="{x:Null}" BorderBrush="{x:Null}">
-                    <Border CornerRadius="15" Margin="0"  Background="White" Padding="5"  Width="50">
-                        <StackPanel Orientation="Vertical">
+                <Button Margin="10 5 10 10" Padding="0" Background="{x:Null}" BorderBrush="{x:Null}"  Width="50" Height="50">
+                    <Border CornerRadius="15" Margin="0"  Background="White" Width="50" Height="50">
+                        <StackPanel Orientation="Vertical" VerticalAlignment="Center">
                             <materialDesign:PackIcon Kind="cart" Width="30" Height="30" HorizontalAlignment="Center"  Foreground="Gray"/>
                             <TextBlock Text="Checkout" Foreground="Gray" FontSize="9" FontWeight="Medium" HorizontalAlignment="Center"></TextBlock>
                         </StackPanel>
                     </Border>
                 </Button>
                 <!--Statistic button-->
-                <Button Margin="10 5 10 10" Padding="0" Background="{x:Null}" BorderBrush="{x:Null}">
-                    <Border CornerRadius="15"  Background="White" Padding="5">
-                        <StackPanel Orientation="Vertical">
+                <Button Margin="10 5 10 10" Padding="0" Background="{x:Null}" BorderBrush="{x:Null}" Width="50" Height="50">
+                    <Border CornerRadius="15"  Background="White">
+                        <StackPanel Orientation="Vertical" VerticalAlignment="Center">
                             <materialDesign:PackIcon Kind="ChartLine" Width="30" Height="30" HorizontalAlignment="Center"  Foreground="Gray"/>
                             <TextBlock Text="Statistic" Foreground="Gray" FontSize="9" FontWeight="Medium" HorizontalAlignment="Center"></TextBlock>
                         </StackPanel>
                     </Border>
                 </Button>
                 <!--Setting button-->
-                <Button Margin="10 5 10 10" Padding="0" Background="{x:Null}" BorderBrush="{x:Null}">
-                    <Border CornerRadius="15"  Background="White" Padding="5">
-                        <StackPanel Orientation="Vertical">
+                <Button Margin="10 5 10 10" Padding="0" Background="{x:Null}" BorderBrush="{x:Null}" Width="50" Height="50">
+                    <Border CornerRadius="15"  Background="White">
+                        <StackPanel Orientation="Vertical" VerticalAlignment="Center">
                             <materialDesign:PackIcon Kind="CogOutline" Width="30" Height="30" HorizontalAlignment="Center"  Foreground="Gray"/>
                             <TextBlock Text="Setting" Foreground="Gray" FontSize="9" FontWeight="Medium" HorizontalAlignment="Center"></TextBlock>
                         </StackPanel>
@@ -59,8 +59,8 @@
                 </Button>
             </StackPanel>
             <StackPanel DockPanel.Dock="Bottom" Height="30" VerticalAlignment="Bottom" Orientation="Horizontal" HorizontalAlignment="Center">
-                <TextBlock Foreground="Gray">Version: </TextBlock>
-                <TextBlock Text="{Binding AppVersion}"></TextBlock>
+                <TextBlock FontSize="10" Foreground="Gray">Version: </TextBlock>
+                <TextBlock FontSize="10" Text="{Binding AppVersion}"></TextBlock>
             </StackPanel>
         </DockPanel>
 
