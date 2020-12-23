@@ -3,10 +3,11 @@
                     xmlns:viewmodel="clr-namespace:CakeShopApp.ViewModels">
     <viewmodel:SplashScreenViewModel x:Key="SSVM"/>
     <viewmodel:MainViewModel x:Key="MVM"/>
+    <viewmodel:HomeUCViewModel x:Key="HUCVM"/>
     <!--<viewmodel:ControlBarViewModel x:Key="CBVM"/>
 
     <viewmodel:DetailUCViewModel x:Key="DUCVM"/>
-    <viewmodel:HomeUCViewModel x:Key="HUCVM"/>
+    
     <viewmodel:PlacesUCViewModel x:Key="PUCVM"/>
     <viewmodel:ThemeUCViewModel x:Key="TUCVM"/>
 

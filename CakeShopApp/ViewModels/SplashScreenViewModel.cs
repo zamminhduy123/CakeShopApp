@@ -73,9 +73,6 @@ namespace CakeShopApp.ViewModels
             if (ProgressBarValue >= _time_SplashScreen)
             {
                 dT.Dispose();
-                //thisWindow.Close();
-                //MainWindow mW = new MainWindow();
-                //mW.Show();
             }
             else
             {
@@ -83,8 +80,5 @@ namespace CakeShopApp.ViewModels
             }
 
         }
-
-
-
     }
 }

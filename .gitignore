@@ -280,3 +280,6 @@ packages/System.Security.Principal.Windows.5.0.0/System.Security.Principal.Windo
 packages/System.Security.Principal.Windows.5.0.0/THIRD-PARTY-NOTICES.TXT
 packages/System.Security.Principal.Windows.5.0.0/useSharedDesignerContext.txt
 packages/System.Security.Principal.Windows.5.0.0/version.txt
+CakeShopApp/obj/Debug/Views/UC/HomeUC.baml
+CakeShopApp/obj/Debug/Views/UC/HomeUC.g.cs
+CakeShopApp/obj/Debug/Views/UC/HomeUC.g.i.cs

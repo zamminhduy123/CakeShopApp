@@ -65,6 +65,8 @@ namespace CakeShopApp.ViewModels
             ResetPanelColor();
             global.HomeColor = Brushes.SaddleBrown.ToString();
             global.HomeTextColor = Brushes.White.ToString();
+            //global.CurrentPageViewModel = new HomeUCViewModel();
+
             VersionTextBlock = GetPublishedVersion();
             if (VersionTextBlock == null || VersionTextBlock == "")
                 VersionTextBlock = "not installed";
@@ -74,6 +76,8 @@ namespace CakeShopApp.ViewModels
                 ResetPanelColor();
                 global.HomeColor = Brushes.SaddleBrown.ToString();
                 global.HomeTextColor = Brushes.White.ToString();
+                global.CurrentPageViewModel = new HomeUCViewModel();
+                
             });
 
             CheckOutCommand = new RelayCommand<object>((param) => { return true; }, (param) =>

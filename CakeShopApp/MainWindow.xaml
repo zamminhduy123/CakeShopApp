@@ -4,7 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CakeShopApp"
-        
+        xmlns:viewmodels="clr-namespace:CakeShopApp.ViewModels"
+        xmlns:uc="clr-namespace:CakeShopApp.Views.UC"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
 
          TextElement.FontWeight="Regular"
@@ -20,10 +21,11 @@
     mc:Ignorable="d"
         Title="CakeShopApp" Height="850" Width="1200">
     <Window.Resources>
-        <!--<DataTemplate DataType="{x:Type viewmodels:DetailUCViewModel}">
-            <uc:DetailUC DataContext="{Binding}"/>
-            --><!-- This is a UserControl --><!--
+        <DataTemplate DataType="{x:Type viewmodels:HomeUCViewModel}">
+            <uc:HomeUC DataContext="{Binding}"/>
+            <!-- This is a UserControl -->
         </DataTemplate>
+         <!--
         <DataTemplate DataType="{x:Type viewmodels:HomeUCViewModel}">
             <uc:HomeUC DataContext="{Binding}"/>
             --><!-- This is a UserControl --><!--
@@ -52,7 +54,7 @@
         <DockPanel DockPanel.Dock="Left">
             <StackPanel DockPanel.Dock="Top" Height="auto" Width="110" Orientation="Vertical" Margin="5">
                 <!--icon-->
-                <Image Source="/Assets/Icon.png" RenderOptions.BitmapScalingMode="Fant" Width="70"/>
+                <Image Source="/Assets/Icon.png" HorizontalAlignment="Center" RenderOptions.BitmapScalingMode="Fant" Width="70"/>
                 <!--Home button-->
                 <Button Margin="10 30 10 10" Padding="0" Background="{x:Null}" BorderBrush="{x:Null}"  Width="90" Height="90" Command="{Binding HomeCommand}">
                     <Border CornerRadius="15" Margin="0"  Background="{Binding Source={StaticResource Global},Path=HomeColor}" Width="90" Height="90">
@@ -96,7 +98,7 @@
             </StackPanel>
         </DockPanel>
 
-        <ContentControl DockPanel.Dock="Right">
+        <ContentControl Grid.Column="1" DockPanel.Dock="Right" Height="850" Width="1000" Content="{Binding Source={StaticResource Global},Path=CurrentPageViewModel}">
 
         </ContentControl>
     </DockPanel>
