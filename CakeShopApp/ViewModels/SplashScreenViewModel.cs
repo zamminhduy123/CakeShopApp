@@ -42,6 +42,7 @@ namespace CakeShopApp.ViewModels
         #endregion
         public SplashScreenViewModel()
         {
+            ImageCover = System.Text.Encoding.Default.GetBytes(_defaultImage);
             LoadedWindowCommand = new RelayCommand<Window>((prop) => { return true; }, (splash) =>
             {
                 splash.Hide();

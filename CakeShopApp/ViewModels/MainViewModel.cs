@@ -28,7 +28,6 @@ namespace CakeShopApp.ViewModels
         public ICommand AddMemberCommand { get; set; }
         public ICommand SettingCommand { get; set; }
         public ICommand AboutCommand { get; set; }
-
         public ICommand OpenPanelCommand { get; set; }
 
         #endregion

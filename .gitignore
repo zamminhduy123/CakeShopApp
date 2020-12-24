@@ -283,3 +283,13 @@ packages/System.Security.Principal.Windows.5.0.0/version.txt
 CakeShopApp/obj/Debug/Views/UC/HomeUC.baml
 CakeShopApp/obj/Debug/Views/UC/HomeUC.g.cs
 CakeShopApp/obj/Debug/Views/UC/HomeUC.g.i.cs
+packages/System.Windows.Interactivity.WPF.2.0.20525/.signature.p7s
+packages/System.Windows.Interactivity.WPF.2.0.20525/lib/net40/Microsoft.Expression.Interactions.dll
+packages/System.Windows.Interactivity.WPF.2.0.20525/lib/net40/Microsoft.Expression.Interactions.xml
+packages/System.Windows.Interactivity.WPF.2.0.20525/lib/net40/System.Windows.Interactivity.dll
+packages/System.Windows.Interactivity.WPF.2.0.20525/lib/net40/System.Windows.Interactivity.xml
+packages/System.Windows.Interactivity.WPF.2.0.20525/System.Windows.Interactivity.WPF.2.0.20525.nupkg
+CakeShopApp/bin/Debug/Microsoft.Expression.Interactions.dll
+CakeShopApp/bin/Debug/Microsoft.Expression.Interactions.xml
+CakeShopApp/bin/Debug/System.Windows.Interactivity.dll
+CakeShopApp/bin/Debug/System.Windows.Interactivity.xml

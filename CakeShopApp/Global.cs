@@ -104,7 +104,7 @@ namespace CakeShopApp
         Global()
         {
             ThemeColor = ConfigurationManager.AppSettings["ThemeColor"];
-            //CurrentPageViewModel = new HomeUCViewModel();
+            CurrentPageViewModel = new HomeUCViewModel();
         }
     }
 }
