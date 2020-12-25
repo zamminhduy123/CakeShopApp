@@ -4,9 +4,10 @@
     <viewmodel:SplashScreenViewModel x:Key="SSVM"/>
     <viewmodel:MainViewModel x:Key="MVM"/>
     <viewmodel:HomeUCViewModel x:Key="HUCVM"/>
+    <viewmodel:CakesUCViewModel x:Key="CKUCVM"/>
     <!--<viewmodel:ControlBarViewModel x:Key="CBVM"/>
 
-    <viewmodel:DetailUCViewModel x:Key="DUCVM"/>
+    
     
     <viewmodel:PlacesUCViewModel x:Key="PUCVM"/>
     <viewmodel:ThemeUCViewModel x:Key="TUCVM"/>

@@ -1,0 +1,94 @@
+﻿<UserControl x:Class="CakeShopApp.Views.UC.CakesUC"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CakeShopApp.Views.UC"
+             
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+
+             TextElement.FontWeight="Regular"
+             TextElement.FontSize="13"
+             TextOptions.TextFormattingMode="Ideal"
+             TextOptions.TextRenderingMode="Auto"
+            
+            Background="White"
+            DataContext="{StaticResource CKUCVM}"
+
+            mc:Ignorable="d" 
+            d:DesignHeight="850" d:DesignWidth="1100">
+    <DockPanel>
+        <StackPanel DockPanel.Dock="Top" Height="75" Orientation="Horizontal">
+            <!--Search Bar-->
+            <Border BorderThickness="1" BorderBrush="SaddleBrown" CornerRadius="10" Margin="50 10 20 10">
+                <StackPanel  Orientation="Horizontal" Margin="10">
+                    <materialDesign:PackIcon Foreground="Gray" VerticalAlignment="Center" Kind="Magnify" Width="30" Height="30" />
+                    <TextBox DockPanel.Dock="Right"
+                            VerticalAlignment="Center"
+                            Width="250"
+                            Height="30"
+                            AcceptsReturn="True"
+                            materialDesign:HintAssist.Hint="Search for cake"/>
+                </StackPanel>
+            </Border>
+
+            <Button Width="170" Height="55" Background="White" BorderThickness="1" BorderBrush="SaddleBrown"  ToolTip="Add New Cake">
+                <materialDesign:PackIcon Foreground="SaddleBrown"  Width="50" Height="40" Kind="Plus"/>
+            </Button>
+        </StackPanel>
+        
+        <!--Categories Tree-->
+
+        <TreeView DockPanel.Dock="Right" Width="300">
+            <!--<TreeView.Resources>
+                <HierarchicalDataTemplate ItemsSource="{Binding Categories}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding Name}" />
+                        <TextBlock Text=" [" Foreground="Blue" />
+                        <TextBlock Text="{Binding Categories.Count}" Foreground="Blue" />
+                        <TextBlock Text="]" Foreground="Blue" />
+                    </StackPanel>
+                </HierarchicalDataTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding Name}" />
+                        <TextBlock Text=" (" Foreground="Green" />
+                        <TextBlock Text="{Binding Age}" Foreground="Green" />
+                        <TextBlock Text=" years)" Foreground="Green" />
+                    </StackPanel>
+                </DataTemplate>
+            </TreeView.Resources>-->
+        </TreeView>
+        
+
+        <ListView Margin="20 0">
+            <ListViewItem>
+                <!--Sample-->
+                <Border CornerRadius="10" BorderThickness="1" BorderBrush="SaddleBrown" Width="200" Height="300" Margin="20 10">
+                    <StackPanel>
+                        <Image Height="200"></Image>
+                        <TextBlock FontSize="25" FontWeight="Medium" Margin="5" Foreground="SaddleBrown">Teramisu</TextBlock>
+                        <TextBlock FontSize="20" FontWeight="Medium" Margin="5 0">120.000 VND</TextBlock>
+                    </StackPanel>
+                    
+                </Border>
+            </ListViewItem>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Border CornerRadius="10" BorderThickness="1" BorderBrush="SaddleBrown" Width="200" Height="300" Margin="10">
+                        <StackPanel>
+                            <Image Height="200"></Image>
+                            <TextBlock FontSize="25" FontWeight="Medium" Margin="5" Foreground="SaddleBrown">Teramisu</TextBlock>
+                            <TextBlock FontSize="20" FontWeight="Medium" Margin="5 0">120.000 VND</TextBlock>
+                        </StackPanel>
+                    </Border>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel></WrapPanel>
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+        </ListView>
+    </DockPanel>
+</UserControl>

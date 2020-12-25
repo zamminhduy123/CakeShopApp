@@ -373,3 +373,7 @@ packages/EntityFramework.6.2.0/tools/EntityFramework.psm1
 packages/EntityFramework.6.2.0/tools/init.ps1
 packages/EntityFramework.6.2.0/tools/install.ps1
 packages/EntityFramework.6.2.0/tools/migrate.exe
+CakeShopApp/obj/Debug/Views/UC/CakesUC.baml
+CakeShopApp/obj/Debug/Views/UC/CakesUC.g.cs
+CakeShopApp/obj/Debug/Views/UC/CakesUC.g.i.cs
+packages/EntityFramework.6.2.0/.signature.p7s

@@ -25,19 +25,14 @@ namespace CakeShopApp.ViewModels
         public ICommand HomeCommand { get; set; }
         public ICommand CheckOutCommand { get; set; }
         public ICommand StatisticCommand { get; set; }
-        public ICommand AddMemberCommand { get; set; }
+        public ICommand CakesCommand { get; set; }
         public ICommand SettingCommand { get; set; }
         public ICommand AboutCommand { get; set; }
         public ICommand OpenPanelCommand { get; set; }
 
         #endregion
 
-        #region PanelColor
-
-        public String PlacesColor { get => _addPlaceColor; set { _addPlaceColor = value; OnPropertyChanged(); } }
-        public String AddMemberColor { get => _addMemberColor; set { _addMemberColor = value; OnPropertyChanged(); } }
-        public String SettingColor { get => _settingColor; set { _settingColor = value; OnPropertyChanged(); } }
-        public String AboutColor { get => _aboutColor; set { _aboutColor = value; OnPropertyChanged(); } }
+        #region Panel
 
         public String VersionTextBlock { get => _versionTextBlock; set { _versionTextBlock = value; OnPropertyChanged(); } }
 
@@ -86,6 +81,14 @@ namespace CakeShopApp.ViewModels
                 global.CheckOutTextColor = Brushes.White.ToString();
             });
 
+            CakesCommand = new RelayCommand<object>((param) => { return true; }, (param) =>
+            {
+                ResetPanelColor();
+                global.CakesColor = Brushes.SaddleBrown.ToString();
+                global.CakesTextColor = Brushes.White.ToString();
+                global.CurrentPageViewModel = new CakesUCViewModel();
+            });
+
             StatisticCommand = new RelayCommand<object>((param) => { return true; }, (param) =>
             {
                 ResetPanelColor();
@@ -114,6 +117,9 @@ namespace CakeShopApp.ViewModels
 
             global.SettingColor = Brushes.White.ToString();
             global.SettingTextColor = Brushes.Gray.ToString();
+
+            global.CakesColor = Brushes.White.ToString();
+            global.CakesTextColor = Brushes.Gray.ToString();
         }
     }
 }
