@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="39cf29dc7d534551986a9ed8218bbacb" Name="Diagram1">
+        <EntityTypeShape EntityType="CakeShopAppDBModel.Category" Width="1.5" PointX="0.75" PointY="2.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CakeShopAppDBModel.DeliveryPayment" Width="1.5" PointX="5.25" PointY="9.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="CakeShopAppDBModel.DirectPayment" Width="1.5" PointX="5.25" PointY="12.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="CakeShopAppDBModel.Invoice" Width="1.5" PointX="3" PointY="7" IsExpanded="true" />
+        <EntityTypeShape EntityType="CakeShopAppDBModel.InvoiceDetail" Width="1.5" PointX="5.25" PointY="2.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="CakeShopAppDBModel.Photo" Width="1.5" PointX="5.25" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CakeShopAppDBModel.Product" Width="1.5" PointX="3" PointY="1.875" IsExpanded="true" />
+        <AssociationConnector Association="CakeShopAppDBModel.fk_product_category" ManuallyRouted="false" />
+        <AssociationConnector Association="CakeShopAppDBModel.fk_deliveryPayment_invoice" ManuallyRouted="false" />
+        <AssociationConnector Association="CakeShopAppDBModel.fk_directPayment_invoice" ManuallyRouted="false" />
+        <AssociationConnector Association="CakeShopAppDBModel.fk_invoiceDetail_Invoice" ManuallyRouted="false" />
+        <AssociationConnector Association="CakeShopAppDBModel.fk_invoiceDetail_Product" ManuallyRouted="false" />
+        <AssociationConnector Association="CakeShopAppDBModel.fk_photo_product" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
