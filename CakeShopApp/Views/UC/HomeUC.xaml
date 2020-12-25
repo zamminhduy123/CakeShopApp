@@ -163,7 +163,7 @@
                                 <Border CornerRadius="10" Width="50" Height="50">
                                     <Border.Background>
                                         <ImageBrush RenderOptions.BitmapScalingMode="Fant"
-                                            ImageSource="/Assets/Icon.png">
+                                            >
                                         </ImageBrush>
                                     </Border.Background>
                                 </Border>

@@ -92,6 +92,10 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Global.cs" />
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="SplashScreenWindow.xaml.cs">
       <DependentUpon>SplashScreenWindow.xaml</DependentUpon>
     </Compile>
@@ -102,18 +106,14 @@
     <Compile Include="Views\UC\HomeUC.xaml.cs">
       <DependentUpon>HomeUC.xaml</DependentUpon>
     </Compile>
-    <Page Include="MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
+    <Page Include="MainWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>XamlIntelliSenseFileGenerator</Generator>
+    </Page>
     <Page Include="ResourceDictionaries\CommonStyle.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -161,8 +161,6 @@
   <ItemGroup />
   <ItemGroup>
     <Resource Include="Assets\Icon.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Icon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -12,7 +12,7 @@ namespace CakeShopApp.ViewModels
     {
         #region private variables
         //private BaseViewModel _currentPageViewModel = null;
-        private Visibility _leftPanelVisibility = Visibility.Visible;
+        //private Visibility _leftPanelVisibility = Visibility.Visible;
         private String _addPlaceColor = Brushes.White.ToString();
         private String _addMemberColor = Brushes.White.ToString();
         private String _settingColor = Brushes.White.ToString();
