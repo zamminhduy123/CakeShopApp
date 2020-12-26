@@ -17,6 +17,10 @@ namespace CakeShopApp.Models
             if (value == null || value == "0") return "0 VNĐ";
             bool isNegative = false;
             var tmp = value as string;
+            if (tmp == null)
+            {
+
+            }
             if (tmp[0] == '-')
             {
                 isNegative = true;

@@ -15,7 +15,7 @@ namespace CakeShopApp.Models
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             byte[] tmp = value as byte[];
-            if (tmp == null || tmp.Length == 0) return null;
+            if (tmp == null || tmp.Length == 0) tmp = System.Text.Encoding.Default.GetBytes(Global.GetInstance().NoImageStringSource);
             var image = new BitmapImage();
             using (var mem = new MemoryStream(tmp))
             {

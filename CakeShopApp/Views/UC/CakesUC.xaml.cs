@@ -28,6 +28,5 @@ namespace CakeShopApp.Views.UC
             InitializeComponent();
             this.DataContext = Viewmodel = new CakesUCViewModel();
         }
-
     }
 }

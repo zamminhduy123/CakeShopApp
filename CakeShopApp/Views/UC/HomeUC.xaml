@@ -5,8 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CakeShopApp.Views.UC"
              
-             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
+             xmlns:models="clr-namespace:CakeShopApp.Models"
              TextElement.FontWeight="Regular"
              TextElement.FontSize="13"
              TextOptions.TextFormattingMode="Ideal"
@@ -17,6 +17,12 @@
 
             mc:Ignorable="d" 
             d:DesignHeight="850" d:DesignWidth="1100">
+
+    <UserControl.Resources>
+        <models:BytesToBitMapConverter x:Key="ImageConverter"/>
+        <models:NumberToVNDConverter x:Key="MoneyComverter"/>
+    </UserControl.Resources>
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="3*"/>
@@ -102,15 +108,15 @@
             </DockPanel>
 
             <!--List Item-->
-            <ListView Margin="10">
-                <ListViewItem>
+            <ListView Margin="10" ItemsSource="{Binding Products}" SelectedItem="{Binding SelectedProduct}">
+                <!--<ListViewItem>
                     <Button Background="{x:Null}" BorderBrush="{x:Null}"  Width="200" Height="250" Padding="0">
                         <Border Background="White" CornerRadius="15" >
                             <Grid Width="200" Height="250">
                                 <Border VerticalAlignment="Top" Height="170" CornerRadius="10" Margin="10" BorderBrush="Gray" BorderThickness="1">
-                                    <!--<Border.Background>
+                                    --><!--<Border.Background>
                                         <ImageBrush ImageSource="{Binding ItemImageSource}"></ImageBrush>
-                                    </Border.Background>-->
+                                    </Border.Background>--><!--
                                 </Border>
                                 <StackPanel VerticalAlignment="Bottom" Margin="0 0 0 5">
                                     <TextBlock Foreground="Black"  VerticalAlignment="Bottom" Text="Hazelnut Milk Shake" HorizontalAlignment="Center" FontSize="20" FontWeight="Medium"></TextBlock>
@@ -119,31 +125,31 @@
                             </Grid>
                         </Border>
                     </Button>
-                </ListViewItem>
-                <!--<ListView.ItemTemplate>
+                </ListViewItem>-->
+                <ListView.ItemTemplate>
                     <DataTemplate>
                         <Button Background="{x:Null}" BorderBrush="{x:Null}"  Width="200" Height="250" Padding="0">
                             <Border Background="White" CornerRadius="15" >
                                 <Grid Width="200" Height="250">
                                     <Border VerticalAlignment="Top" Height="170" CornerRadius="10" Margin="10" BorderBrush="Gray" BorderThickness="1">
                                         <Border.Background>
-                                            <ImageBrush ImageSource="{Binding ItemImageSource}"></ImageBrush>
+                                            <ImageBrush ImageSource="{Binding Thumbnail, Converter={StaticResource ImageConverter}}"></ImageBrush>
                                         </Border.Background>
                                     </Border>
                                     <StackPanel VerticalAlignment="Bottom" Margin="0 0 0 5">
-                                        <TextBlock Foreground="Black"  VerticalAlignment="Bottom" Text="{Binding ItemName}" HorizontalAlignment="Center" FontSize="20" FontWeight="Medium"></TextBlock>
-                                        <TextBlock Foreground="Black"  VerticalAlignment="Bottom" Text="{Binding ItemPrice}" HorizontalAlignment="Center" FontSize="20" FontWeight="Medium"></TextBlock>
+                                        <TextBlock Foreground="Black"  VerticalAlignment="Bottom" Text="{Binding Name}" HorizontalAlignment="Center" FontSize="20" FontWeight="Medium"></TextBlock>
+                                        <TextBlock Foreground="Black"  VerticalAlignment="Bottom" Text="{Binding Price, Converter={StaticResource MoneyComverter}}" HorizontalAlignment="Center" FontSize="20" FontWeight="Medium"></TextBlock>
                                     </StackPanel>
                                 </Grid>
                             </Border>
                         </Button>
                     </DataTemplate>
-                </ListView.ItemTemplate>-->
-                <!--<ListView.ItemsPanel>
+                </ListView.ItemTemplate>
+                <ListView.ItemsPanel>
                     <ItemsPanelTemplate>
                         <WrapPanel/>
                     </ItemsPanelTemplate>
-                </ListView.ItemsPanel>-->
+                </ListView.ItemsPanel>
             </ListView>
         </StackPanel>
 
@@ -156,8 +162,8 @@
                 </DockPanel>
 
                 <!--Cart List-->
-                <ListView Margin="10" ScrollViewer.HorizontalScrollBarVisibility="Disabled" MaxHeight="600">
-                    <ListViewItem>
+                <ListView x:Name="Invoice" Margin="10" ScrollViewer.HorizontalScrollBarVisibility="Disabled" MaxHeight="600" ItemsSource="{Binding InvoiceDetails}">
+                    <!--<ListViewItem>
                         <DockPanel Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListView}},Path=ActualWidth}" LastChildFill="False" >
                             <StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
                                 <Border CornerRadius="10" Width="50" Height="50">
@@ -187,49 +193,52 @@
                                 <TextBlock Text="150.000 VND" VerticalAlignment="Center" FontSize="14" FontWeight="Medium" Margin="0"></TextBlock>
                             </StackPanel>
                         </DockPanel>
-                    </ListViewItem>
-                    <!--<ListView.ItemTemplate>
+                    </ListViewItem>-->
+                    <ListView.ItemTemplate>
                         <DataTemplate>
                             <DockPanel Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListView}},Path=ActualWidth}" LastChildFill="False">
                                 <StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
                                     <Border CornerRadius="10" Width="50" Height="50">
                                         <Border.Background>
                                             <ImageBrush RenderOptions.BitmapScalingMode="Fant"
-                                            ImageSource="/Assets/Icon.png">
+                                            ImageSource="{Binding ProductThumbnail, Converter={StaticResource ImageConverter}}">
                                             </ImageBrush>
                                         </Border.Background>
                                     </Border>
                                     <StackPanel Margin="10">
-                                        <TextBlock Text="Bánh teramisu" FontWeight="Medium"></TextBlock>
-                                        <TextBlock Text="200.000 VND"></TextBlock>
+                                        <TextBlock Text="{Binding ProductName}" FontWeight="Medium"></TextBlock>
+                                        <TextBlock Text="{Binding ProductPrice, Converter={StaticResource MoneyComverter}}"></TextBlock>
                                     </StackPanel>
                                 </StackPanel>
 
-                                <StackPanel Width="200" Orientation="Horizontal" DockPanel.Dock="Right">
-                                    <ComboBox  
+                                <StackPanel Width="300" Orientation="Horizontal" DockPanel.Dock="Right">
+                                    <TextBox  
                                       Margin="10 0"
-                                      Width="90"
-                                      materialDesign:HintAssist.Hint="1"
-                                      materialDesign:TextFieldAssist.PrefixText="Số lượng: "
-                                      IsEditable="True">
-                                        <ComboBoxItem>
-                                            1
-                                        </ComboBoxItem>
-                                        <ComboBoxItem>
-                                            2
-                                        </ComboBoxItem>
-                                        <ComboBoxItem>
-                                            3
-                                        </ComboBoxItem>
-                                        <ComboBoxItem>
-                                            4
-                                        </ComboBoxItem>
-                                    </ComboBox>
-                                    <TextBlock Text="{Binding SummaryPrice}" VerticalAlignment="Center" FontSize="14" FontWeight="Medium"></TextBlock>
+                                      Width="20" VerticalAlignment="Center" TextAlignment="Right"
+                                      materialDesign:HintAssist.Hint="Số lượng"
+                                      Text="{Binding Amount}">
+                                    </TextBox>
+                                    <TextBox  
+                                      Margin="10 0"
+                                      Width="20" VerticalAlignment="Center" TextAlignment="Right"
+                                      materialDesign:HintAssist.Hint="Giảm giá"
+                                      Text="{Binding Discount}">
+                                    </TextBox>
+                                    <TextBox  
+                                      Margin="10 0"
+                                      Width="20" VerticalAlignment="Center" TextAlignment="Right"
+                                      materialDesign:HintAssist.Hint="Tặng"
+                                      Text="{Binding GiftAmount}">
+                                    </TextBox>
+                                    <TextBlock Text="{Binding SummaryPrice, Converter={StaticResource MoneyComverter}}" VerticalAlignment="Center" FontSize="14" FontWeight="Medium"></TextBlock>
+                                    <Button Width="20" Height="20" Margin="5 0" Foreground="White" Background="Red" BorderThickness="0" Padding="0" HorizontalAlignment="Right"
+                                            Command="{Binding ElementName=Invoice, Path=DataContext.DeleteDetailInListCommand}" CommandParameter="{Binding}">
+                                        <materialDesign:PackIcon Kind="CartRemove" />
+                                    </Button>
                                 </StackPanel>
                             </DockPanel>
                         </DataTemplate>
-                    </ListView.ItemTemplate>-->
+                    </ListView.ItemTemplate>
                 </ListView>
             </StackPanel>
 
