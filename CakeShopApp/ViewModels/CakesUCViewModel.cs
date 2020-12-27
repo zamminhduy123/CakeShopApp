@@ -6,6 +6,8 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Input;
 
 namespace CakeShopApp.ViewModels
 {
@@ -17,11 +19,11 @@ namespace CakeShopApp.ViewModels
 
         #region properties
 
-        private AsyncObservableCollection<dynamic> _categories;
-        public AsyncObservableCollection<dynamic> Categories { get => _categories; set { _categories = value; OnPropertyChanged(); } }
+        private AsyncObservableCollection<Root> _categories;
+        public AsyncObservableCollection<Root> Categories { get => _categories; set { _categories = value; OnPropertyChanged(); } }
 
-        private dynamic _selectedCategory;
-        public dynamic SelectedCategory
+        private Root _selectedCategory;
+        public Root SelectedCategory
         {
             get => _selectedCategory; set
             {
@@ -74,23 +76,100 @@ namespace CakeShopApp.ViewModels
         #endregion
 
         #region commands
-
+        public ICommand ChangeCategoryCommand { get; set; }
         #endregion
 
         public CakesUCViewModel()
         {
             // khởi tạo dữ liệu
-            Categories = new AsyncObservableCollection<dynamic>();
-            Categories.Add(new { Id = 0, Name = "Tất cả", Count = DataProvider.Ins.DB.Products.Count(), });
+            Categories = new AsyncObservableCollection<Root>();
+            Categories.Add(new Root { Id = 0, Name = "Tất cả", Count = DataProvider.Ins.DB.Products.Count()});
             foreach (var category in DataProvider.Ins.DB.Categories)
             {
-                Categories.Add(new { 
-                Id = category.Id,
-                Name = category.Name,
-                Count = category.Products.Count(),
+                Categories.Add(new Root { 
+                    Id = category.Id,
+                    Name = category.Name,
+                    Count = DataProvider.Ins.DB.Products.Where(x => x.CategoryId == category.Id).Count()
                 });
             }
+            foreach (var category in Categories)
+            {
+                category.LoadChild();
+            }
+
             SelectedCategory = Categories.First(x => x.Id == 0);
+
+            // commands
+            ChangeCategoryCommand = new RelayCommand<object>((param) => { return true; }, (param) => {
+                Products = new AsyncObservableCollection<dynamic>();
+                //if (param.Id == 0)
+                //{
+                //    foreach (var product in DataProvider.Ins.DB.Products)
+                //    {
+                //        Products.Add(new
+                //        {
+                //            Id = product.Id,
+                //            Name = product.Name,
+                //            Thumbnail = (product.Photos.Count == 0) ? null : product.Photos.ToList()[0].ImageBytes,
+                //            Price = product.SellPrice.ToString(),
+                //        });
+                //    }
+                //}
+                //else
+                //{
+                //    int id = param.Id;
+                //    foreach (var product in DataProvider.Ins.DB.Products.Where(x => x.CategoryId == id))
+                //    {
+                //        Products.Add(new
+                //        {
+                //            Id = product.Id,
+                //            Name = product.Name,
+                //            Thumbnail = (product.Photos.Count == 0) ? null : product.Photos.ToList()[0].ImageBytes,
+                //            Price = product.SellPrice.ToString(),
+                //        });
+                //    }
+                //}
+            });
         }
+    }
+
+    //tạo class hỗ trợ
+    public class Root
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public int Count { get; set; }
+        public AsyncObservableCollection<RootChild> Child { get; set; }
+        public void LoadChild()
+        {
+            Child = new AsyncObservableCollection<RootChild>();
+            if (Id == 0)
+            {
+                foreach (var product in DataProvider.Ins.DB.Products)
+                {
+                    Child.Add(new RootChild
+                    {
+                        Id = product.Id,
+                        Name = product.Name,
+                    });
+                }
+            }
+            else
+            {
+                foreach (var product in DataProvider.Ins.DB.Products.Where(x => x.CategoryId == Id))
+                {
+                    Child.Add(new RootChild
+                    {
+                        Id = product.Id,
+                        Name = product.Name,
+                    });
+                }
+            }
+        }
+    }
+    public class RootChild
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
     }
 }

@@ -26,18 +26,22 @@ namespace CakeShopApp.ViewModels
             get => _selectedProduct; set
             {
                 _selectedProduct = value;
-                InvoiceDetails.Add(new DetailInList
+                if (SelectedProduct != null)
                 {
-                    ProductId = SelectedProduct.Id,
-                    ProductName = SelectedProduct.Name,
-                    ProductThumbnail = SelectedProduct.Thumbnail,
-                    ProductPrice = SelectedProduct.Price,
-                    Amount = 1,
-                    Discount = 0,
-                    GiftAmount = 0,
-                    SummaryPrice = SelectedProduct.Price,
-                });
-                Products.Remove(SelectedProduct);
+                    InvoiceDetails.Add(new DetailInList
+                    {
+                        ProductId = SelectedProduct.Id,
+                        ProductName = SelectedProduct.Name,
+                        ProductThumbnail = SelectedProduct.Thumbnail,
+                        ProductPrice = SelectedProduct.Price,
+                        Amount = 1,
+                        Discount = 0,
+                        GiftAmount = 0,
+                        SummaryPrice = SelectedProduct.Price,
+                    });
+                    Products.Remove(SelectedProduct);
+                    SelectedProduct = null;
+                }
                 OnPropertyChanged();
             }
         }
@@ -48,7 +52,7 @@ namespace CakeShopApp.ViewModels
         #endregion
 
         #region commands
-        public ICommand DeleteDetailInListCommand;
+        public ICommand DeleteDetailInListCommand { get; set; }
         #endregion
 
         public HomeUCViewModel()
@@ -68,8 +72,18 @@ namespace CakeShopApp.ViewModels
             InvoiceDetails = new AsyncObservableCollection<DetailInList>();
 
             // Commands
-            DeleteDetailInListCommand = new RelayCommand<object>((param) => { return true; }, (param) => {
-                int a = 1;
+            DeleteDetailInListCommand = new RelayCommand<DetailInList>((param) => { return true; }, (param) => {
+                int count = InvoiceDetails.Count;
+                Product product = DataProvider.Ins.DB.Products.Find(param.ProductId);
+                int index = DataProvider.Ins.DB.Products.ToList().IndexOf(product);
+                Products.Insert(index, new
+                {
+                    Id = param.ProductId,
+                    Name = param.ProductName,
+                    Thumbnail = param.ProductThumbnail,
+                    Price = param.ProductPrice,
+                });
+                InvoiceDetails.Remove(param);
             });
         }
 

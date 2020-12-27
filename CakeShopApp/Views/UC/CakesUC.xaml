@@ -5,9 +5,11 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CakeShopApp.Views.UC"
              xmlns:models="clr-namespace:CakeShopApp.Models"
+             xmlns:vm="clr-namespace:CakeShopApp.ViewModels"
              
-             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             
              TextElement.FontWeight="Regular"
              TextElement.FontSize="13"
              TextOptions.TextFormattingMode="Ideal"
@@ -46,27 +48,29 @@
         
         <!--Categories Tree-->
 
-        <!--<TreeView DockPanel.Dock="Right" Width="300">
+        <TreeView x:Name="categories" DockPanel.Dock="Right" Width="300" ItemsSource="{Binding Categories}" FlowDirection="RightToLeft">
+            <!--<i:Interaction.Triggers>
+                <i:EventTrigger EventName="SelectedItemChanged">
+                    <i:InvokeCommandAction Command="{Binding ChangeCategoryCommand}" CommandParameter="{Binding Path=categories.SelectedItem}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>-->
             <TreeView.Resources>
-                <HierarchicalDataTemplate DataType="{x:Type models:Category}" ItemsSource="{Binding Categories}" x:Key="CategoriesHierarchicalDataTemplate">
+                <HierarchicalDataTemplate DataType="{x:Type vm:Root}" ItemsSource="{Binding Child}">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="{Binding Name}" />
                         <TextBlock Text=" [" Foreground="Blue" />
-                        <TextBlock Text="{Binding Categories.Count}" Foreground="Blue" />
+                        <TextBlock Text="{Binding Count}" Foreground="Blue" />
                         <TextBlock Text="]" Foreground="Blue" />
                     </StackPanel>
                 </HierarchicalDataTemplate>
-                <DataTemplate>
+                <DataTemplate DataType="{x:Type vm:RootChild}">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="{Binding Name}" />
-                        <TextBlock Text=" (" Foreground="Green" />
-                        <TextBlock Text="{Binding Age}" Foreground="Green" />
-                        <TextBlock Text=" years)" Foreground="Green" />
                     </StackPanel>
                 </DataTemplate>
             </TreeView.Resources>
-        </TreeView>-->
-        <ListView DockPanel.Dock="Right" Width="300" ItemsSource="{Binding Categories}" SelectedItem="{Binding SelectedCategory}">
+        </TreeView>
+        <!--<ListView DockPanel.Dock="Right" Width="300" ItemsSource="{Binding Categories}" SelectedItem="{Binding SelectedCategory}">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
@@ -77,7 +81,7 @@
                     </StackPanel>
                 </DataTemplate>
             </ListView.ItemTemplate>
-        </ListView>
+        </ListView>-->
 
         <ListView Margin="20 0" ItemsSource="{Binding Products}" SelectedItem="{Binding SelectedProduct}" ScrollViewer.HorizontalScrollBarVisibility="Visible">
             <!--<ListViewItem>
