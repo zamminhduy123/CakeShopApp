@@ -49,11 +49,11 @@
         <!--Categories Tree-->
 
         <TreeView x:Name="categories" DockPanel.Dock="Right" Width="300" ItemsSource="{Binding Categories}" FlowDirection="RightToLeft">
-            <!--<i:Interaction.Triggers>
+            <i:Interaction.Triggers>
                 <i:EventTrigger EventName="SelectedItemChanged">
-                    <i:InvokeCommandAction Command="{Binding ChangeCategoryCommand}" CommandParameter="{Binding Path=categories.SelectedItem}"/>
+                    <i:InvokeCommandAction Command="{Binding ChangeCategoryCommand}" CommandParameter="{Binding ElementName=categories, Path=SelectedItem}"/>
                 </i:EventTrigger>
-            </i:Interaction.Triggers>-->
+            </i:Interaction.Triggers>
             <TreeView.Resources>
                 <HierarchicalDataTemplate DataType="{x:Type vm:Root}" ItemsSource="{Binding Child}">
                     <StackPanel Orientation="Horizontal">

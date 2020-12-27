@@ -102,33 +102,47 @@ namespace CakeShopApp.ViewModels
             // commands
             ChangeCategoryCommand = new RelayCommand<object>((param) => { return true; }, (param) => {
                 Products = new AsyncObservableCollection<dynamic>();
-                //if (param.Id == 0)
-                //{
-                //    foreach (var product in DataProvider.Ins.DB.Products)
-                //    {
-                //        Products.Add(new
-                //        {
-                //            Id = product.Id,
-                //            Name = product.Name,
-                //            Thumbnail = (product.Photos.Count == 0) ? null : product.Photos.ToList()[0].ImageBytes,
-                //            Price = product.SellPrice.ToString(),
-                //        });
-                //    }
-                //}
-                //else
-                //{
-                //    int id = param.Id;
-                //    foreach (var product in DataProvider.Ins.DB.Products.Where(x => x.CategoryId == id))
-                //    {
-                //        Products.Add(new
-                //        {
-                //            Id = product.Id,
-                //            Name = product.Name,
-                //            Thumbnail = (product.Photos.Count == 0) ? null : product.Photos.ToList()[0].ImageBytes,
-                //            Price = product.SellPrice.ToString(),
-                //        });
-                //    }
-                //}
+                if (param is Root)
+                {
+                    var tmp = param as Root;
+                    if (tmp.Id == 0)
+                    {
+                        foreach (var product in DataProvider.Ins.DB.Products)
+                        {
+                            Products.Add(new
+                            {
+                                Id = product.Id,
+                                Name = product.Name,
+                                Thumbnail = (product.Photos.Count == 0) ? null : product.Photos.ToList()[0].ImageBytes,
+                                Price = product.SellPrice.ToString(),
+                            });
+                        }
+                    }
+                    else
+                    {
+                        foreach (var product in DataProvider.Ins.DB.Products.Where(x => x.CategoryId == tmp.Id))
+                        {
+                            Products.Add(new
+                            {
+                                Id = product.Id,
+                                Name = product.Name,
+                                Thumbnail = (product.Photos.Count == 0) ? null : product.Photos.ToList()[0].ImageBytes,
+                                Price = product.SellPrice.ToString(),
+                            });
+                        }
+                    }
+                }
+                else if (param is RootChild)
+                {
+                    var tmp = param as RootChild;
+                    Product product = DataProvider.Ins.DB.Products.Find(tmp.Id);
+                    SelectedProduct = new {
+                        Id = product.Id,
+                        Name = product.Name,
+                        Thumbnail = (product.Photos.Count == 0) ? null : product.Photos.ToList()[0].ImageBytes,
+                        Price = product.SellPrice.ToString(),
+                    };
+                }
             });
         }
     }
