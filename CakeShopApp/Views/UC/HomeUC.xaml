@@ -183,7 +183,7 @@
                                         <materialDesign:PackIcon Kind="Minus" />
                                     </Button>
                                 </StackPanel>
-                                
+
                                 <TextBlock Text="150.000 VND" VerticalAlignment="Center" FontSize="14" FontWeight="Medium" Margin="0"></TextBlock>
                             </StackPanel>
                         </DockPanel>
@@ -232,8 +232,248 @@
                     </ListView.ItemTemplate>-->
                 </ListView>
             </StackPanel>
+        </Grid>
+        <!--Check out Dialog-->
+        <materialDesign:DialogHost IsOpen="{Binding IsOpenAddJourneyDialog}" Grid.Column="0" Panel.ZIndex="1" Grid.ColumnSpan="2"
+                    Style="{StaticResource MaterialDesignEmbeddedDialogHost}"
+                    DialogMargin="8">
+            <materialDesign:DialogHost.DialogContent>
+                <Grid Height="auto">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition Height="70"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock FontSize="20" FontWeight="Medium" Margin="10">
+                            Invoice
+                        </TextBlock>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock FontSize="17" FontWeight="Medium" Margin="10" Text="ID: "/>
+                            <TextBlock FontSize="17" FontWeight="Medium" Margin="10" Text="23"></TextBlock>
+                        </StackPanel>
+                        <TextBox
+                              Margin="10"
+                              x:Name="CusNameTextBox"
+                              materialDesign:HintAssist.Hint="Customer Name: ">
+                                                    <!--<TextBox.Text>
+                                                    <Binding
+                                  Path="Name"
+                                  UpdateSourceTrigger="PropertyChanged">
+                                                        <Binding.ValidationRules>
+                                                            <domain1:NotEmptyValidationRule
+                                                                ValidatesOnTargetUpdated="True" 
+                                                                xmlns:domain1="clr-namespace:MaterialDesignDemo.Domain" />
+                                                        </Binding.ValidationRules>
+                                                    </Binding>  
+                            </TextBox.Text>-->
+                        </TextBox>
+                        <TextBox
+                              Margin="10"
+                              x:Name="CusPhoneTextBox"
+                              materialDesign:HintAssist.Hint="Phone: ">
+                            <!--<TextBox.Text>
+                                                    <Binding
+                                  Path="Name"
+                                  UpdateSourceTrigger="PropertyChanged">
+                                                        <Binding.ValidationRules>
+                                                            <domain1:NotEmptyValidationRule
+                                                                ValidatesOnTargetUpdated="True" 
+                                                                xmlns:domain1="clr-namespace:MaterialDesignDemo.Domain" />
+                                                        </Binding.ValidationRules>
+                                                    </Binding>  
+                            </TextBox.Text>-->
+                        </TextBox>
+                        <Border BorderBrush="SaddleBrown" BorderThickness="2" Padding="5" CornerRadius="10">
+                            <ListView
+                            ItemsSource="{Binding Items1}">
+                                <ListView.View>
+                                    <GridView>
+                                        <GridViewColumn
+                                    DisplayMemberBinding="{Binding Name}"
+                                    Header="Name" />
+                                        <GridViewColumn
+                                        DisplayMemberBinding="{Binding Quantity}"
+                                        Header="Quantity" />
+                                        <GridViewColumn
+                                            DisplayMemberBinding="{Binding Price}"
+                                            Header="Price" />
+                                        <GridViewColumn
+                                        DisplayMemberBinding="{Binding Total}"
+                                        Header="Total">
+                                            <GridViewColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <ComboBox
+                                                    Width="100">
+                                                        <ComboBoxItem
+                                                        Content="Test" />
+                                                        <ComboBoxItem
+                                                            Content="Test2" />
+                                                        <ComboBoxItem
+                                                            Content="Test3" />
+                                                    </ComboBox>
+                                                </DataTemplate>
+                                            </GridViewColumn.CellTemplate>
+                                        </GridViewColumn>
+                                    </GridView>
+                                </ListView.View>
+                            </ListView>
+                        </Border>
+                    </StackPanel>
 
-            <Button VerticalAlignment="Bottom" Background="{x:Null}" BorderBrush="{x:Null}" Height="100">
+                    <StackPanel Grid.Column="1" Orientation="Vertical">
+                        <DatePicker
+                                Margin="10"
+                              Width="auto"
+                              materialDesign:HintAssist.Hint="Create Date"
+                              Style="{StaticResource MaterialDesignOutlinedDatePicker}" />
+                        <Border CornerRadius="10" BorderThickness="2" BorderBrush="SaddleBrown" Margin="5">
+                            <materialDesign:Flipper Margin="10">
+                                <materialDesign:Flipper.FrontContent>
+                                    <StackPanel Margin="10 20">
+                                        <Button
+                                          Command="{x:Static materialDesign:Flipper.FlipCommand}"
+                                          Margin="5"
+                                          Width="190">
+                                            DELIVERY...
+                                        </Button>
+
+                                        <StackPanel Orientation="Horizontal" Margin="10">
+                                            <TextBlock VerticalAlignment="Center" Text="Cash: " FontSize="15" FontWeight="Medium"></TextBlock>
+                                            <TextBox Width="100"
+                                                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                                  VerticalAlignment="Center" /> 
+                                        </StackPanel>
+
+                                        <StackPanel Orientation="Horizontal" Margin="10">
+                                            <TextBlock VerticalAlignment="Center" Text="Change: " FontSize="15" FontWeight="Medium"></TextBlock>
+                                            <TextBox Width="100"
+                                                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                                  VerticalAlignment="Center" />
+                                        </StackPanel>
+                                    </StackPanel>
+                                </materialDesign:Flipper.FrontContent>
+                                <materialDesign:Flipper.BackContent>
+                                    <Grid
+                                      Height="auto"
+                                      Width="auto">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition
+                                           Height="Auto" />
+                                            <RowDefinition
+                                            Height="*" />
+                                        </Grid.RowDefinitions>
+                                        <materialDesign:ColorZone
+                                        Mode="Accent"
+                                        Padding="5">
+                                            <StackPanel
+                                         Orientation="Horizontal">
+                                                <Button
+                                                Style="{StaticResource MaterialDesignToolForegroundButton}"
+                                                Command="{x:Static materialDesign:Flipper.FlipCommand}"
+                                                HorizontalAlignment="Left">
+                                                    <materialDesign:PackIcon
+                                              Kind="ArrowLeft"
+                                              HorizontalAlignment="Right" />
+                                                </Button>
+                                                <TextBlock
+                                                Margin="5 0 0 0"
+                                                VerticalAlignment="Center">
+                                              DELIVERY INFORMATION
+                                                </TextBlock>
+                                            </StackPanel>
+                                        </materialDesign:ColorZone>
+                                        <Grid
+                                        Grid.Row="1"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Top"
+                                        Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Grid}},Path=ActualWidth}">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition />
+                                                <RowDefinition />
+                                                <RowDefinition />
+                                                <RowDefinition />
+                                            </Grid.RowDefinitions>
+                                            <StackPanel
+                                              Grid.Row="0"
+                                              Orientation="Horizontal"
+                                              Margin="0 12 0 0"
+                                              HorizontalAlignment="Right">
+                                                <TextBlock Text="Delivery"></TextBlock>
+                                                <ToggleButton
+                                                Margin="8 0 0 0"></ToggleButton>
+                                            </StackPanel>
+                                            <TextBox
+                                          materialDesign:HintAssist.Hint="Address"
+                                          Margin="0 12 0 0"
+                                            Grid.Row="1">
+                                            </TextBox>
+                                            <TextBox
+                                          Grid.Row="2"
+                                          materialDesign:HintAssist.Hint="PrePaid"
+                                          materialDesign:HintAssist.IsFloating="True"
+                                          Margin="0 10 0 0">
+                                                0
+                                            </TextBox>
+                                            <TextBox
+                                          Grid.Row="3"
+                                          materialDesign:HintAssist.Hint="PostPaid"
+                                          materialDesign:HintAssist.IsFloating="True"
+                                          Margin="0 10 0 0">
+                                                0
+                                            </TextBox>
+                                        </Grid>
+                                    </Grid>
+                                </materialDesign:Flipper.BackContent>
+                            </materialDesign:Flipper>
+                        </Border>
+                        <Border BorderBrush="SaddleBrown" BorderThickness="2" Background="{x:Null}" CornerRadius="10" Margin="5">
+                            <StackPanel Orientation="Vertical">
+                                <StackPanel Orientation="Horizontal" Margin="10">
+                                    <TextBlock VerticalAlignment="Center" Text="% Off: " FontSize="15" FontWeight="Medium"></TextBlock>
+                                    <TextBox Width="100"
+                                      Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                      VerticalAlignment="Center" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="10">
+                                    <TextBlock VerticalAlignment="Center" Text="Total: " FontSize="15" FontWeight="Medium"></TextBlock>
+                                    <TextBox Width="100"
+                                      Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                      VerticalAlignment="Center" />
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="1"  Orientation="Horizontal" Grid.Column="1" VerticalAlignment="Bottom" Margin="0 0 20 20">
+                        <Button
+                                  Style="{StaticResource MaterialDesignFlatButton}"
+                                  IsDefault="True"
+                                  Margin="0 8 8 0"
+                            FontSize="20"
+                                  IsEnabled="{Binding IsEnabledAddJourneyButton}"
+                                  Command="{Binding AddJourneyCommand}"  CommandParameter="true">
+                            CHECKOUT
+                        </Button>
+                        <Button
+                                          Style="{StaticResource MaterialDesignFlatButton}"
+                                          IsCancel="True"
+                                          Margin="0 8 8 0"
+                            FontSize="20"
+                                          Command="{Binding AddJourneyCommand}"  CommandParameter="false">
+                            CANCEL
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </materialDesign:DialogHost.DialogContent>
+            
+            <Button HorizontalAlignment="Right" VerticalAlignment="Bottom" Background="{x:Null}" BorderBrush="{x:Null}" Height="100"
+                        Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}"
+                        ToolTip="Thêm 1 chuyến đi"
+                    Margin="0 0 30 0">
                 <Border CornerRadius="10" Background="SaddleBrown">
                     <StackPanel Orientation="Horizontal" Margin="10">
                         <TextBlock Text="Check Out: " FontSize="25" ></TextBlock>
@@ -244,6 +484,6 @@
                     </Border.Effect>
                 </Border>
             </Button>
-        </Grid>
+        </materialDesign:DialogHost>
     </Grid>
 </UserControl>
