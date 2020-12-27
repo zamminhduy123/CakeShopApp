@@ -38,6 +38,9 @@ namespace CakeShopApp.ViewModels
                             Name = product.Name,
                             Thumbnail = (product.Photos.Count == 0) ? null: product.Photos.ToList()[0].ImageBytes,
                             Price = product.SellPrice.ToString(),
+                            ImportPrice = product.ImportPrice.ToString(),
+                            Description = product.Description,
+                            InStock = product.InStockAmount,
                         });
                     }
                 }
@@ -52,6 +55,9 @@ namespace CakeShopApp.ViewModels
                             Name = product.Name,
                             Thumbnail = (product.Photos.Count == 0) ? null : product.Photos.ToList()[0].ImageBytes,
                             Price = product.SellPrice.ToString(),
+                            ImportPrice = product.ImportPrice.ToString(),
+                            Description = product.Description,
+                            InStock = product.InStockAmount,
                         });
                     }
                 }
@@ -115,6 +121,9 @@ namespace CakeShopApp.ViewModels
                                 Name = product.Name,
                                 Thumbnail = (product.Photos.Count == 0) ? null : product.Photos.ToList()[0].ImageBytes,
                                 Price = product.SellPrice.ToString(),
+                                ImportPrice = product.ImportPrice.ToString(),
+                                Description = product.Description,
+                                InStock = product.InStockAmount,
                             });
                         }
                     }
@@ -128,6 +137,9 @@ namespace CakeShopApp.ViewModels
                                 Name = product.Name,
                                 Thumbnail = (product.Photos.Count == 0) ? null : product.Photos.ToList()[0].ImageBytes,
                                 Price = product.SellPrice.ToString(),
+                                ImportPrice = product.ImportPrice.ToString(),
+                                Description = product.Description,
+                                InStock = product.InStockAmount,
                             });
                         }
                     }

@@ -70,47 +70,62 @@
                 </DataTemplate>
             </TreeView.Resources>
         </TreeView>
-        <!--<ListView DockPanel.Dock="Right" Width="300" ItemsSource="{Binding Categories}" SelectedItem="{Binding SelectedCategory}">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{Binding Name}" />
-                        <TextBlock Text=" [" Foreground="Blue" />
-                        <TextBlock Text="{Binding Count}" Foreground="Blue" />
-                        <TextBlock Text="]" Foreground="Blue" />
-                    </StackPanel>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>-->
 
-        <ListView Margin="20 0" ItemsSource="{Binding Products}" SelectedItem="{Binding SelectedProduct}" ScrollViewer.HorizontalScrollBarVisibility="Visible">
-            <!--<ListViewItem>
-                --><!--Sample--><!--
-                <Border CornerRadius="10" BorderThickness="1" BorderBrush="SaddleBrown" Width="200" Height="300" Margin="20 10">
-                    <StackPanel>
-                        <Image Height="200"></Image>
-                        <TextBlock FontSize="25" FontWeight="Medium" Margin="5" Foreground="SaddleBrown">Teramisu</TextBlock>
-                        <TextBlock FontSize="20" FontWeight="Medium" Margin="5 0">120.000 VND</TextBlock>
-                    </StackPanel>
-                    
-                </Border>
-            </ListViewItem>-->
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <Border CornerRadius="10" BorderThickness="1" BorderBrush="SaddleBrown" Width="200" Height="300" Margin="10">
-                        <StackPanel>
-                            <Image Height="200" Source="{Binding Thumbnail, Converter={StaticResource ImageConverter}}"></Image>
-                            <TextBlock FontSize="25" FontWeight="Medium" Margin="5" Foreground="SaddleBrown" Text="{Binding Name}"></TextBlock>
-                            <TextBlock FontSize="20" FontWeight="Medium" Margin="5 0" Text="{Binding Price, Converter={StaticResource MoneyComverter}}"></TextBlock>
-                        </StackPanel>
-                    </Border>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-            <ListView.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <WrapPanel></WrapPanel>
-                </ItemsPanelTemplate>
-            </ListView.ItemsPanel>
-        </ListView>
+        <!--Product ListView-->
+        <Grid DockPanel.Dock="Left">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="100"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <!--Title-->
+            <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="7" CornerRadius="10" BorderThickness="1" BorderBrush="SaddleBrown" Height="50" Margin="20 10">
+            </Border>
+            <TextBlock Grid.Row="0" Grid.Column="0" FontSize="25" FontWeight="Medium" Margin="10 5" Foreground="SaddleBrown" VerticalAlignment="Center" HorizontalAlignment="Center">Ảnh</TextBlock>
+            <TextBlock Grid.Row="0" Grid.Column="1" FontSize="25" FontWeight="Medium" Margin="10 5" Foreground="SaddleBrown" VerticalAlignment="Center" HorizontalAlignment="Center">Tên Bánh</TextBlock>
+            <TextBlock Grid.Row="0" Grid.Column="2" FontSize="25" FontWeight="Medium" Margin="10 5" Foreground="SaddleBrown" VerticalAlignment="Center" HorizontalAlignment="Center">Mô tả</TextBlock>
+            <TextBlock Grid.Row="0" Grid.Column="3" FontSize="25" FontWeight="Medium" Margin="10 5" Foreground="SaddleBrown" VerticalAlignment="Center" HorizontalAlignment="Center">Giá nhập</TextBlock>
+            <TextBlock Grid.Row="0" Grid.Column="4" FontSize="25" FontWeight="Medium" Margin="10 5" Foreground="SaddleBrown" VerticalAlignment="Center" HorizontalAlignment="Center">Giá xuất</TextBlock>
+            <TextBlock Grid.Row="0" Grid.Column="5" FontSize="25" FontWeight="Medium" Margin="10 5" Foreground="SaddleBrown" VerticalAlignment="Center" HorizontalAlignment="Center">Tồn kho</TextBlock>
+
+            <!--Products List-->
+            <ListView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="7" ItemsSource="{Binding Products}" SelectedItem="{Binding SelectedProduct}" ScrollViewer.VerticalScrollBarVisibility="Hidden" ScrollViewer.HorizontalScrollBarVisibility="Hidden" Margin="20 10">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Border CornerRadius="10" BorderThickness="1" BorderBrush="SaddleBrown" Height="50" Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListView}},Path=ActualWidth}" HorizontalAlignment="Left">
+                            <StackPanel Orientation="Horizontal">
+                                <Image Grid.Column="0" Height="50" Width="50" Source="{Binding Thumbnail, Converter={StaticResource ImageConverter}}" Margin="5"></Image>
+                                <TextBlock Grid.Column="1" FontSize="15" FontWeight="Medium" Margin="10 5" Foreground="SaddleBrown" Text="{Binding Name}" Width="100"></TextBlock>
+                                <TextBlock Grid.Column="2" FontSize="15" FontWeight="Medium" Margin="10 5" Foreground="SaddleBrown" Text="{Binding Description}" Width="100"></TextBlock>
+                                <TextBlock Grid.Column="3" FontSize="15" FontWeight="Medium" Margin="10 5" Text="{Binding ImportPrice, Converter={StaticResource MoneyComverter}}"></TextBlock>
+                                <TextBlock Grid.Column="4" FontSize="15" FontWeight="Medium" Margin="10 5" Text="{Binding Price, Converter={StaticResource MoneyComverter}}"></TextBlock>
+                                <TextBlock Grid.Column="5" FontSize="15" FontWeight="Medium" Margin="10 5" Foreground="SaddleBrown" Text="{Binding InStock}"></TextBlock>
+                                <Button Grid.Column="6" Width="20" Height="20" Margin="10 5" BorderBrush="SaddleBrown" Background="Gray" BorderThickness="1" Padding="0" HorizontalAlignment="Right"
+                                            Command="{Binding ElementName=Invoice, Path=DataContext.EditProductCommand}" CommandParameter="{Binding}">
+                                    <materialDesign:PackIcon Kind="Pencil" Background="SaddleBrown" />
+                                </Button>
+                                <Button Grid.Column="6" Width="20" Height="20" Margin="10 5" BorderBrush="Red" Background="Transparent" BorderThickness="1" Padding="0" HorizontalAlignment="Right"
+                                            Command="{Binding ElementName=Invoice, Path=DataContext.DeleteProductCommand}" CommandParameter="{Binding}">
+                                    <materialDesign:PackIcon Kind="CloseCircle" Background="Red" />
+                                </Button>
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+                <!--<ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel></WrapPanel>
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>-->
+            </ListView>
+        </Grid>
     </DockPanel>
 </UserControl>
