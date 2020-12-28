@@ -64,15 +64,6 @@
                         </StackPanel>
                     </Border>
                 </Button>
-                <!--Checkout button-->
-                <Button Margin="10 5 10 10" Padding="0" Background="{x:Null}" BorderBrush="{x:Null}"  Width="90" Height="90" Command="{Binding CheckOutCommand}">
-                    <Border CornerRadius="15" Margin="0"  Background="{Binding Source={StaticResource Global},Path=CheckOutColor}" Width="90" Height="90">
-                        <StackPanel Orientation="Vertical" VerticalAlignment="Center">
-                            <materialDesign:PackIcon Kind="cart" Width="50" Height="50" HorizontalAlignment="Center"  Foreground="{Binding Source={StaticResource Global},Path=CheckOutTextColor}"/>
-                            <TextBlock Text="Checkout" Foreground="{Binding Source={StaticResource Global},Path=CheckOutTextColor}" FontSize="19" FontWeight="Medium" HorizontalAlignment="Center"></TextBlock>
-                        </StackPanel>
-                    </Border>
-                </Button>
                 <!--Cakes button-->
                 <Button Margin="10 5 10 10" Padding="0" Background="{x:Null}" BorderBrush="{x:Null}"  Width="90" Height="90" Command="{Binding CakesCommand}">
                     <Border CornerRadius="15" Margin="0"  Background="{Binding Source={StaticResource Global},Path=CakesColor}" Width="90" Height="90">

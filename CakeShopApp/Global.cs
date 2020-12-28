@@ -91,8 +91,8 @@ namespace CakeShopApp
         public String HomeColor { get => _homeColor; set { _homeColor = value; OnPropertyChanged("HomeColor"); } }
         public String CheckOutColor { get => _checkOutColor; set { _checkOutColor = value; OnPropertyChanged("CheckOutColor"); } }
 
-        public String CakesColor { get => _cakesColor; set { _cakesColor = value; OnPropertyChanged("HomeColor"); } }
-        public String CakesTextColor { get => _cakesTextColor; set { _cakesTextColor = value; OnPropertyChanged("CheckOutColor"); } }
+        public String CakesColor { get => _cakesColor; set { _cakesColor = value; OnPropertyChanged("CakesColor"); } }
+        public String CakesTextColor { get => _cakesTextColor; set { _cakesTextColor = value; OnPropertyChanged("CakesTextColor"); } }
 
         public BaseViewModel CurrentPageViewModel { get => _currentPageViewModel; set { _currentPageViewModel = value; OnPropertyChanged("CurrentPageViewModel"); } }
 
