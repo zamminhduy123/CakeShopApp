@@ -4,9 +4,12 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CakeShopApp.Views.UC"
+             xmlns:models="clr-namespace:CakeShopApp.Models"
+             xmlns:vm="clr-namespace:CakeShopApp.ViewModels"
              
-             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             
              TextElement.FontWeight="Regular"
              TextElement.FontSize="13"
              TextOptions.TextFormattingMode="Ideal"
@@ -17,6 +20,12 @@
 
             mc:Ignorable="d" 
             d:DesignHeight="850" d:DesignWidth="1100">
+    
+    <UserControl.Resources>
+        <models:BytesToBitMapConverter x:Key="ImageConverter"/>
+        <models:NumberToVNDConverter x:Key="MoneyComverter"/>
+    </UserControl.Resources>
+    
     <DockPanel>
         <StackPanel DockPanel.Dock="Top" Height="75" Orientation="Horizontal">
             <!--Search Bar-->
@@ -39,56 +48,84 @@
         
         <!--Categories Tree-->
 
-        <TreeView DockPanel.Dock="Right" Width="300">
-            <!--<TreeView.Resources>
-                <HierarchicalDataTemplate ItemsSource="{Binding Categories}">
+        <TreeView x:Name="categories" DockPanel.Dock="Right" Width="300" ItemsSource="{Binding Categories}" FlowDirection="RightToLeft">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="SelectedItemChanged">
+                    <i:InvokeCommandAction Command="{Binding ChangeCategoryCommand}" CommandParameter="{Binding ElementName=categories, Path=SelectedItem}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+            <TreeView.Resources>
+                <HierarchicalDataTemplate DataType="{x:Type vm:Root}" ItemsSource="{Binding Child}">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="{Binding Name}" />
                         <TextBlock Text=" [" Foreground="Blue" />
-                        <TextBlock Text="{Binding Categories.Count}" Foreground="Blue" />
+                        <TextBlock Text="{Binding Count}" Foreground="Blue" />
                         <TextBlock Text="]" Foreground="Blue" />
                     </StackPanel>
                 </HierarchicalDataTemplate>
-                <DataTemplate>
+                <DataTemplate DataType="{x:Type vm:RootChild}">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="{Binding Name}" />
-                        <TextBlock Text=" (" Foreground="Green" />
-                        <TextBlock Text="{Binding Age}" Foreground="Green" />
-                        <TextBlock Text=" years)" Foreground="Green" />
                     </StackPanel>
                 </DataTemplate>
-            </TreeView.Resources>-->
+            </TreeView.Resources>
         </TreeView>
-        
 
-        <ListView Margin="20 0">
-            <ListViewItem>
-                <!--Sample-->
-                <Border CornerRadius="10" BorderThickness="1" BorderBrush="SaddleBrown" Width="200" Height="300" Margin="20 10">
-                    <StackPanel>
-                        <Image Height="200"></Image>
-                        <TextBlock FontSize="25" FontWeight="Medium" Margin="5" Foreground="SaddleBrown">Teramisu</TextBlock>
-                        <TextBlock FontSize="20" FontWeight="Medium" Margin="5 0">120.000 VND</TextBlock>
-                    </StackPanel>
-                    
-                </Border>
-            </ListViewItem>
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <Border CornerRadius="10" BorderThickness="1" BorderBrush="SaddleBrown" Width="200" Height="300" Margin="10">
-                        <StackPanel>
-                            <Image Height="200"></Image>
-                            <TextBlock FontSize="25" FontWeight="Medium" Margin="5" Foreground="SaddleBrown">Teramisu</TextBlock>
-                            <TextBlock FontSize="20" FontWeight="Medium" Margin="5 0">120.000 VND</TextBlock>
-                        </StackPanel>
-                    </Border>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-            <ListView.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <WrapPanel></WrapPanel>
-                </ItemsPanelTemplate>
-            </ListView.ItemsPanel>
-        </ListView>
+        <!--Product ListView-->
+        <Grid DockPanel.Dock="Left">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="100"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <!--Title-->
+            <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="7" CornerRadius="10" BorderThickness="1" BorderBrush="SaddleBrown" Height="50" Margin="20 10">
+            </Border>
+            <TextBlock Grid.Row="0" Grid.Column="0" FontSize="25" FontWeight="Medium" Margin="10 5" Foreground="SaddleBrown" VerticalAlignment="Center" HorizontalAlignment="Center">Ảnh</TextBlock>
+            <TextBlock Grid.Row="0" Grid.Column="1" FontSize="25" FontWeight="Medium" Margin="10 5" Foreground="SaddleBrown" VerticalAlignment="Center" HorizontalAlignment="Center">Tên Bánh</TextBlock>
+            <TextBlock Grid.Row="0" Grid.Column="2" FontSize="25" FontWeight="Medium" Margin="10 5" Foreground="SaddleBrown" VerticalAlignment="Center" HorizontalAlignment="Center">Mô tả</TextBlock>
+            <TextBlock Grid.Row="0" Grid.Column="3" FontSize="25" FontWeight="Medium" Margin="10 5" Foreground="SaddleBrown" VerticalAlignment="Center" HorizontalAlignment="Center">Giá nhập</TextBlock>
+            <TextBlock Grid.Row="0" Grid.Column="4" FontSize="25" FontWeight="Medium" Margin="10 5" Foreground="SaddleBrown" VerticalAlignment="Center" HorizontalAlignment="Center">Giá xuất</TextBlock>
+            <TextBlock Grid.Row="0" Grid.Column="5" FontSize="25" FontWeight="Medium" Margin="10 5" Foreground="SaddleBrown" VerticalAlignment="Center" HorizontalAlignment="Center">Tồn kho</TextBlock>
+
+            <!--Products List-->
+            <ListView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="7" ItemsSource="{Binding Products}" SelectedItem="{Binding SelectedProduct}" ScrollViewer.VerticalScrollBarVisibility="Hidden" ScrollViewer.HorizontalScrollBarVisibility="Hidden" Margin="20 10">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Border CornerRadius="10" BorderThickness="1" BorderBrush="SaddleBrown" Height="50" Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListView}},Path=ActualWidth}" HorizontalAlignment="Left">
+                            <StackPanel Orientation="Horizontal">
+                                <Image Grid.Column="0" Height="50" Width="50" Source="{Binding Thumbnail, Converter={StaticResource ImageConverter}}" Margin="5"></Image>
+                                <TextBlock Grid.Column="1" FontSize="15" FontWeight="Medium" Margin="10 5" Foreground="SaddleBrown" Text="{Binding Name}" Width="100"></TextBlock>
+                                <TextBlock Grid.Column="2" FontSize="15" FontWeight="Medium" Margin="10 5" Foreground="SaddleBrown" Text="{Binding Description}" Width="100"></TextBlock>
+                                <TextBlock Grid.Column="3" FontSize="15" FontWeight="Medium" Margin="10 5" Text="{Binding ImportPrice, Converter={StaticResource MoneyComverter}}"></TextBlock>
+                                <TextBlock Grid.Column="4" FontSize="15" FontWeight="Medium" Margin="10 5" Text="{Binding Price, Converter={StaticResource MoneyComverter}}"></TextBlock>
+                                <TextBlock Grid.Column="5" FontSize="15" FontWeight="Medium" Margin="10 5" Foreground="SaddleBrown" Text="{Binding InStock}"></TextBlock>
+                                <Button Grid.Column="6" Width="20" Height="20" Margin="10 5" BorderBrush="SaddleBrown" Background="Gray" BorderThickness="1" Padding="0" HorizontalAlignment="Right"
+                                            Command="{Binding ElementName=Invoice, Path=DataContext.EditProductCommand}" CommandParameter="{Binding}">
+                                    <materialDesign:PackIcon Kind="Pencil" Background="SaddleBrown" />
+                                </Button>
+                                <Button Grid.Column="6" Width="20" Height="20" Margin="10 5" BorderBrush="Red" Background="Transparent" BorderThickness="1" Padding="0" HorizontalAlignment="Right"
+                                            Command="{Binding ElementName=Invoice, Path=DataContext.DeleteProductCommand}" CommandParameter="{Binding}">
+                                    <materialDesign:PackIcon Kind="CloseCircle" Background="Red" />
+                                </Button>
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+                <!--<ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel></WrapPanel>
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>-->
+            </ListView>
+        </Grid>
     </DockPanel>
 </UserControl>
