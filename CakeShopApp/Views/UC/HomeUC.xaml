@@ -108,20 +108,37 @@
             </DockPanel>
 
             <!--List Item-->
-            <ListView ItemsSource="{Binding Products}" SelectedItem="{Binding SelectedProduct}" HorizontalAlignment="Left"  Width="630" Height="450" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+            <ListView Margin="10" ItemsSource="{Binding Products}" SelectedItem="{Binding SelectedProduct}">
+                <!--<ListViewItem>
+                    <Button Background="{x:Null}" BorderBrush="{x:Null}"  Width="200" Height="250" Padding="0">
+                        <Border Background="White" CornerRadius="15" >
+                            <Grid Width="200" Height="250">
+                                <Border VerticalAlignment="Top" Height="170" CornerRadius="10" Margin="10" BorderBrush="Gray" BorderThickness="1">
+                                    --><!--<Border.Background>
+                                        <ImageBrush ImageSource="{Binding ItemImageSource}"></ImageBrush>
+                                    </Border.Background>--><!--
+                                </Border>
+                                <StackPanel VerticalAlignment="Bottom" Margin="0 0 0 5">
+                                    <TextBlock Foreground="Black"  VerticalAlignment="Bottom" Text="Hazelnut Milk Shake" HorizontalAlignment="Center" FontSize="20" FontWeight="Medium"></TextBlock>
+                                    <TextBlock Foreground="Black"  VerticalAlignment="Bottom" Text="45.000 VND" HorizontalAlignment="Center" FontSize="20" FontWeight="Medium"></TextBlock>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                    </Button>
+                </ListViewItem>-->
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <Button Background="{x:Null}" BorderBrush="{x:Null}"  Width="185" Height="250" Padding="0">
-                            <Border Background="White" CornerRadius="15" Margin="0" Width="185" Height="250">
-                                <Grid Width="185">
+                        <Button Background="{x:Null}" BorderBrush="{x:Null}"  Width="200" Height="250" Padding="0">
+                            <Border Background="White" CornerRadius="15" >
+                                <Grid Width="200" Height="250">
                                     <Border VerticalAlignment="Top" Height="170" CornerRadius="10" Margin="10" BorderBrush="Gray" BorderThickness="1">
                                         <Border.Background>
                                             <ImageBrush ImageSource="{Binding Thumbnail, Converter={StaticResource ImageConverter}}"></ImageBrush>
                                         </Border.Background>
                                     </Border>
                                     <StackPanel VerticalAlignment="Bottom" Margin="0 0 0 5">
-                                        <TextBlock Foreground="Black"  VerticalAlignment="Bottom" Text="{Binding Name}" HorizontalAlignment="Center" TextAlignment="Center" FontSize="15" TextWrapping="Wrap" FontWeight="Medium"></TextBlock>
-                                        <TextBlock Foreground="Black"  VerticalAlignment="Bottom" Text="{Binding Price, Converter={StaticResource MoneyComverter}}" HorizontalAlignment="Center" FontSize="15" FontWeight="Medium"></TextBlock>
+                                        <TextBlock Foreground="Black"  VerticalAlignment="Bottom" Text="{Binding Name}" HorizontalAlignment="Center" FontSize="20" FontWeight="Medium"></TextBlock>
+                                        <TextBlock Foreground="Black"  VerticalAlignment="Bottom" Text="{Binding Price, Converter={StaticResource MoneyComverter}}" HorizontalAlignment="Center" FontSize="20" FontWeight="Medium"></TextBlock>
                                     </StackPanel>
                                 </Grid>
                             </Border>
@@ -146,6 +163,37 @@
 
                 <!--Cart List-->
                 <ListView x:Name="Invoice" Margin="10" ScrollViewer.HorizontalScrollBarVisibility="Disabled" MaxHeight="600" ItemsSource="{Binding InvoiceDetails}">
+                    <!--<ListViewItem>
+                        <DockPanel Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListView}},Path=ActualWidth}" LastChildFill="False" >
+                            <StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
+                                <Border CornerRadius="10" Width="50" Height="50">
+                                    <Border.Background>
+                                        <ImageBrush RenderOptions.BitmapScalingMode="Fant"
+                                            >
+                                        </ImageBrush>
+                                    </Border.Background>
+                                </Border>
+                                <StackPanel Margin="10">
+                                    <TextBlock Text="Bánh teramisu" FontWeight="Medium"></TextBlock>
+                                    <TextBlock Text="200.000 VND"></TextBlock>
+                                </StackPanel>
+                            </StackPanel>
+
+                            <StackPanel Width="auto" Margin="20 0" Orientation="Horizontal" DockPanel.Dock="Right">
+                                <StackPanel Orientation="Horizontal" Margin="10 0">
+                                    <Button Width="20" Height="20" Margin="5 0" Foreground="White" Background="SaddleBrown" BorderThickness="0" Padding="0">
+                                        <materialDesign:PackIcon Kind="Plus" />
+                                    </Button>
+                                    <TextBlock VerticalAlignment="Center" FontSize="20" FontWeight="Medium">2</TextBlock>
+                                    <Button Width="20" Height="20" Margin="5 0" Foreground="White" Padding="0" Background="SaddleBrown" BorderThickness="0">
+                                        <materialDesign:PackIcon Kind="Minus" />
+                                    </Button>
+                                </StackPanel>
+
+                                <TextBlock Text="150.000 VND" VerticalAlignment="Center" FontSize="14" FontWeight="Medium" Margin="0"></TextBlock>
+                            </StackPanel>
+                        </DockPanel>
+                    </ListViewItem>-->
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <DockPanel Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListView}},Path=ActualWidth}" LastChildFill="False">
@@ -195,7 +243,7 @@
             </StackPanel>
         </Grid>
         <!--Check out Dialog-->
-        <materialDesign:DialogHost Grid.Column="0" Panel.ZIndex="1" Grid.ColumnSpan="2"
+        <materialDesign:DialogHost IsOpen="{Binding IsOpenAddJourneyDialog}" Grid.Column="0" Panel.ZIndex="1" Grid.ColumnSpan="2"
                     Style="{StaticResource MaterialDesignEmbeddedDialogHost}"
                     DialogMargin="8">
             <materialDesign:DialogHost.DialogContent>
