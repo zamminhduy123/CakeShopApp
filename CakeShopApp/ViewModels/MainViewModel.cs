@@ -94,6 +94,7 @@ namespace CakeShopApp.ViewModels
                 ResetPanelColor();
                 global.StatisticColor = Brushes.SaddleBrown.ToString();
                 global.StatisticTextColor = Brushes.White.ToString();
+                global.CurrentPageViewModel = new StatisticsUCViewModel();
             });
 
             SettingCommand = new RelayCommand<object>((param) => { return true; }, (param) =>

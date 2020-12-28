@@ -25,8 +25,8 @@
 
     <Grid>
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="5*"/>
             <ColumnDefinition Width="3*"/>
-            <ColumnDefinition Width="2*"/>
         </Grid.ColumnDefinitions>
         <StackPanel Orientation="Vertical" Background="#fbf7f0">
             <!-- First bar -->
@@ -108,12 +108,12 @@
             </DockPanel>
 
             <!--List Item-->
-            <ListView ItemsSource="{Binding Products}" SelectedItem="{Binding SelectedProduct}" HorizontalAlignment="Left"  Width="630" Height="450" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+            <ListView ItemsSource="{Binding Products}" SelectedItem="{Binding SelectedProduct}" HorizontalAlignment="Left"  Width="660" Height="450" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <Button Background="{x:Null}" BorderBrush="{x:Null}"  Width="185" Height="250" Padding="0">
-                            <Border Background="White" CornerRadius="15" Margin="0" Width="185" Height="250">
-                                <Grid Width="185">
+                        <Button Background="{x:Null}" BorderBrush="{x:Null}"  Width="195" Height="250" Padding="0">
+                            <Border Background="White" CornerRadius="15" Margin="0" Width="195" Height="250">
+                                <Grid Width="195">
                                     <Border VerticalAlignment="Top" Height="170" CornerRadius="10" Margin="10" BorderBrush="Gray" BorderThickness="1">
                                         <Border.Background>
                                             <ImageBrush ImageSource="{Binding Thumbnail, Converter={StaticResource ImageConverter}}"></ImageBrush>

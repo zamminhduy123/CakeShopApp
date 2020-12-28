@@ -29,11 +29,11 @@
         <DataTemplate DataType="{x:Type viewmodels:CakesUCViewModel}">
             <uc:CakesUC DataContext="{Binding}"/>
         </DataTemplate>
-        <!--
-        <DataTemplate DataType="{x:Type viewmodels:PlacesUCViewModel}">
-            <uc:PlacesUC DataContext="{Binding}"/>
-            --><!-- This is a UserControl --><!--
+        <DataTemplate DataType="{x:Type viewmodels:StatisticsUCViewModel}">
+            <uc:StatisticsUC DataContext="{Binding}"/>
         </DataTemplate>
+        <!--
+        
         <DataTemplate DataType="{x:Type viewmodels:MembersUCViewModel}">
             <uc:MemebersUC DataContext="{Binding}"/>
             --><!-- This is a UserControl --><!--
