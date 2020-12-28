@@ -97,7 +97,7 @@
             <TextBlock Grid.Row="0" Grid.Column="5" FontSize="25" FontWeight="Medium" Margin="10 5" Foreground="SaddleBrown" VerticalAlignment="Center" HorizontalAlignment="Center">Tồn kho</TextBlock>
 
             <!--Products List-->
-            <ListView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="7" ItemsSource="{Binding Products}" SelectedItem="{Binding SelectedProduct}" ScrollViewer.VerticalScrollBarVisibility="Hidden" ScrollViewer.HorizontalScrollBarVisibility="Hidden" Margin="20 10">
+            <ListView x:Name="ProductsListView" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="7" ItemsSource="{Binding Products}" SelectedItem="{Binding SelectedProduct}" ScrollViewer.VerticalScrollBarVisibility="Hidden" ScrollViewer.HorizontalScrollBarVisibility="Hidden" Margin="20 10">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <Border CornerRadius="10" BorderThickness="1" BorderBrush="SaddleBrown" Height="50" Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListView}},Path=ActualWidth}" HorizontalAlignment="Left">
@@ -109,11 +109,11 @@
                                 <TextBlock Grid.Column="4" FontSize="15" FontWeight="Medium" Margin="10 5" Text="{Binding Price, Converter={StaticResource MoneyComverter}}"></TextBlock>
                                 <TextBlock Grid.Column="5" FontSize="15" FontWeight="Medium" Margin="10 5" Foreground="SaddleBrown" Text="{Binding InStock}"></TextBlock>
                                 <Button Grid.Column="6" Width="20" Height="20" Margin="10 5" BorderBrush="SaddleBrown" Background="Gray" BorderThickness="1" Padding="0" HorizontalAlignment="Right"
-                                            Command="{Binding ElementName=Invoice, Path=DataContext.EditProductCommand}" CommandParameter="{Binding}">
+                                            Command="{Binding ElementName=ProductsListView, Path=DataContext.EditProductCommand}" CommandParameter="{Binding}">
                                     <materialDesign:PackIcon Kind="Pencil" Background="SaddleBrown" />
                                 </Button>
                                 <Button Grid.Column="6" Width="20" Height="20" Margin="10 5" BorderBrush="Red" Background="Transparent" BorderThickness="1" Padding="0" HorizontalAlignment="Right"
-                                            Command="{Binding ElementName=Invoice, Path=DataContext.DeleteProductCommand}" CommandParameter="{Binding}">
+                                            Command="{Binding ElementName=ProductsListView, Path=DataContext.DeleteProductCommand}" CommandParameter="{Binding}">
                                     <materialDesign:PackIcon Kind="CloseCircle" Background="Red" />
                                 </Button>
                             </StackPanel>

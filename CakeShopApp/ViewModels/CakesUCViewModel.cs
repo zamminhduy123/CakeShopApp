@@ -41,6 +41,7 @@ namespace CakeShopApp.ViewModels
                             ImportPrice = product.ImportPrice.ToString(),
                             Description = product.Description,
                             InStock = product.InStockAmount,
+                            CategoryId = product.CategoryId,
                         });
                     }
                 }
@@ -58,6 +59,7 @@ namespace CakeShopApp.ViewModels
                             ImportPrice = product.ImportPrice.ToString(),
                             Description = product.Description,
                             InStock = product.InStockAmount,
+                            CategoryId = product.CategoryId,
                         });
                     }
                 }
@@ -83,6 +85,9 @@ namespace CakeShopApp.ViewModels
 
         #region commands
         public ICommand ChangeCategoryCommand { get; set; }
+        public ICommand AddProductCommand { get; set; }
+        public ICommand EditProductCommand { get; set; }
+        public ICommand DeleteProductCommand { get; set; }
         #endregion
 
         public CakesUCViewModel()
@@ -124,6 +129,7 @@ namespace CakeShopApp.ViewModels
                                 ImportPrice = product.ImportPrice.ToString(),
                                 Description = product.Description,
                                 InStock = product.InStockAmount,
+                                CategoryId = product.CategoryId,
                             });
                         }
                     }
@@ -140,6 +146,7 @@ namespace CakeShopApp.ViewModels
                                 ImportPrice = product.ImportPrice.ToString(),
                                 Description = product.Description,
                                 InStock = product.InStockAmount,
+                                CategoryId = product.CategoryId,
                             });
                         }
                     }
@@ -156,15 +163,45 @@ namespace CakeShopApp.ViewModels
                     };
                 }
             });
+            AddProductCommand = new RelayCommand<object>((param) => { return true; }, (param) => { });
+            EditProductCommand = new RelayCommand<dynamic>((param) => { return true; }, (param) => { });
+            DeleteProductCommand = new RelayCommand<dynamic>((param) => { return true; }, (param) => {
+                if (Global.GetInstance().ConfirmMessageDelete() == true)
+                {
+                    // Xóa khỏi Phân loại tất cả
+                    Root all = Categories.First(x => x.Id == 0);
+                    all.Count--;
+                    all.Child.Remove(all.Child.First(x => x.Id == param.Id));
+
+                    // Xóa khỏi Phân loại bánh chính
+                    Root category = Categories.First(x => x.Id == param.CategoryId);
+                    category.Count--;
+                    category.Child.Remove(category.Child.First(x => x.Id == param.Id));
+
+                    // Xóa khỏi Database
+                    DataProvider.Ins.DB.Products.Remove(DataProvider.Ins.DB.Products.Find(param.Id));
+                    DataProvider.Ins.DB.SaveChanges();
+
+                    // Xóa khỏi danh sách hiển thị
+                    Products.Remove(param);
+                }
+            });
         }
     }
 
     //tạo class hỗ trợ
-    public class Root
+    public class Root : BaseViewModel
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public int Count { get; set; }
+
+        private int _id;
+        public int Id { get => _id; set { _id = value; OnPropertyChanged(); } }
+
+        private string _name;
+        public string Name { get => _name; set { _name = value; OnPropertyChanged(); } }
+
+        private int _count;
+        public int Count { get => _count; set { _count = value; OnPropertyChanged(); } }
+
         public AsyncObservableCollection<RootChild> Child { get; set; }
         public void LoadChild()
         {
@@ -193,9 +230,14 @@ namespace CakeShopApp.ViewModels
             }
         }
     }
-    public class RootChild
+    public class RootChild : BaseViewModel
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
+
+        private int _id;
+        public int Id { get => _id; set { _id = value; OnPropertyChanged(); } }
+
+        private string _name;
+        public string Name { get => _name; set { _name = value; OnPropertyChanged(); } }
+
     }
 }
