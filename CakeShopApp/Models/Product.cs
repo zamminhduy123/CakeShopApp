@@ -49,6 +49,9 @@ namespace CakeShopApp.Models
         private int _sellPrice;
         public int SellPrice { get => _sellPrice; set { _sellPrice = value; OnPropertyChanged(); } }
 
+        private int _isHidden;
+        public int IsHidden { get => _isHidden; set { _isHidden = value; OnPropertyChanged(); } }
+
         public virtual Category Category { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<InvoiceDetail> InvoiceDetails { get; set; }

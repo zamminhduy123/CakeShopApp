@@ -59,7 +59,7 @@ namespace CakeShopApp.ViewModels
         {
             // khởi tạo dữ liệu
             Products = new AsyncObservableCollection<dynamic>();
-            foreach (var product in DataProvider.Ins.DB.Products)
+            foreach (var product in DataProvider.Ins.DB.Products.Where(x => x.IsHidden == 0))
             {
                 Products.Add(new
                 {
@@ -75,7 +75,7 @@ namespace CakeShopApp.ViewModels
             DeleteDetailInListCommand = new RelayCommand<DetailInList>((param) => { return true; }, (param) => {
                 int count = InvoiceDetails.Count;
                 Product product = DataProvider.Ins.DB.Products.Find(param.ProductId);
-                int index = DataProvider.Ins.DB.Products.ToList().IndexOf(product);
+                int index = Products.IndexOf(product);
                 Products.Insert(index, new
                 {
                     Id = param.ProductId,
