@@ -1,13 +1,16 @@
 ﻿using CakeShopApp.Model;
 using CakeShopApp.Models;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media.Imaging;
 
 namespace CakeShopApp.ViewModels
 {
@@ -18,6 +21,8 @@ namespace CakeShopApp.ViewModels
         #endregion
 
         #region properties
+
+        // SHOW LIST AND SELECTED ITEM
 
         private AsyncObservableCollection<Root> _categories;
         public AsyncObservableCollection<Root> Categories { get => _categories; set { _categories = value; OnPropertyChanged(); } }
@@ -39,7 +44,6 @@ namespace CakeShopApp.ViewModels
                             Thumbnail = (product.Photos.Count == 0) ? null: product.Photos.ToList()[0].ImageBytes,
                             Price = product.SellPrice.ToString(),
                             ImportPrice = product.ImportPrice.ToString(),
-                            Description = product.Description,
                             InStock = product.InStockAmount,
                             CategoryId = product.CategoryId,
                         });
@@ -57,7 +61,6 @@ namespace CakeShopApp.ViewModels
                             Thumbnail = (product.Photos.Count == 0) ? null : product.Photos.ToList()[0].ImageBytes,
                             Price = product.SellPrice.ToString(),
                             ImportPrice = product.ImportPrice.ToString(),
-                            Description = product.Description,
                             InStock = product.InStockAmount,
                             CategoryId = product.CategoryId,
                         });
@@ -81,13 +84,96 @@ namespace CakeShopApp.ViewModels
         private AsyncObservableCollection<dynamic> _products;
         public AsyncObservableCollection<dynamic> Products { get => _products; set { _products = value; OnPropertyChanged(); } }
 
+        // ADD NEW PRODUCT / UPDATE PRODUCT
+
+        private dynamic _selectedNewProductCategory;
+        public dynamic SelectedNewProductCategory { get => _selectedNewProductCategory; set { _selectedNewProductCategory = value; OnPropertyChanged(); } }
+
+        private AsyncObservableCollection<dynamic> _newProductCategoriesList;
+        public AsyncObservableCollection<dynamic> NewProductCategoriesList { get => _newProductCategoriesList; set { _newProductCategoriesList = value; OnPropertyChanged(); } }
+
+        private string _newProductName;
+        public string NewProductName { get => _newProductName; set { _newProductName = value; OnPropertyChanged(); } }
+
+        private string _newProductDescription;
+        public string NewProductDescription { get => _newProductDescription; set { _newProductDescription = value; OnPropertyChanged(); } }
+
+        private int _newProductImportAmount;
+        public int NewProductImportAmount { get => _newProductImportAmount; set { _newProductImportAmount = value; OnPropertyChanged(); } }
+
+        private int _newProductImportPrice;
+        public int NewProductImportPrice { get => _newProductImportPrice; set { _newProductImportPrice = value; OnPropertyChanged(); } }
+
+        private int _newProductSellPrice;
+        public int NewProductSellPrice { get => _newProductSellPrice; set { _newProductSellPrice = value; OnPropertyChanged(); } }
+
+        private bool _isOpenAddProductDialog;
+        public bool IsOpenAddProductDialog
+        {
+            get => _isOpenAddProductDialog;
+            set
+            {
+                _isOpenAddProductDialog = value;
+                NewProductName = null;
+                SelectedNewProductCategory = null;
+                NewProductDescription = null;
+                NewProductImportAmount = 0;
+                NewProductImportPrice = 0;
+                NewProductSellPrice = 0;
+                NewProductImages = new AsyncObservableCollection<dynamic>();
+
+                NewProductCategoriesList = new AsyncObservableCollection<dynamic>();
+                foreach (var category in DataProvider.Ins.DB.Categories)
+                {
+                    NewProductCategoriesList.Add(new Root
+                    {
+                        Id = category.Id,
+                        Name = category.Name,
+                    });
+                }
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _isOpenUpdateProductDialog;
+        public bool IsOpenUpdateProductDialog
+        {
+            get => _isOpenUpdateProductDialog;
+            set
+            {
+                _isOpenUpdateProductDialog = value;
+                NewProductCategoriesList = new AsyncObservableCollection<dynamic>();
+                foreach (var category in DataProvider.Ins.DB.Categories)
+                {
+                    NewProductCategoriesList.Add(new Root
+                    {
+                        Id = category.Id,
+                        Name = category.Name,
+                    });
+                }
+                OnPropertyChanged();
+            }
+        }
+
+        private AsyncObservableCollection<dynamic> _newProductImages;
+        public AsyncObservableCollection<dynamic> NewProductImages { get => _newProductImages; set { _newProductImages = value; OnPropertyChanged(); } }
+
+        private dynamic _selectedNewProductImage;
+        public dynamic SelectedNewProductImage { get => _selectedNewProductImage; set { _selectedNewProductImage = value; OnPropertyChanged(); } }
+
         #endregion
 
         #region commands
         public ICommand ChangeCategoryCommand { get; set; }
         public ICommand AddProductCommand { get; set; }
+        public ICommand ClickAddProductButtonCommand { get; set; }
         public ICommand EditProductCommand { get; set; }
+        public ICommand ClickEditProductButtonCommand { get; set; }
         public ICommand DeleteProductCommand { get; set; }
+        public ICommand AddImageCommand { get; set; }
+        public ICommand DeleteImageCommand { get; set; }
+        public ICommand SetThumbnailCommand { get; set; }
+        
         #endregion
 
         public CakesUCViewModel()
@@ -110,6 +196,7 @@ namespace CakeShopApp.ViewModels
 
             SelectedCategory = Categories.First(x => x.Id == 0);
 
+            NewProductImages = new AsyncObservableCollection<dynamic>();
             // commands
             ChangeCategoryCommand = new RelayCommand<object>((param) => { return true; }, (param) => {
                 Products = new AsyncObservableCollection<dynamic>();
@@ -127,7 +214,6 @@ namespace CakeShopApp.ViewModels
                                 Thumbnail = (product.Photos.Count == 0) ? null : product.Photos.ToList()[0].ImageBytes,
                                 Price = product.SellPrice.ToString(),
                                 ImportPrice = product.ImportPrice.ToString(),
-                                Description = product.Description,
                                 InStock = product.InStockAmount,
                                 CategoryId = product.CategoryId,
                             });
@@ -144,7 +230,6 @@ namespace CakeShopApp.ViewModels
                                 Thumbnail = (product.Photos.Count == 0) ? null : product.Photos.ToList()[0].ImageBytes,
                                 Price = product.SellPrice.ToString(),
                                 ImportPrice = product.ImportPrice.ToString(),
-                                Description = product.Description,
                                 InStock = product.InStockAmount,
                                 CategoryId = product.CategoryId,
                             });
@@ -163,8 +248,91 @@ namespace CakeShopApp.ViewModels
                     };
                 }
             });
-            AddProductCommand = new RelayCommand<object>((param) => { return true; }, (param) => { });
-            EditProductCommand = new RelayCommand<dynamic>((param) => { return true; }, (param) => { });
+            ClickAddProductButtonCommand = new RelayCommand<dynamic>((param) => { return true; }, (param) => {
+                IsOpenAddProductDialog = true;
+            });
+            AddProductCommand = new RelayCommand<string>((param) => { return true; }, (param) => {
+                if (bool.Parse(param) == true)
+                {
+                    Product newproduct = new Product();
+                    newproduct.CategoryId = SelectedNewProductCategory.Id;
+                    newproduct.Name = NewProductName;
+                    newproduct.Description = (NewProductDescription == null) ? "" : NewProductDescription;
+                    newproduct.ImportDate = DateTime.Now;
+                    newproduct.ImportAmount = NewProductImportAmount;
+                    newproduct.ImportPrice = NewProductImportPrice;
+                    newproduct.InStockAmount = NewProductImportAmount;
+                    newproduct.SellPrice = NewProductSellPrice;
+                    DataProvider.Ins.DB.Products.Add(newproduct);
+                    DataProvider.Ins.DB.SaveChanges();
+                    if (NewProductImages.Count != 0)
+                    {
+                        DataProvider.Ins.DB.Photos.Add(new Photo
+                        {
+                            ProductId = newproduct.Id,
+                            OrderNumber = 0,
+                            ImageBytes = NewProductImages.First(x => x.IsThumbnail == true).ByteImage,
+                        });
+                        foreach (var image in NewProductImages.Where(x => x.IsThumbnail == false))
+                        {
+                            var maxordernum = 1;
+                            DataProvider.Ins.DB.Photos.Add(new Photo
+                            {
+                                ProductId = newproduct.Id,
+                                OrderNumber = maxordernum++,
+                                ImageBytes = image.ByteImage,
+                            });
+                        }
+                    }
+                    DataProvider.Ins.DB.SaveChanges();
+
+                    // Thêm vào Phân loại tất cả
+                    Root all = Categories.First(x => x.Id == 0);
+                    all.Count++;
+                    all.Child.Add(new RootChild { Id = newproduct.Id, Name = newproduct.Name});
+
+                    // Thêm vào Phân loại bánh chính
+                    Root category = Categories.First(x => x.Id == newproduct.CategoryId);
+                    category.Count++;
+                    category.Child.Add(new RootChild { Id = newproduct.Id, Name = newproduct.Name });
+
+                    //Thêm vào danh sách nếu đang hiển thị phân loại đó
+                    if (SelectedCategory.Id == 0 || SelectedCategory.Id == newproduct.CategoryId)
+                    {
+                        Products.Add(new
+                        {
+                            Id = newproduct.Id,
+                            Name = newproduct.Name,
+                            Thumbnail = (newproduct.Photos.Count == 0) ? null : newproduct.Photos.ToList()[0].ImageBytes,
+                            Price = newproduct.SellPrice.ToString(),
+                            ImportPrice = newproduct.ImportPrice.ToString(),
+                            InStock = newproduct.InStockAmount,
+                            CategoryId = newproduct.CategoryId,
+                        });
+                    }
+                }
+                IsOpenAddProductDialog = false;
+            });
+            ClickEditProductButtonCommand = new RelayCommand<dynamic>((param) => { return true; }, (param) => {
+                IsOpenUpdateProductDialog = true;
+                Product editproduct = DataProvider.Ins.DB.Products.Find(param);
+                NewProductName = editproduct.Name;
+                SelectedNewProductCategory = NewProductCategoriesList.First(x => x.Id == editproduct.CategoryId);
+                NewProductDescription = editproduct.Description;
+                NewProductImportAmount = 0;
+                NewProductImportPrice = editproduct.ImportPrice;
+                NewProductSellPrice = editproduct.SellPrice;
+                NewProductImages = new AsyncObservableCollection<dynamic>();
+                foreach (var image in editproduct.Photos)
+                {
+                    NewProductImages.Add(new { 
+                        IsThumbnail = (image.OrderNumber == 0) ? true : false, 
+                        ByteImage = image.ImageBytes, });
+                }
+            }); 
+            EditProductCommand = new RelayCommand<dynamic>((param) => { return true; }, (param) => {
+                IsOpenUpdateProductDialog = false;
+            });
             DeleteProductCommand = new RelayCommand<dynamic>((param) => { return true; }, (param) => {
                 if (Global.GetInstance().ConfirmMessageDelete() == true)
                 {
@@ -186,6 +354,72 @@ namespace CakeShopApp.ViewModels
                     Products.Remove(param);
                 }
             });
+            AddImageCommand = new RelayCommand<dynamic>((param) => { return true; }, (param) =>
+            {
+                OpenFileDialog dialog = new OpenFileDialog();
+                dialog.Multiselect = true;
+                dialog.Filter = "JPG files (*.jpg)|*.jpg| PNG files (*.png)|*.png| All files (*.*)|*.*";
+                if (dialog.ShowDialog() == true)
+                {
+                    bool hasthumbnail = (NewProductImages.Where(x => x.IsThumbnail == true).Count() == 1) ? true : false;
+                    foreach (var absoluteLink in dialog.FileNames)
+                    {
+                        byte[] newBytesImage = BitMapImageTOBytes(new BitmapImage(
+                                                    new Uri(absoluteLink,
+                                                    UriKind.Absolute)
+                                                    ));
+                        NewProductImages.Add(new
+                        {
+                            IsThumbnail = !hasthumbnail,
+                            ByteImage = newBytesImage,
+                        });
+                        hasthumbnail = true;
+                    }
+                }
+            });
+            DeleteImageCommand = new RelayCommand<dynamic>((param) => { return true; }, (param) =>
+            {
+                if (SelectedNewProductImage.IsThumbnail == true && NewProductImages.Count != 0)
+                {
+                    int setthumbnailindex = 0;
+                    if (NewProductImages.IndexOf(SelectedNewProductImage) == 0)
+                    {
+                        setthumbnailindex = 1;
+                    }
+                    dynamic tmp = new { IsThumbnail = true, ByteImage = NewProductImages.First().ByteImage };
+                    NewProductImages.RemoveAt(setthumbnailindex);
+                    NewProductImages.Insert(setthumbnailindex, tmp);
+                }
+                NewProductImages.Remove(SelectedNewProductImage);
+            });
+            SetThumbnailCommand = new RelayCommand<dynamic>((param) => { return true; }, (param) =>
+            {
+                int index;
+                int hasThumbnail = NewProductImages.Where(x => x.IsThumbnail == true).Count();
+                dynamic tmp;
+                if (hasThumbnail != 0)
+                {
+                    tmp = NewProductImages.First(x => x.IsThumbnail == true);
+                    index = NewProductImages.IndexOf(tmp);
+                    dynamic changedtmp = new { IsThumbnail = false, ByteImage = tmp.ByteImage };
+                    NewProductImages.Remove(tmp);
+                    NewProductImages.Insert(index, changedtmp);
+                }
+                tmp = new { IsThumbnail = true, ByteImage = SelectedNewProductImage.ByteImage };
+                index = NewProductImages.IndexOf(SelectedNewProductImage);
+                NewProductImages.Remove(SelectedNewProductImage);
+                NewProductImages.Insert(index, tmp);
+            });
+        }
+
+        public byte[] BitMapImageTOBytes(BitmapImage imageC)
+        {
+            if (imageC == null) return null;
+            MemoryStream memStream = new MemoryStream();
+            JpegBitmapEncoder encoder = new JpegBitmapEncoder();
+            encoder.Frames.Add(BitmapFrame.Create(imageC));
+            encoder.Save(memStream);
+            return memStream.ToArray();
         }
     }
 

@@ -61,7 +61,7 @@
           </Key>
           <Property Name="ProductId" Type="int" Nullable="false" />
           <Property Name="OrderNumber" Type="int" Nullable="false" />
-          <Property Name="ImageBytes" Type="binary" MaxLength="1" Nullable="false" />
+          <Property Name="ImageBytes" Type="varbinary(max)" Nullable="false" />
         </EntityType>
         <EntityType Name="Product">
           <Key>
@@ -251,7 +251,7 @@
           </Key>
           <Property Name="ProductId" Type="Int32" Nullable="false" />
           <Property Name="OrderNumber" Type="Int32" Nullable="false" />
-          <Property Name="ImageBytes" Type="Binary" MaxLength="1" FixedLength="true" Nullable="false" />
+          <Property Name="ImageBytes" Type="Binary" MaxLength="Max" FixedLength="false" Nullable="false" />
           <NavigationProperty Name="Product" Relationship="Self.fk_photo_product" FromRole="Photo" ToRole="Product" />
         </EntityType>
         <EntityType Name="Product">
