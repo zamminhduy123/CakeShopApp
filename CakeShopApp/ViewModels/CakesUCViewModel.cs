@@ -17,7 +17,7 @@ namespace CakeShopApp.ViewModels
     class CakesUCViewModel : BaseViewModel
     {
         #region variables
-
+        Product _editProduct;
         #endregion
 
         #region properties
@@ -142,14 +142,21 @@ namespace CakeShopApp.ViewModels
             set
             {
                 _isOpenUpdateProductDialog = value;
-                NewProductCategoriesList = new AsyncObservableCollection<dynamic>();
-                foreach (var category in DataProvider.Ins.DB.Categories)
+                if (value == true)
                 {
-                    NewProductCategoriesList.Add(new Root
+                    NewProductCategoriesList = new AsyncObservableCollection<dynamic>();
+                    foreach (var category in DataProvider.Ins.DB.Categories)
                     {
-                        Id = category.Id,
-                        Name = category.Name,
-                    });
+                        NewProductCategoriesList.Add(new Root
+                        {
+                            Id = category.Id,
+                            Name = category.Name,
+                        });
+                    }
+                }
+                else
+                {
+                    _editProduct = null;
                 }
                 OnPropertyChanged();
             }
@@ -316,15 +323,15 @@ namespace CakeShopApp.ViewModels
             });
             ClickEditProductButtonCommand = new RelayCommand<dynamic>((param) => { return true; }, (param) => {
                 IsOpenUpdateProductDialog = true;
-                Product editproduct = DataProvider.Ins.DB.Products.Find(param);
-                NewProductName = editproduct.Name;
-                SelectedNewProductCategory = NewProductCategoriesList.First(x => x.Id == editproduct.CategoryId);
-                NewProductDescription = editproduct.Description;
+                _editProduct = DataProvider.Ins.DB.Products.Find(param);
+                NewProductName = _editProduct.Name;
+                SelectedNewProductCategory = NewProductCategoriesList.First(x => x.Id == _editProduct.CategoryId);
+                NewProductDescription = _editProduct.Description;
                 NewProductImportAmount = 0;
-                NewProductImportPrice = editproduct.ImportPrice;
-                NewProductSellPrice = editproduct.SellPrice;
+                NewProductImportPrice = _editProduct.ImportPrice;
+                NewProductSellPrice = _editProduct.SellPrice;
                 NewProductImages = new AsyncObservableCollection<dynamic>();
-                foreach (var image in editproduct.Photos)
+                foreach (var image in _editProduct.Photos)
                 {
                     NewProductImages.Add(new { 
                         IsThumbnail = (image.OrderNumber == 0) ? true : false, 
@@ -332,6 +339,84 @@ namespace CakeShopApp.ViewModels
                 }
             }); 
             EditProductCommand = new RelayCommand<dynamic>((param) => { return true; }, (param) => {
+                if (bool.Parse(param) == true)
+                {
+                    // xóa dữ liệu cũ
+                    _editProduct.IsHidden = 1;
+                    DataProvider.Ins.DB.SaveChanges();
+
+                    // tạo dữ liệu mới
+                    Product newproduct = new Product();
+                    newproduct.CategoryId = SelectedNewProductCategory.Id;
+                    newproduct.Name = NewProductName;
+                    newproduct.Description = (NewProductDescription == null) ? "" : NewProductDescription;
+                    newproduct.ImportDate = DateTime.Now;
+                    newproduct.ImportAmount = NewProductImportAmount + _editProduct.ImportAmount;
+                    newproduct.ImportPrice = NewProductImportPrice;
+                    newproduct.InStockAmount = NewProductImportAmount + _editProduct.InStockAmount;
+                    newproduct.SellPrice = NewProductSellPrice;
+                    newproduct.IsHidden = 0;
+                    DataProvider.Ins.DB.Products.Add(newproduct);
+                    DataProvider.Ins.DB.SaveChanges();
+                    if (NewProductImages.Count != 0)
+                    {
+                        DataProvider.Ins.DB.Photos.Add(new Photo
+                        {
+                            ProductId = newproduct.Id,
+                            OrderNumber = 0,
+                            ImageBytes = NewProductImages.First(x => x.IsThumbnail == true).ByteImage,
+                        });
+                        foreach (var image in NewProductImages.Where(x => x.IsThumbnail == false))
+                        {
+                            var maxordernum = 1;
+                            DataProvider.Ins.DB.Photos.Add(new Photo
+                            {
+                                ProductId = newproduct.Id,
+                                OrderNumber = maxordernum++,
+                                ImageBytes = image.ByteImage,
+                            });
+                        }
+                    }
+                    DataProvider.Ins.DB.SaveChanges();
+
+                    // Xóa khỏi Phân loại tất cả
+                    Root all = Categories.First(x => x.Id == 0);
+                    all.Count--;
+                    all.Child.Remove(all.Child.First(x => x.Id == _editProduct.Id));
+
+                    // Xóa khỏi Phân loại bánh chính
+                    Root category = Categories.First(x => x.Id == _editProduct.CategoryId);
+                    category.Count--;
+                    category.Child.Remove(category.Child.First(x => x.Id == _editProduct.Id));
+
+                    // Xóa khỏi danh sách hiển thị
+                    Products.Remove(Products.First(x => x.Id == _editProduct.Id));
+
+                    // Thêm vào Phân loại tất cả
+                    Root all2 = Categories.First(x => x.Id == 0);
+                    all2.Count++;
+                    all2.Child.Add(new RootChild { Id = newproduct.Id, Name = newproduct.Name });
+
+                    // Thêm vào Phân loại bánh chính
+                    Root category2 = Categories.First(x => x.Id == newproduct.CategoryId);
+                    category2.Count++;
+                    category2.Child.Add(new RootChild { Id = newproduct.Id, Name = newproduct.Name });
+
+                    //Thêm vào danh sách nếu đang hiển thị phân loại đó
+                    if (SelectedCategory.Id == 0 || SelectedCategory.Id == newproduct.CategoryId)
+                    {
+                        Products.Add(new
+                        {
+                            Id = newproduct.Id,
+                            Name = newproduct.Name,
+                            Thumbnail = (newproduct.Photos.Count == 0) ? null : newproduct.Photos.ToList()[0].ImageBytes,
+                            Price = newproduct.SellPrice.ToString(),
+                            ImportPrice = newproduct.ImportPrice.ToString(),
+                            InStock = newproduct.InStockAmount,
+                            CategoryId = newproduct.CategoryId,
+                        });
+                    }
+                }
                 IsOpenUpdateProductDialog = false;
             });
             DeleteProductCommand = new RelayCommand<dynamic>((param) => { return true; }, (param) => {
