@@ -36,7 +36,7 @@ namespace CakeShopApp.ViewModels
                 Products = new AsyncObservableCollection<dynamic>();
                 if (SelectedCategory.Id == 0)
                 {
-                    foreach (var product in DataProvider.Ins.DB.Products)
+                    foreach (var product in DataProvider.Ins.DB.Products.Where(x => x.IsHidden == 0))
                     {
                         Products.Add(new {
                             Id = product.Id,
@@ -52,7 +52,7 @@ namespace CakeShopApp.ViewModels
                 else
                 {
                     int id = SelectedCategory.Id;
-                    foreach (var product in DataProvider.Ins.DB.Products.Where(x => x.CategoryId == id))
+                    foreach (var product in DataProvider.Ins.DB.Products.Where(x => x.IsHidden == 0 && x.CategoryId == id))
                     {
                         Products.Add(new
                         {
@@ -210,38 +210,7 @@ namespace CakeShopApp.ViewModels
                 if (param is Root)
                 {
                     var tmp = param as Root;
-                    if (tmp.Id == 0)
-                    {
-                        foreach (var product in DataProvider.Ins.DB.Products.Where(x => x.IsHidden == 0))
-                        {
-                            Products.Add(new
-                            {
-                                Id = product.Id,
-                                Name = product.Name,
-                                Thumbnail = (product.Photos.Count == 0) ? null : product.Photos.ToList()[0].ImageBytes,
-                                Price = product.SellPrice.ToString(),
-                                ImportPrice = product.ImportPrice.ToString(),
-                                InStock = product.InStockAmount,
-                                CategoryId = product.CategoryId,
-                            });
-                        }
-                    }
-                    else
-                    {
-                        foreach (var product in DataProvider.Ins.DB.Products.Where(x => x.IsHidden == 0 && x.CategoryId == tmp.Id))
-                        {
-                            Products.Add(new
-                            {
-                                Id = product.Id,
-                                Name = product.Name,
-                                Thumbnail = (product.Photos.Count == 0) ? null : product.Photos.ToList()[0].ImageBytes,
-                                Price = product.SellPrice.ToString(),
-                                ImportPrice = product.ImportPrice.ToString(),
-                                InStock = product.InStockAmount,
-                                CategoryId = product.CategoryId,
-                            });
-                        }
-                    }
+                    SelectedCategory = tmp;
                 }
                 else if (param is RootChild)
                 {
