@@ -59,7 +59,7 @@ namespace CakeShopApp.ViewModels
         {
             // khởi tạo dữ liệu
             Products = new AsyncObservableCollection<dynamic>();
-            foreach (var product in DataProvider.Ins.DB.Products)
+            foreach (var product in DataProvider.Ins.DB.Products.Where(x => x.IsHidden == 0))
             {
                 Products.Add(new
                 {

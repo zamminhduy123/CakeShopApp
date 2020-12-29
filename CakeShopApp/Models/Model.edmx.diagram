@@ -4,14 +4,14 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="96e818188f78480dab6ed9f2c8d4d476" Name="Diagram1">
+      <Diagram DiagramId="bd8db95faa1c47c088b3bfb9c16c44e2" Name="Diagram1">
         <EntityTypeShape EntityType="CakeShopAppDBModel.Category" Width="1.5" PointX="0.75" PointY="2.75" IsExpanded="true" />
         <EntityTypeShape EntityType="CakeShopAppDBModel.DeliveryPayment" Width="1.5" PointX="5.25" PointY="9.125" IsExpanded="true" />
         <EntityTypeShape EntityType="CakeShopAppDBModel.DirectPayment" Width="1.5" PointX="5.25" PointY="12.125" IsExpanded="true" />
         <EntityTypeShape EntityType="CakeShopAppDBModel.Invoice" Width="1.5" PointX="3" PointY="7" IsExpanded="true" />
         <EntityTypeShape EntityType="CakeShopAppDBModel.InvoiceDetail" Width="1.5" PointX="5.25" PointY="2.375" IsExpanded="true" />
         <EntityTypeShape EntityType="CakeShopAppDBModel.Photo" Width="1.5" PointX="5.25" PointY="5.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="CakeShopAppDBModel.Product" Width="1.5" PointX="3" PointY="1.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="CakeShopAppDBModel.Product" Width="1.5" PointX="3" PointY="1.75" IsExpanded="true" />
         <AssociationConnector Association="CakeShopAppDBModel.fk_product_category" ManuallyRouted="false" />
         <AssociationConnector Association="CakeShopAppDBModel.fk_deliveryPayment_invoice" ManuallyRouted="false" />
         <AssociationConnector Association="CakeShopAppDBModel.fk_directPayment_invoice" ManuallyRouted="false" />

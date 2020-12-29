@@ -180,13 +180,13 @@ namespace CakeShopApp.ViewModels
         {
             // khởi tạo dữ liệu
             Categories = new AsyncObservableCollection<Root>();
-            Categories.Add(new Root { Id = 0, Name = "Tất cả", Count = DataProvider.Ins.DB.Products.Count()});
+            Categories.Add(new Root { Id = 0, Name = "Tất cả", Count = DataProvider.Ins.DB.Products.Where(x => x.IsHidden == 0).Count()});
             foreach (var category in DataProvider.Ins.DB.Categories)
             {
                 Categories.Add(new Root { 
                     Id = category.Id,
                     Name = category.Name,
-                    Count = DataProvider.Ins.DB.Products.Where(x => x.CategoryId == category.Id).Count()
+                    Count = DataProvider.Ins.DB.Products.Where(x => x.IsHidden == 0 && x.CategoryId == category.Id).Count()
                 });
             }
             foreach (var category in Categories)
@@ -205,7 +205,7 @@ namespace CakeShopApp.ViewModels
                     var tmp = param as Root;
                     if (tmp.Id == 0)
                     {
-                        foreach (var product in DataProvider.Ins.DB.Products)
+                        foreach (var product in DataProvider.Ins.DB.Products.Where(x => x.IsHidden == 0))
                         {
                             Products.Add(new
                             {
@@ -221,7 +221,7 @@ namespace CakeShopApp.ViewModels
                     }
                     else
                     {
-                        foreach (var product in DataProvider.Ins.DB.Products.Where(x => x.CategoryId == tmp.Id))
+                        foreach (var product in DataProvider.Ins.DB.Products.Where(x => x.IsHidden == 0 && x.CategoryId == tmp.Id))
                         {
                             Products.Add(new
                             {
@@ -263,6 +263,7 @@ namespace CakeShopApp.ViewModels
                     newproduct.ImportPrice = NewProductImportPrice;
                     newproduct.InStockAmount = NewProductImportAmount;
                     newproduct.SellPrice = NewProductSellPrice;
+                    newproduct.IsHidden = 0;
                     DataProvider.Ins.DB.Products.Add(newproduct);
                     DataProvider.Ins.DB.SaveChanges();
                     if (NewProductImages.Count != 0)
@@ -347,7 +348,7 @@ namespace CakeShopApp.ViewModels
                     category.Child.Remove(category.Child.First(x => x.Id == param.Id));
 
                     // Xóa khỏi Database
-                    DataProvider.Ins.DB.Products.Remove(DataProvider.Ins.DB.Products.Find(param.Id));
+                    DataProvider.Ins.DB.Products.Find(param.Id).IsHidden = 1;
                     DataProvider.Ins.DB.SaveChanges();
 
                     // Xóa khỏi danh sách hiển thị
@@ -442,7 +443,7 @@ namespace CakeShopApp.ViewModels
             Child = new AsyncObservableCollection<RootChild>();
             if (Id == 0)
             {
-                foreach (var product in DataProvider.Ins.DB.Products)
+                foreach (var product in DataProvider.Ins.DB.Products.Where(x => x.IsHidden == 0))
                 {
                     Child.Add(new RootChild
                     {
@@ -453,7 +454,7 @@ namespace CakeShopApp.ViewModels
             }
             else
             {
-                foreach (var product in DataProvider.Ins.DB.Products.Where(x => x.CategoryId == Id))
+                foreach (var product in DataProvider.Ins.DB.Products.Where(x => x.IsHidden == 0 && x.CategoryId == Id))
                 {
                     Child.Add(new RootChild
                     {

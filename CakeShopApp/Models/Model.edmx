@@ -61,7 +61,7 @@
           </Key>
           <Property Name="ProductId" Type="int" Nullable="false" />
           <Property Name="OrderNumber" Type="int" Nullable="false" />
-          <Property Name="ImageBytes" Type="varbinary(max)" Nullable="false" />
+          <Property Name="ImageBytes" Type="varbinary(max)" />
         </EntityType>
         <EntityType Name="Product">
           <Key>
@@ -76,6 +76,7 @@
           <Property Name="ImportPrice" Type="int" Nullable="false" />
           <Property Name="InStockAmount" Type="int" Nullable="false" />
           <Property Name="SellPrice" Type="int" Nullable="false" />
+          <Property Name="IsHidden" Type="int" Nullable="false" />
         </EntityType>
         <Association Name="fk_deliveryPayment_invoice">
           <End Role="Invoice" Type="Self.Invoice" Multiplicity="1" />
@@ -251,7 +252,7 @@
           </Key>
           <Property Name="ProductId" Type="Int32" Nullable="false" />
           <Property Name="OrderNumber" Type="Int32" Nullable="false" />
-          <Property Name="ImageBytes" Type="Binary" MaxLength="Max" FixedLength="false" Nullable="false" />
+          <Property Name="ImageBytes" Type="Binary" MaxLength="Max" FixedLength="false" />
           <NavigationProperty Name="Product" Relationship="Self.fk_photo_product" FromRole="Photo" ToRole="Product" />
         </EntityType>
         <EntityType Name="Product">
@@ -267,6 +268,7 @@
           <Property Name="ImportPrice" Type="Int32" Nullable="false" />
           <Property Name="InStockAmount" Type="Int32" Nullable="false" />
           <Property Name="SellPrice" Type="Int32" Nullable="false" />
+          <Property Name="IsHidden" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Category" Relationship="Self.fk_product_category" FromRole="Product" ToRole="Category" />
           <NavigationProperty Name="InvoiceDetails" Relationship="Self.fk_invoiceDetail_Product" FromRole="Product" ToRole="InvoiceDetail" />
           <NavigationProperty Name="Photos" Relationship="Self.fk_photo_product" FromRole="Product" ToRole="Photo" />
@@ -456,6 +458,7 @@
                 <ScalarProperty Name="ImportPrice" ColumnName="ImportPrice" />
                 <ScalarProperty Name="InStockAmount" ColumnName="InStockAmount" />
                 <ScalarProperty Name="SellPrice" ColumnName="SellPrice" />
+                <ScalarProperty Name="IsHidden" ColumnName="IsHidden" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
