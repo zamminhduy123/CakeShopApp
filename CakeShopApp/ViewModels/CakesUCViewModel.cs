@@ -17,7 +17,10 @@ namespace CakeShopApp.ViewModels
     class CakesUCViewModel : BaseViewModel
     {
         #region variables
+
         Product _editProduct;
+        private List<dynamic> _imageList;
+        int _imageHolderNumber;
         #endregion
 
         #region properties
@@ -70,19 +73,112 @@ namespace CakeShopApp.ViewModels
             }
         }
 
+        private AsyncObservableCollection<dynamic> _products;
+        public AsyncObservableCollection<dynamic> Products { get => _products; set { _products = value; OnPropertyChanged(); } }
+
+        // DETAIL PRODUCT
+
+        private Visibility _changeImageVisibility; // hiden nếu ko có ảnh
+        public Visibility ChangeImageVisibility { get => _changeImageVisibility; set { _changeImageVisibility = value; OnPropertyChanged(); } }
+
+        private byte[] _imageHolder;
+        public byte[] ImageHolder { get => _imageHolder; set { _imageHolder = value; OnPropertyChanged(); } }
+
+        private bool _isOpenProductDialog;
+        public bool IsOpenProductDialog { get => _isOpenProductDialog; set { _isOpenProductDialog = value;
+                if (value == false)
+                {
+                    SelectedProduct = null;
+                }
+                OnPropertyChanged(); } }
+
         private dynamic _selectedProduct;
         public dynamic SelectedProduct
         {
             get => _selectedProduct; set
             {
                 _selectedProduct = value;
-                
+                if (value != null)
+                {
+                    Product detail = DataProvider.Ins.DB.Products.Find(SelectedProduct.Id);
+                    List<int> invoiceids = new List<int>();
+                    int numbuy = 0;
+                    foreach (var invoice in detail.InvoiceDetails)
+                    {
+                        if (invoiceids.Where(x => x == invoice.InvoiceId).Count() == 0)
+                        {
+                            invoiceids.Add(invoice.InvoiceId);
+                            numbuy++;
+                        }
+                    }
+                    DetailProductName = detail.Name;
+                    DetailProductCategory = detail.Category.Name;
+                    DetailProductImportAmount = detail.ImportAmount;
+                    DetailProductSellAmount = detail.ImportAmount - detail.InStockAmount;
+                    DetailProductInStockAmount = detail.InStockAmount;
+                    DetailProductDescription = detail.Description;
+                    DetailProductCreateDate = detail.ImportDate.Date.ToString().Split(' ')[0];
+                    DetailProductNumBuy = numbuy;
+                    ChangeImageVisibility = Visibility.Hidden;
+                    if (detail.Photos.Count != 0)
+                    {
+                        _imageList = new List<dynamic>();
+                        foreach (var image in detail.Photos.OrderBy(x => x.OrderNumber))
+                        {
+                            _imageList.Add(new
+                            {
+                                Id = image.OrderNumber,
+                                ImageBytes = image.ImageBytes,
+                            });
+                        }
+                        _imageHolderNumber = 0;
+                        ImageHolder = _imageList[0].ImageBytes;
+                        ChangeImageVisibility = (_imageList.Count > 1) ? Visibility.Visible : Visibility.Hidden;
+                    }
+                    IsOpenProductDialog = true;
+                }
+                else
+                {
+                    DetailProductName = "";
+                    DetailProductCategory = "";
+                    DetailProductImportAmount = 0;
+                    DetailProductSellAmount = 0;
+                    DetailProductInStockAmount = 0;
+                    DetailProductDescription = "";
+                    DetailProductCreateDate = "";
+                    DetailProductNumBuy = 0;
+                    _imageList = new List<dynamic>();
+                    ImageHolder = null;
+                    _imageHolderNumber = 0;
+                }
                 OnPropertyChanged();
             }
         }
 
-        private AsyncObservableCollection<dynamic> _products;
-        public AsyncObservableCollection<dynamic> Products { get => _products; set { _products = value; OnPropertyChanged(); } }
+        private string _detailProductName;
+        public string DetailProductName { get => _detailProductName; set { _detailProductName = value; OnPropertyChanged(); } }
+
+        private string _detailProductCategory;
+        public string DetailProductCategory { get => _detailProductCategory; set { _detailProductCategory = value; OnPropertyChanged(); } }
+
+        private int _detailProductImportAmount;
+        public int DetailProductImportAmount { get => _detailProductImportAmount; set { _detailProductImportAmount = value; OnPropertyChanged(); } }
+
+        private int _detailProductSellAmount;
+        public int DetailProductSellAmount { get => _detailProductSellAmount; set { _detailProductSellAmount = value; OnPropertyChanged(); } }
+
+        private int _detailProductInStockAmount;
+        public int DetailProductInStockAmount { get => _detailProductInStockAmount; set { _detailProductInStockAmount = value; OnPropertyChanged(); } }
+
+        private string _detailProductDescription;
+        public string DetailProductDescription { get => _detailProductDescription; set { _detailProductDescription = value; OnPropertyChanged(); } }
+
+        private string _detailProductCreateDate;
+        public string DetailProductCreateDate { get => _detailProductCreateDate; set { _detailProductCreateDate = value; OnPropertyChanged(); } }
+
+        private int _detailProductNumBuy;
+        public int DetailProductNumBuy { get => _detailProductNumBuy; set { _detailProductNumBuy = value; OnPropertyChanged(); } }
+
 
         // ADD NEW PRODUCT / UPDATE PRODUCT
 
@@ -180,7 +276,10 @@ namespace CakeShopApp.ViewModels
         public ICommand AddImageCommand { get; set; }
         public ICommand DeleteImageCommand { get; set; }
         public ICommand SetThumbnailCommand { get; set; }
-        
+        public ICommand PrevImageCommand { get; set; }
+        public ICommand NextImageCommand { get; set; }
+        public ICommand CloseDetaiProductCommand { get; set; }
+
         #endregion
 
         public CakesUCViewModel()
@@ -206,7 +305,6 @@ namespace CakeShopApp.ViewModels
             NewProductImages = new AsyncObservableCollection<dynamic>();
             // commands
             ChangeCategoryCommand = new RelayCommand<object>((param) => { return true; }, (param) => {
-                Products = new AsyncObservableCollection<dynamic>();
                 if (param is Root)
                 {
                     var tmp = param as Root;
@@ -464,6 +562,51 @@ namespace CakeShopApp.ViewModels
                 index = NewProductImages.IndexOf(SelectedNewProductImage);
                 NewProductImages.Remove(SelectedNewProductImage);
                 NewProductImages.Insert(index, tmp);
+            });
+
+            PrevImageCommand = new RelayCommand<dynamic>((param) => { return true; }, (param) =>
+            {
+                if (_imageList.Count < 2) return;
+                if (_imageList[0].Id == _imageHolderNumber) // ảnh đầu list
+                {
+                    _imageHolderNumber = _imageList[_imageList.Count - 1].Id;
+                    ImageHolder = _imageList[_imageList.Count - 1].ImageBytes;
+                }
+                else
+                {
+                    dynamic tmp = new
+                    {
+                        Id = _imageHolderNumber,
+                        ImageBytes = ImageHolder,
+                    };
+                    int index = _imageList.IndexOf(tmp);
+                    _imageHolderNumber = _imageList[index - 1].Id;
+                    ImageHolder = _imageList[index - 1].ImageBytes;
+                }
+            });
+            NextImageCommand = new RelayCommand<dynamic>((param) => { return true; }, (param) =>
+            {
+                if (_imageList.Count < 2) return;
+                if (_imageList[_imageList.Count - 1].Id == _imageHolderNumber) // ảnh cuối list
+                {
+                    _imageHolderNumber = _imageList[0].Id;
+                    ImageHolder = _imageList[0].ImageBytes;
+                }
+                else
+                {
+                    dynamic tmp = new
+                    {
+                        Id = _imageHolderNumber,
+                        ImageBytes = ImageHolder,
+                    };
+                    int index = _imageList.IndexOf(tmp);
+                    _imageHolderNumber = _imageList[index + 1].Id;
+                    ImageHolder = _imageList[index + 1].ImageBytes;
+                }
+            });
+
+            CloseDetaiProductCommand = new RelayCommand<dynamic>((param) => { return true; }, (param) => {
+                IsOpenProductDialog = false;
             });
         }
 

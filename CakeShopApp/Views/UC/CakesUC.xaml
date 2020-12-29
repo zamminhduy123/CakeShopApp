@@ -30,6 +30,18 @@
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.DialogHost.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
+        <Style x:Key="HolderButton" TargetType="Border">
+            <Setter Property="Width" Value="auto"></Setter>
+            <Setter Property="Height" Value="auto"></Setter>
+            <Setter Property="CornerRadius" Value="50"></Setter>
+            <Setter Property="Background" Value="WhiteSmoke"></Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="SaddleBrown"></Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
     </UserControl.Resources>
 
     <Grid>
@@ -157,6 +169,8 @@
                 </StackPanel>
             </materialDesign:DialogHost.DialogContent>
         </materialDesign:DialogHost>
+        
+        <!--sửa sản phẩm-->
 
         <materialDesign:DialogHost IsOpen="{Binding IsOpenUpdateProductDialog}"
                                         Style="{StaticResource MaterialDesignEmbeddedDialogHost}"
@@ -272,6 +286,138 @@
                                                           Margin="0 8 8 0"
                                                           Command="{Binding EditProductCommand}"  CommandParameter="false">
                             CANCEL
+                        </Button>
+                    </StackPanel>
+                </StackPanel>
+            </materialDesign:DialogHost.DialogContent>
+        </materialDesign:DialogHost>
+        <!--Hiển thị-->
+
+        <materialDesign:DialogHost IsOpen="{Binding IsOpenProductDialog}"
+                                        Style="{StaticResource MaterialDesignEmbeddedDialogHost}"
+                                        DialogMargin="8" Panel.ZIndex="2">
+
+            <!--Nội dung dialog sửa sản phẩm-->
+            <materialDesign:DialogHost.DialogContent>
+
+                <StackPanel Margin="16">
+                    <TextBlock>
+                                                   THÔNG TIN SẢN PHẨM
+                    </TextBlock>
+                    <Grid Width="900" Height="700">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Grid Grid.Row="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Orientation="Vertical" Grid.Column="0">
+                                <TextBox Margin="5 10"
+                                  materialDesign:HintAssist.Hint="Tên bánh"
+                                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                  VerticalAlignment="Center"
+                                  FontSize="15" Text="{Binding DetailProductName}" IsReadOnly="True">
+                                </TextBox>
+                                <TextBox Margin="5 10"
+                                  materialDesign:HintAssist.Hint="Loại bánh"
+                                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                  VerticalAlignment="Center"
+                                  FontSize="15" Text="{Binding DetailProductCategory}" IsReadOnly="True">
+                                </TextBox>
+                                <TextBox Margin="5 10"
+                                  materialDesign:HintAssist.Hint="Ngày tạo"
+                                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                  VerticalAlignment="Center"
+                                  FontSize="15" Text="{Binding DetailProductCreateDate}" IsReadOnly="True">
+                                </TextBox>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox Margin="5 10" Grid.Column="0"
+                                      materialDesign:HintAssist.Hint="Tổng số nhập"
+                                      Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                      VerticalAlignment="Center"
+                                        FontSize="15" Text="{Binding DetailProductImportAmount}" IsReadOnly="True">
+                                    </TextBox>
+                                    <TextBox Margin="5 10" Grid.Column="1"
+                                      materialDesign:HintAssist.Hint="Tồn kho"
+                                      Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                      VerticalAlignment="Center"
+                                        FontSize="15" Text="{Binding DetailProductInStockAmount}" IsReadOnly="True">
+                                    </TextBox>
+                                </Grid>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox Margin="5 10" Grid.Column="0"
+                                      materialDesign:HintAssist.Hint="Tổng số bán"
+                                      Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                      VerticalAlignment="Center"
+                                        FontSize="15" Text="{Binding DetailProductSellAmount}" IsReadOnly="True">
+                                    </TextBox>
+                                    <TextBox Margin="5 10" Grid.Column="1"
+                                  materialDesign:HintAssist.Hint="Số người mua"
+                                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                  VerticalAlignment="Center"
+                                  FontSize="15" Text="{Binding DetailProductNumBuy}" IsReadOnly="True">
+                                    </TextBox>
+                                </Grid>
+                            </StackPanel> 
+                            <TextBlock Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="20" FontWeight="Bold" Foreground="SaddleBrown">ẢNH</TextBlock>
+                            <Border Name="Mask2"
+                                    Background="White"
+                                    BorderBrush="SaddleBrown"
+                                    BorderThickness="2"
+                                    CornerRadius="30" Margin="20" Height="300" Grid.Column="1">
+                            </Border>
+                            <StackPanel Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal">
+                                <Button Background="{x:Null}" BorderBrush="{x:Null}" Padding="0" Margin="0" Command="{Binding PrevImageCommand}" CommandParameter="{Binding ElementName=ImageHolder}" Visibility="{Binding ChangeImageVisibility}">
+                                    <Border Style="{StaticResource HolderButton}">
+                                        <materialDesign:PackIcon Kind="ChevronLeft" Width="35" Height="35" Foreground="SaddleBrown" />
+                                    </Border>
+                                </Button>
+                                <Image x:Name="ImageHolder" Stretch="None" RenderOptions.BitmapScalingMode="HighQuality" Source="{Binding ImageHolder, Converter={StaticResource ImageConverter}}" Width="330" Height="280"/>
+                                <Button Background="{x:Null}" BorderBrush="{x:Null}" Padding="0" Command="{Binding NextImageCommand}"  CommandParameter="{Binding ElementName=ImageHolder}" Visibility="{Binding ChangeImageVisibility}">
+                                    <Border Style="{StaticResource HolderButton}">
+                                        <materialDesign:PackIcon Kind="ChevronRight" Width="35" Height="35" Foreground="SaddleBrown" />
+                                    </Border>
+                                </Button>
+                                <StackPanel.OpacityMask>
+                                    <VisualBrush Visual="{Binding ElementName=Mask2}" />
+                                </StackPanel.OpacityMask>
+                            </StackPanel>
+                        </Grid>
+                        <TextBlock Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="20" FontWeight="Bold" Foreground="SaddleBrown">MÔ TẢ</TextBlock>
+                        <Grid Grid.Row="1">
+                            <Border Name="Mask1"
+                                    Background="White"
+                                    BorderBrush="SaddleBrown"
+                                    BorderThickness="2"
+                                    CornerRadius="30" Margin="20" Height="300" Grid.Row="0">
+                            </Border>
+                            <TextBlock Text="{Binding DetailProductDescription}" Grid.Row="0" VerticalAlignment="Center" TextWrapping="Wrap" >
+                                <TextBlock.OpacityMask>
+                                    <VisualBrush Visual="{Binding ElementName=Mask1}" />
+                                </TextBlock.OpacityMask>
+                            </TextBlock>
+                        </Grid>
+                        
+                    </Grid>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Button
+                                                          Style="{StaticResource MaterialDesignFlatButton}"
+                                                          IsDefault="True"
+                                                          IsCancel="True"
+                                                          Margin="0 8 8 0"
+                                                          Command="{Binding CloseDetaiProductCommand}"  CommandParameter="true">
+                            CLOSE
                         </Button>
                     </StackPanel>
                 </StackPanel>
