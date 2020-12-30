@@ -156,7 +156,7 @@ namespace CakeShopApp.ViewModels
                 {
                     case 0:
                         Products = new AsyncObservableCollection<dynamic>();
-                        foreach (var product in DataProvider.Ins.DB.Products.Where(x => x.IsHidden == 0).OrderBy(x => x.ImportAmount - x.InStockAmount))
+                        foreach (var product in DataProvider.Ins.DB.Products.Where(x => x.IsHidden == 0).OrderByDescending(x => x.ImportAmount - x.InStockAmount))
                         {
                             Products.Add(new
                             {
@@ -241,7 +241,7 @@ namespace CakeShopApp.ViewModels
                 {
                     case 0:
                         Products = new AsyncObservableCollection<dynamic>();
-                        foreach (var product in DataProvider.Ins.DB.Products.Where(x => x.IsHidden == 0 && x.CategoryId == categoryid).OrderBy(x => x.ImportAmount - x.InStockAmount))
+                        foreach (var product in DataProvider.Ins.DB.Products.Where(x => x.IsHidden == 0 && x.CategoryId == categoryid).OrderByDescending(x => x.ImportAmount - x.InStockAmount))
                         {
                             Products.Add(new
                             {
