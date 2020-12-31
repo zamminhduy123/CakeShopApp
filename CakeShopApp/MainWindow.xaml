@@ -32,12 +32,12 @@
         <DataTemplate DataType="{x:Type viewmodels:StatisticsUCViewModel}">
             <uc:StatisticsUC DataContext="{Binding}"/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type viewmodels:SettingUCViewModel}">
+            <uc:SettingUC DataContext="{Binding}"/>
+        </DataTemplate>
         <!--
         
-        <DataTemplate DataType="{x:Type viewmodels:MembersUCViewModel}">
-            <uc:MemebersUC DataContext="{Binding}"/>
-            --><!-- This is a UserControl --><!--
-        </DataTemplate>
+
         <DataTemplate DataType="{x:Type viewmodels:ThemeUCViewModel}">
             <uc:ThemeUC DataContext="{Binding}"/>
             --><!-- This is a UserControl --><!--

@@ -1,0 +1,33 @@
+﻿<UserControl x:Class="CakeShopApp.Views.UC.SettingUC"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CakeShopApp.Views.UC"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
+             xmlns:models="clr-namespace:CakeShopApp.Models"
+            
+             TextElement.FontWeight="Regular"
+             TextElement.FontSize="13"
+             TextOptions.TextFormattingMode="Ideal"
+             TextOptions.TextRenderingMode="Auto"
+            
+            Background="White"
+            DataContext="{StaticResource SETUCVM}"
+
+            mc:Ignorable="d" 
+            d:DesignHeight="850" d:DesignWidth="1100">
+    <Grid>
+        <materialDesign:Card MinWidth="300" Padding="0 5" Background="White" HorizontalAlignment="Left" VerticalAlignment="Top"  Width="auto" UniformCornerRadius="10" Margin="10">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock FontSize="30" FontWeight="Medium" Text="Splash Screen" Margin="20 0" VerticalAlignment="Center"></TextBlock>
+                <CheckBox
+                                             Background ="SaddleBrown"
+                                                  Margin="30 5"
+                                            IsChecked="{Binding IsShowSplash}"
+                        materialDesign:CheckBoxAssist.CheckBoxSize="50">
+                </CheckBox>
+            </StackPanel>
+        </materialDesign:Card>
+    </Grid>
+</UserControl>

@@ -172,6 +172,7 @@
     <Compile Include="ViewModels\CakesUCViewModel.cs" />
     <Compile Include="ViewModels\HomeUCViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="ViewModels\SettingUCViewModel.cs" />
     <Compile Include="ViewModels\SplashScreenViewModel.cs" />
     <Compile Include="ViewModels\StatisticsUCViewModel.cs" />
     <Compile Include="Views\UC\CakesUC.xaml.cs">
@@ -183,6 +184,9 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Views\UC\SettingUC.xaml.cs">
+      <DependentUpon>SettingUC.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\UC\StatisticsUC.xaml.cs">
       <DependentUpon>StatisticsUC.xaml</DependentUpon>
@@ -208,6 +212,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\UC\HomeUC.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\UC\SettingUC.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

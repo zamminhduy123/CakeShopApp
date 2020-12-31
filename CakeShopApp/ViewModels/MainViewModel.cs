@@ -102,6 +102,7 @@ namespace CakeShopApp.ViewModels
                 ResetPanelColor();
                 global.SettingColor = Brushes.SaddleBrown.ToString();
                 global.SettingTextColor = Brushes.White.ToString();
+                global.CurrentPageViewModel = new SettingUCViewModel();
             });
         }
 

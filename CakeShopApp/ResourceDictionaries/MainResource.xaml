@@ -6,12 +6,13 @@
     <viewmodel:HomeUCViewModel x:Key="HUCVM"/>
     <viewmodel:CakesUCViewModel x:Key="CKUCVM"/>
     <viewmodel:StatisticsUCViewModel x:Key="SUCVM"/>
+    <viewmodel:SettingUCViewModel x:Key="SETUCVM"/>
     <!--<viewmodel:ControlBarViewModel x:Key="CBVM"/>
 
     
     
     
-    <viewmodel:ThemeUCViewModel x:Key="TUCVM"/>
+    
 
     <viewmodel:MembersUCViewModel x:Key="MUCVM"/>
     <viewmodel:AboutUCViewModel x:Key="AVM"></viewmodel:AboutUCViewModel>-->

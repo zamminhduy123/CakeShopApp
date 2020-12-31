@@ -35,7 +35,7 @@
     </i:Interaction.Triggers>
     
     <Border VerticalAlignment="Bottom" HorizontalAlignment="Center"
-                        CornerRadius="50" Height="600" Width="900"  RenderOptions.BitmapScalingMode="HighQuality">
+                        CornerRadius="10" Height="600" Width="900"  RenderOptions.BitmapScalingMode="HighQuality">
         <Border.Background>
             <ImageBrush Stretch="Fill" RenderOptions.BitmapScalingMode="HighQuality" ImageSource="{Binding ImageCover}">
                 <ImageBrush.RelativeTransform>

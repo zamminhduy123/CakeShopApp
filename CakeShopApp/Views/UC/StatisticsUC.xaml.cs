@@ -15,7 +15,7 @@ using System.Windows.Shapes;
 
 namespace CakeShopApp.Views.UC
 {
-    /// <summary>
+    /// <summary>a
     /// Interaction logic for StatisticsUC.xaml
     /// </summary>
     public partial class StatisticsUC : UserControl

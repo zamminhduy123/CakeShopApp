@@ -448,29 +448,32 @@
             </StackPanel>
 
             <!--Categories Tree-->
-
-            <TreeView x:Name="categories" DockPanel.Dock="Right" Width="230" Margin="0 10" Padding="0" ItemsSource="{Binding Categories}" FlowDirection="RightToLeft" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="SelectedItemChanged">
-                        <i:InvokeCommandAction Command="{Binding ChangeCategoryCommand}" CommandParameter="{Binding ElementName=categories, Path=SelectedItem}"/>
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
-                <TreeView.Resources>
-                    <HierarchicalDataTemplate DataType="{x:Type vm:Root}" ItemsSource="{Binding Child}">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{Binding Name}" />
-                            <TextBlock Text=" [" Foreground="Blue" />
-                            <TextBlock Text="{Binding Count}" Foreground="Blue" />
-                            <TextBlock Text="]" Foreground="Blue" />
-                        </StackPanel>
-                    </HierarchicalDataTemplate>
-                    <DataTemplate DataType="{x:Type vm:RootChild}">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{Binding Name}" />
-                        </StackPanel>
-                    </DataTemplate>
-                </TreeView.Resources>
-            </TreeView>
+            <StackPanel DockPanel.Dock="Right" Width="230" Margin="0 10" >
+                <TextBlock FontSize="20" HorizontalAlignment="Right" FontWeight="Medium" Text="Categories Tree"></TextBlock>
+                <Grid Height="2" Background="SaddleBrown" Margin="10 10 0 5"></Grid>
+                <TreeView x:Name="categories" Padding="0" ItemsSource="{Binding Categories}" FlowDirection="RightToLeft" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="SelectedItemChanged">
+                            <i:InvokeCommandAction Command="{Binding ChangeCategoryCommand}" CommandParameter="{Binding ElementName=categories, Path=SelectedItem}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                    <TreeView.Resources>
+                        <HierarchicalDataTemplate DataType="{x:Type vm:Root}" ItemsSource="{Binding Child}">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding Name}" />
+                                <TextBlock Text=" [" Foreground="Blue" />
+                                <TextBlock Text="{Binding Count}" Foreground="Blue" />
+                                <TextBlock Text="]" Foreground="Blue" />
+                            </StackPanel>
+                        </HierarchicalDataTemplate>
+                        <DataTemplate DataType="{x:Type vm:RootChild}">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding Name}" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </TreeView.Resources>
+                </TreeView>
+            </StackPanel>
 
             <!--Product ListView-->
             <ListView x:Name="ProductsListView"

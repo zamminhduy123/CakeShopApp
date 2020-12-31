@@ -45,30 +45,17 @@
                 </Border>
             </DockPanel>
             <!--pick to bar-->
-            <ListView Margin="0 20 0 0" ItemsSource="{Binding Categories}" SelectedItem="{Binding SelectedCategory}">
-                <!--<ListViewItem>
-                    <Button Margin="10 0" Background="{x:Null}" BorderBrush="{x:Null}"  Width="100" Height="150" Padding="0">
-                        <Border Background="White" CornerRadius="15" >
-                            <StackPanel Orientation="Vertical" Width="100" Height="150">
-                                <Border Height="80" CornerRadius="10" Margin="10" BorderBrush="Gray" BorderThickness="1">
-                                    <materialDesign:PackIcon Foreground="Black"
-                                                             Width="50" Height="50" Kind="Fire" HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="0.7"/>
-                                </Border>
-                                <TextBlock Foreground="Black"  VerticalAlignment="Center" Text="Hot" HorizontalAlignment="Center" FontSize="25" FontWeight="Medium"></TextBlock>
-                            </StackPanel>
-                        </Border>
-                    </Button>
-                </ListViewItem>-->
+            <ListView Margin="0 20 0 0" ItemsSource="{Binding Categories}" SelectedItem="{Binding SelectedCategory}" ScrollViewer.CanContentScroll="False">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <Button Background="{x:Null}" BorderBrush="{x:Null}"  Width="100" Height="150" Padding="0">
-                            <Border Background="White" CornerRadius="15" >
+                            <Border Background="White" CornerRadius="15" Margin="0">
                                 <StackPanel Orientation="Vertical" Width="100" Height="150">
                                     <Border Height="80" CornerRadius="10" Margin="10" BorderBrush="Gray" BorderThickness="1">
                                         <materialDesign:PackIcon Foreground="Black"
                                                              Width="50" Height="50" Kind="{Binding PickIcon}" HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="0.7"/>
                                     </Border>
-                                    <TextBlock Foreground="Black"  VerticalAlignment="Center" Text="{Binding Name}" HorizontalAlignment="Center" FontSize="25" FontWeight="Medium"></TextBlock>
+                                    <TextBlock Foreground="Black"  VerticalAlignment="Center" Text="{Binding Name}" HorizontalAlignment="Center" TextWrapping="Wrap" FontSize="15" FontWeight="Medium"></TextBlock>
                                 </StackPanel>
                             </Border>
                         </Button>
@@ -86,7 +73,7 @@
                 <Border DockPanel.Dock="Right" BorderThickness="0" Background="White" CornerRadius="10" Margin="10 10 20 10">
                     <StackPanel  Orientation="Horizontal" Margin="10">
                         <TextBlock Text="Sort To: " VerticalAlignment="Center" FontSize="20" Foreground="Gray"></TextBlock>
-                        <ComboBox DockPanel.Dock="Right" ItemsSource="{Binding Sorts}" SelectedItem="{Binding SelectedSort}"
+                        <ComboBox FontSize="15" FontWeight="Medium" DockPanel.Dock="Right" ItemsSource="{Binding Sorts}" SelectedItem="{Binding SelectedSort}"
                             VerticalAlignment="Center"
                             Width="150"
                             Height="30">

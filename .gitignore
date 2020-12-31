@@ -407,3 +407,8 @@ packages/LiveCharts.Wpf.0.9.7/lib/net45/LiveCharts.Wpf.pdb
 packages/LiveCharts.Wpf.0.9.7/lib/net45/LiveCharts.Wpf.XML
 packages/LiveCharts.Wpf.0.9.7/LiveCharts.Wpf.0.9.7.nupkg
 packages/LiveCharts.Wpf.0.9.7/tools/install.ps1
+CakeShopApp/bin/Debug/CakeShopAppDB.mdf
+CakeShopApp/bin/Debug/CakeShopAppDB_log.ldf
+CakeShopApp/obj/Debug/Views/UC/SettingUC.baml
+CakeShopApp/obj/Debug/Views/UC/SettingUC.g.cs
+CakeShopApp/obj/Debug/Views/UC/SettingUC.g.i.cs
