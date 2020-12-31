@@ -37,7 +37,7 @@
     <Border VerticalAlignment="Bottom" HorizontalAlignment="Center"
                         CornerRadius="10" Height="600" Width="900"  RenderOptions.BitmapScalingMode="HighQuality">
         <Border.Background>
-            <ImageBrush Stretch="Fill" RenderOptions.BitmapScalingMode="HighQuality" ImageSource="{Binding ImageCover}">
+            <ImageBrush Stretch="Fill" RenderOptions.BitmapScalingMode="HighQuality" ImageSource="/Assets/SplashBG.png">
                 <ImageBrush.RelativeTransform>
                     <RotateTransform CenterX="0.5" CenterY="0.5" Angle="0" />
                 </ImageBrush.RelativeTransform>
@@ -46,13 +46,10 @@
         
         <Grid Background="{x:Null}">
             <!--Middle Frame-->
-            <DockPanel>
-                <DockPanel.Effect>
-                    <DropShadowEffect BlurRadius="10" ShadowDepth="7"/>
-                </DockPanel.Effect>
+            <DockPanel HorizontalAlignment="Right" Margin="0 0 60 0" Background="White" Width="350">
                 <StackPanel Orientation="Vertical" DockPanel.Dock="Top">
-                    <Image Source="/Assets/Icon.png" Width="100" Height="100" VerticalAlignment="Top" Margin="0 20 0 0"/>
-                    <TextBlock FontWeight="Bold" Text="Cake Shop" HorizontalAlignment="Center" Margin="0 20" VerticalAlignment="Top"  Foreground="White" FontSize="50"/>
+                    <Image Source="/Assets/Icon.png" Width="120" Height="120" RenderOptions.BitmapScalingMode="Fant" VerticalAlignment="Top" Margin="0 50 0 0"/>
+                    <TextBlock FontWeight="Bold" Text="Cake Shop" HorizontalAlignment="Center" Margin="0 20" VerticalAlignment="Top"  Foreground="SaddleBrown" FontSize="50"/>
                     <!--Location description-->
                     <!--<TextBlock Text="{Binding LocationName}" FontSize="25" FontWeight="Medium" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                     <Border HorizontalAlignment="Center" Width="400"  Height="210" CornerRadius="20" BorderThickness="2" Background="#010203" Padding="5">
