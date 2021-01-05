@@ -35,9 +35,10 @@
         <DataTemplate DataType="{x:Type viewmodels:SettingUCViewModel}">
             <uc:SettingUC DataContext="{Binding}"/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type viewmodels:InvoiceListUCViewModel}">
+            <uc:InvoiceListUC DataContext="{Binding}"/>
+        </DataTemplate>
         <!--
-        
-
         <DataTemplate DataType="{x:Type viewmodels:ThemeUCViewModel}">
             <uc:ThemeUC DataContext="{Binding}"/>
             --><!-- This is a UserControl --><!--
@@ -61,6 +62,15 @@
                         <StackPanel Orientation="Vertical" VerticalAlignment="Center">
                             <materialDesign:PackIcon Kind="StorefrontOutline" Width="50" Height="50" HorizontalAlignment="Center"  Foreground="{Binding Source={StaticResource Global},Path=HomeTextColor}"/>
                             <TextBlock Text="Home" Foreground="{Binding Source={StaticResource Global},Path=HomeTextColor}" FontSize="20" FontWeight="Medium" HorizontalAlignment="Center"></TextBlock>
+                        </StackPanel>
+                    </Border>
+                </Button>
+                <!--Recipts List button-->
+                <Button Margin="10 5 10 10" Padding="0" Background="{x:Null}" BorderBrush="{x:Null}"  Width="90" Height="90" Command="{Binding InvoiceListCommand}">
+                    <Border CornerRadius="15" Margin="0"  Background="{Binding Source={StaticResource Global},Path=InvoiceListColor}" Width="90" Height="90">
+                        <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                            <materialDesign:PackIcon Kind="PlaylistEdit" Width="50" Height="50" HorizontalAlignment="Center"  Foreground="{Binding Source={StaticResource Global},Path=InvoiceListTextColor}"/>
+                            <TextBlock Text="Invoices"  TextAlignment="Center" Foreground="{Binding Source={StaticResource Global},Path=InvoiceListTextColor}" FontSize="19" FontWeight="Medium" HorizontalAlignment="Center"></TextBlock>
                         </StackPanel>
                     </Border>
                 </Button>

@@ -1,7 +1,5 @@
-﻿using CakeShopApp.ViewModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,17 +15,14 @@ using System.Windows.Shapes;
 
 namespace CakeShopApp.Views.UC
 {
-    /// <summary>a
-    /// Interaction logic for StatisticsUC.xaml
+    /// <summary>
+    /// Interaction logic for InvoiceListUC.xaml
     /// </summary>
-    public partial class StatisticsUC : UserControl
+    public partial class InvoiceListUC : UserControl
     {
-        private StatisticsUCViewModel Viewmodel { get; set; }
-        public StatisticsUC()
+        public InvoiceListUC()
         {
             InitializeComponent();
-            this.DataContext = Viewmodel = new StatisticsUCViewModel();
         }
-
     }
 }

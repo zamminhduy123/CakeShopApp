@@ -71,6 +71,9 @@ namespace CakeShopApp
 
         private String _settingTextColor;
 
+        private String _invoiceListColor;
+        private String _invoiceListTextColor;
+
         private String _checkOutColor = Brushes.White.ToString();
 
         private String _homeTextColor;
@@ -93,6 +96,9 @@ namespace CakeShopApp
 
         public String CakesColor { get => _cakesColor; set { _cakesColor = value; OnPropertyChanged("CakesColor"); } }
         public String CakesTextColor { get => _cakesTextColor; set { _cakesTextColor = value; OnPropertyChanged("CakesTextColor"); } }
+
+        public String InvoiceListColor { get => _invoiceListColor; set { _invoiceListColor = value; OnPropertyChanged("InvoiceListColor"); } }
+        public String InvoiceListTextColor { get => _invoiceListTextColor; set { _invoiceListTextColor = value; OnPropertyChanged("InvoiceListTextColor"); } }
 
         public BaseViewModel CurrentPageViewModel { get => _currentPageViewModel; set { _currentPageViewModel = value; OnPropertyChanged("CurrentPageViewModel"); } }
 

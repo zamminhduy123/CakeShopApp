@@ -171,6 +171,7 @@
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\CakesUCViewModel.cs" />
     <Compile Include="ViewModels\HomeUCViewModel.cs" />
+    <Compile Include="ViewModels\InvoiceListUCViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\SettingUCViewModel.cs" />
     <Compile Include="ViewModels\SplashScreenViewModel.cs" />
@@ -184,6 +185,9 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Views\UC\InvoiceListUC.xaml.cs">
+      <DependentUpon>InvoiceListUC.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\UC\SettingUC.xaml.cs">
       <DependentUpon>SettingUC.xaml</DependentUpon>
@@ -212,6 +216,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\UC\HomeUC.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\UC\InvoiceListUC.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

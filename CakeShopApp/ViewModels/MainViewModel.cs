@@ -29,7 +29,7 @@ namespace CakeShopApp.ViewModels
         public ICommand SettingCommand { get; set; }
         public ICommand AboutCommand { get; set; }
         public ICommand OpenPanelCommand { get; set; }
-
+        public ICommand InvoiceListCommand { get; set; }
         #endregion
 
         #region Panel
@@ -59,7 +59,7 @@ namespace CakeShopApp.ViewModels
             ResetPanelColor();
             global.HomeColor = Brushes.SaddleBrown.ToString();
             global.HomeTextColor = Brushes.White.ToString();
-            //global.CurrentPageViewModel = new HomeUCViewModel();
+
 
             VersionTextBlock = GetPublishedVersion();
             if (VersionTextBlock == null || VersionTextBlock == "")
@@ -74,11 +74,12 @@ namespace CakeShopApp.ViewModels
                 
             });
 
-            CheckOutCommand = new RelayCommand<object>((param) => { return true; }, (param) =>
+            InvoiceListCommand = new RelayCommand<object>((param) => { return true; }, (param) =>
             {
                 ResetPanelColor();
-                global.CheckOutColor = Brushes.SaddleBrown.ToString();
-                global.CheckOutTextColor = Brushes.White.ToString();
+                global.InvoiceListColor = Brushes.SaddleBrown.ToString();
+                global.InvoiceListTextColor = Brushes.White.ToString();
+                global.CurrentPageViewModel = new InvoiceListUCViewModel();
             });
 
             CakesCommand = new RelayCommand<object>((param) => { return true; }, (param) =>
@@ -122,6 +123,9 @@ namespace CakeShopApp.ViewModels
 
             global.CakesColor = Brushes.White.ToString();
             global.CakesTextColor = Brushes.Gray.ToString();
+
+            global.InvoiceListColor = Brushes.White.ToString();
+            global.InvoiceListTextColor = Brushes.Gray.ToString();
         }
     }
 }

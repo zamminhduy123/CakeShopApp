@@ -13,6 +13,7 @@ namespace CakeShopApp.ViewModels
     class HomeUCViewModel : BaseViewModel
     {
         #region variables
+        private static object m_lock = new object();
         private List<string> _listSort = new List<string>() { 
             "Bán chạy",
             "Hàng mới",
