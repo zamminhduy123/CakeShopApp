@@ -27,7 +27,7 @@ namespace CakeShopApp.Views.UC
         public HomeUC()
         {
             InitializeComponent();
-            this.DataContext = Viewmodel = new HomeUCViewModel();
+            this.DataContext = Viewmodel = HomeUCViewModel.GetInstance();
         }
 
     }

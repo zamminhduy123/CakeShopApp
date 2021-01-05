@@ -13,6 +13,7 @@ namespace CakeShopApp.ViewModels
     class HomeUCViewModel : BaseViewModel
     {
         #region variables
+        private static HomeUCViewModel _instance = null;
         private static object m_lock = new object();
         private List<string> _listSort = new List<string>() { 
             "Bán chạy",
@@ -228,6 +229,21 @@ namespace CakeShopApp.ViewModels
         public ICommand AddInvoiceCommand { get; set; }
         #endregion
 
+        public static HomeUCViewModel GetInstance()
+        {
+            // DoubleLock
+            if (_instance == null)
+            {
+                lock (m_lock)
+                {
+                    if (_instance == null)
+                    {
+                        _instance = new HomeUCViewModel();
+                    }
+                }
+            }
+            return _instance;
+        }
         public HomeUCViewModel()
         {
             // khởi tạo dữ liệu

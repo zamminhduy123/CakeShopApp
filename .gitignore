@@ -415,3 +415,8 @@ CakeShopApp/obj/Debug/Views/UC/SettingUC.g.i.cs
 CakeShopApp/obj/Debug/Views/UC/InvoiceListUC.baml
 CakeShopApp/obj/Debug/Views/UC/InvoiceListUC.g.cs
 CakeShopApp/obj/Debug/Views/UC/InvoiceListUC.g.i.cs
+CakeShopApp/bin/Debug/CakeShopAppDB.mdf
+CakeShopApp/bin/Debug/CakeShopAppDB_log.ldf
+CakeShopApp/bin/Debug/CakeShopAppDB.mdf
+CakeShopApp/bin/Debug/CakeShopAppDB_log.ldf
+*.mdf

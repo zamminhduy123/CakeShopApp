@@ -70,8 +70,9 @@ namespace CakeShopApp.ViewModels
                 ResetPanelColor();
                 global.HomeColor = Brushes.SaddleBrown.ToString();
                 global.HomeTextColor = Brushes.White.ToString();
-                global.CurrentPageViewModel = new HomeUCViewModel();
-                
+                global.CurrentPageViewModel = HomeUCViewModel.GetInstance();
+
+
             });
 
             InvoiceListCommand = new RelayCommand<object>((param) => { return true; }, (param) =>
