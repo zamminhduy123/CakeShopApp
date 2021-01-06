@@ -348,9 +348,9 @@ namespace CakeShopApp.ViewModels
                             OrderNumber = 0,
                             ImageBytes = NewProductImages.First(x => x.IsThumbnail == true).ByteImage,
                         });
+                        var maxordernum = 1;
                         foreach (var image in NewProductImages.Where(x => x.IsThumbnail == false))
                         {
-                            var maxordernum = 1;
                             DataProvider.Ins.DB.Photos.Add(new Photo
                             {
                                 ProductId = newproduct.Id,
@@ -433,9 +433,9 @@ namespace CakeShopApp.ViewModels
                             OrderNumber = 0,
                             ImageBytes = NewProductImages.First(x => x.IsThumbnail == true).ByteImage,
                         });
+                        var maxordernum = 1;
                         foreach (var image in NewProductImages.Where(x => x.IsThumbnail == false))
                         {
-                            var maxordernum = 1;
                             DataProvider.Ins.DB.Photos.Add(new Photo
                             {
                                 ProductId = newproduct.Id,
