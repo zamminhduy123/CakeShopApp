@@ -19,6 +19,9 @@ namespace CakeShopApp.ViewModels
 
         #region properties
 
+        private string _search;
+        public string Search { get => _search; set { _search = value; CallSearch(); OnPropertyChanged(); } }
+
         // SHOW LIST AND SELECTED ITEM
 
         private int _totalInvoice;
@@ -60,7 +63,7 @@ namespace CakeShopApp.ViewModels
                     DetailCash = (invoice.PaymentMethod == 1) ? invoice.DirectPayment.Cash.ToString() : null;
                     DetailChange = (invoice.PaymentMethod == 1) ? invoice.DirectPayment.Change.ToString() : null;
                     DirectPaymentVisibility = (invoice.PaymentMethod == 1) ? Visibility.Visible : Visibility.Hidden;
-                    DetailCustomerName = invoice.Name;
+                    DetailName = invoice.Name;
                     DetailPhone = invoice.Phone;
                     DetailAddress = (invoice.PaymentMethod == 2) ? invoice.DeliveryPayment.Address : null;
                     DetailPostPaid = (invoice.PaymentMethod == 2) ? invoice.DeliveryPayment.PostPaid.ToString() : null;
@@ -86,7 +89,7 @@ namespace CakeShopApp.ViewModels
                     DetailAddress = null;
                     DetailCash = null;
                     DetailChange = null;
-                    DetailCustomerName = null;
+                    DetailName = null;
                     DetailInvoices = null;
                     DetailPhone = null;
                     DetailPostPaid = null;
@@ -100,8 +103,8 @@ namespace CakeShopApp.ViewModels
         private int _detailId;
         public int DetailId { get => _detailId; set { _detailId = value; OnPropertyChanged(); } }
 
-        private string _detailCustomerName;
-        public string DetailCustomerName { get => _detailCustomerName; set { _detailCustomerName = value; OnPropertyChanged(); } }
+        private string _detailName;
+        public string DetailName { get => _detailName; set { _detailName = value; OnPropertyChanged(); } }
 
         private string _detailPhone;
         public string DetailPhone { get => _detailPhone; set { _detailPhone = value; OnPropertyChanged(); } }
@@ -151,6 +154,34 @@ namespace CakeShopApp.ViewModels
             TotalInvoice = 0;
             CheckedInvoice = 0;
             UnCheckedInvoice = 0;
+            LoadInvoices();
+            
+
+            CheckShipCommand = new RelayCommand<dynamic>((param) => { return true; }, (param) =>
+            {
+                MessageBoxResult result = MessageBox.Show("Đơn hàng đã được thanh toán ?", "CẢNH BÁO", MessageBoxButton.YesNo);
+                if (result == MessageBoxResult.Yes)
+                {
+                    int index = Invoices.IndexOf(param);
+                    Invoice invoice = DataProvider.Ins.DB.Invoices.Find(param.Id);
+                    invoice.Status = "Đã thanh toán";
+                    DataProvider.Ins.DB.SaveChanges();
+                    Invoices.RemoveAt(index);
+                    Invoices.Insert(index, new
+                    {
+                        Id = invoice.Id,
+                        Name = invoice.Name,
+                        Date = invoice.DeliveryPayment.ShippingDate.ToString().Split(' ')[0],
+                        Status = invoice.Status,
+                    });
+                    CheckedInvoice++;
+                    UnCheckedInvoice--;
+                }
+                    
+            });
+        }
+        private void LoadInvoices()
+        {
             Invoices = new AsyncObservableCollection<dynamic>();
             var a = DataProvider.Ins.DB.Invoices.OrderByDescending(x => x.CreatedDate).ToList();
             foreach (var invoice in DataProvider.Ins.DB.Invoices.OrderByDescending(x => x.CreatedDate))
@@ -167,7 +198,7 @@ namespace CakeShopApp.ViewModels
                 Invoices.Add(new
                 {
                     Id = invoice.Id,
-                    CustomerName = invoice.Name,
+                    Name = invoice.Name,
                     Date = date,
                     Status = invoice.Status,
                 });
@@ -181,30 +212,11 @@ namespace CakeShopApp.ViewModels
                     UnCheckedInvoice++;
                 }
             }
-
-
-            CheckShipCommand = new RelayCommand<dynamic>((param) => { return true; }, (param) =>
-            {
-                MessageBoxResult result = MessageBox.Show("Đơn hàng đã được thanh toán ?", "CẢNH BÁO", MessageBoxButton.YesNo);
-                if (result == MessageBoxResult.Yes)
-                {
-                    int index = Invoices.IndexOf(param);
-                    Invoice invoice = DataProvider.Ins.DB.Invoices.Find(param.Id);
-                    invoice.Status = "Đã thanh toán";
-                    DataProvider.Ins.DB.SaveChanges();
-                    Invoices.RemoveAt(index);
-                    Invoices.Insert(index, new
-                    {
-                        Id = invoice.Id,
-                        CustomerName = invoice.Name,
-                        Date = invoice.DeliveryPayment.ShippingDate.ToString().Split(' ')[0],
-                        Status = invoice.Status,
-                    });
-                    CheckedInvoice++;
-                    UnCheckedInvoice--;
-                }
-                    
-            });
+        }
+        private void CallSearch()
+        {
+            LoadInvoices();
+            Invoices = SearchByName(Search, Invoices);
         }
     }
 }

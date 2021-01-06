@@ -25,53 +25,16 @@ namespace CakeShopApp.ViewModels
 
         #region properties
 
+        private string _search;
+        public string Search { get => _search; set { _search = value; CallSearch();  OnPropertyChanged(); } }
+
         // SHOW LIST AND SELECTED ITEM
 
         private AsyncObservableCollection<Root> _categories;
         public AsyncObservableCollection<Root> Categories { get => _categories; set { _categories = value; OnPropertyChanged(); } }
 
         private Root _selectedCategory;
-        public Root SelectedCategory
-        {
-            get => _selectedCategory; set
-            {
-                _selectedCategory = value;
-                Products = new AsyncObservableCollection<dynamic>();
-                if (SelectedCategory.Id == 0)
-                {
-                    foreach (var product in DataProvider.Ins.DB.Products.Where(x => x.IsHidden == 0))
-                    {
-                        Products.Add(new {
-                            Id = product.Id,
-                            Name = product.Name,
-                            Thumbnail = (product.Photos.Count == 0) ? null: product.Photos.ToList()[0].ImageBytes,
-                            Price = product.SellPrice.ToString(),
-                            ImportPrice = product.ImportPrice.ToString(),
-                            InStock = product.InStockAmount,
-                            CategoryId = product.CategoryId,
-                        });
-                    }
-                }
-                else
-                {
-                    int id = SelectedCategory.Id;
-                    foreach (var product in DataProvider.Ins.DB.Products.Where(x => x.IsHidden == 0 && x.CategoryId == id))
-                    {
-                        Products.Add(new
-                        {
-                            Id = product.Id,
-                            Name = product.Name,
-                            Thumbnail = (product.Photos.Count == 0) ? null : product.Photos.ToList()[0].ImageBytes,
-                            Price = product.SellPrice.ToString(),
-                            ImportPrice = product.ImportPrice.ToString(),
-                            InStock = product.InStockAmount,
-                            CategoryId = product.CategoryId,
-                        });
-                    }
-                }
-                OnPropertyChanged();
-            }
-        }
+        public Root SelectedCategory { get => _selectedCategory; set { _selectedCategory = value; CallSearch(); OnPropertyChanged(); } }
 
         private AsyncObservableCollection<dynamic> _products;
         public AsyncObservableCollection<dynamic> Products { get => _products; set { _products = value; OnPropertyChanged(); } }
@@ -610,6 +573,48 @@ namespace CakeShopApp.ViewModels
             });
         }
 
+        private void LoadProducts()
+        {
+            Products = new AsyncObservableCollection<dynamic>();
+            if (SelectedCategory.Id == 0)
+            {
+                foreach (var product in DataProvider.Ins.DB.Products.Where(x => x.IsHidden == 0))
+                {
+                    Products.Add(new
+                    {
+                        Id = product.Id,
+                        Name = product.Name,
+                        Thumbnail = (product.Photos.Count == 0) ? null : product.Photos.ToList()[0].ImageBytes,
+                        Price = product.SellPrice.ToString(),
+                        ImportPrice = product.ImportPrice.ToString(),
+                        InStock = product.InStockAmount,
+                        CategoryId = product.CategoryId,
+                    });
+                }
+            }
+            else
+            {
+                int id = SelectedCategory.Id;
+                foreach (var product in DataProvider.Ins.DB.Products.Where(x => x.IsHidden == 0 && x.CategoryId == id))
+                {
+                    Products.Add(new
+                    {
+                        Id = product.Id,
+                        Name = product.Name,
+                        Thumbnail = (product.Photos.Count == 0) ? null : product.Photos.ToList()[0].ImageBytes,
+                        Price = product.SellPrice.ToString(),
+                        ImportPrice = product.ImportPrice.ToString(),
+                        InStock = product.InStockAmount,
+                        CategoryId = product.CategoryId,
+                    });
+                }
+            }
+        }
+        private void CallSearch()
+        {
+            LoadProducts();
+            Products = SearchByName(Search, Products);
+        }
         public byte[] BitMapImageTOBytes(BitmapImage imageC)
         {
             if (imageC == null) return null;
@@ -661,6 +666,7 @@ namespace CakeShopApp.ViewModels
                 }
             }
         }
+
     }
     public class RootChild : BaseViewModel
     {
