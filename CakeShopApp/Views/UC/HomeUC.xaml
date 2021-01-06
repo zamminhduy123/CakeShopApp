@@ -125,60 +125,76 @@
                 </DockPanel>
 
                 <!--Cart List-->
-                <ListView x:Name="Invoice" Margin="10" ScrollViewer.HorizontalScrollBarVisibility="Disabled" MaxHeight="600" ItemsSource="{Binding InvoiceDetails}">
+                <ListView x:Name="Invoice" Margin="10" ScrollViewer.HorizontalScrollBarVisibility="Disabled" MaxHeight="600" ItemsSource="{Binding InvoiceDetails}" ScrollViewer.CanContentScroll="False">
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <DockPanel Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListView}},Path=ActualWidth}" LastChildFill="False">
-                                <StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
-                                    <Border CornerRadius="10" Width="50" Height="50">
-                                        <Border.Background>
-                                            <ImageBrush RenderOptions.BitmapScalingMode="Fant"
-                                            ImageSource="{Binding ProductThumbnail, Converter={StaticResource ImageConverter}}">
-                                            </ImageBrush>
-                                        </Border.Background>
-                                    </Border>
-                                    <StackPanel Margin="10">
-                                        <TextBlock Text="{Binding ProductName}" FontWeight="Medium"></TextBlock>
-                                        <TextBlock Text="{Binding ProductPrice, Converter={StaticResource MoneyComverter}}"></TextBlock>
+                            <StackPanel Orientation="Vertical"  Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListView}},Path=ActualWidth}">
+                                <DockPanel MinWidth="350" LastChildFill="True" HorizontalAlignment="Left">
+                                    <StackPanel Orientation="Horizontal" DockPanel.Dock="Left" Margin="5">
+                                        <Border CornerRadius="10" Width="50" Height="50">
+                                            <Border.Background>
+                                                <ImageBrush RenderOptions.BitmapScalingMode="Fant"
+                                                ImageSource="{Binding ProductThumbnail, Converter={StaticResource ImageConverter}}">
+                                                </ImageBrush>
+                                            </Border.Background>
+                                        </Border>
+                                        <StackPanel Margin="10" Width="200">
+                                            <TextBlock Text="{Binding ProductName}" FontWeight="Medium" TextWrapping="Wrap"></TextBlock>
+                                            <TextBlock Text="{Binding ProductPrice, Converter={StaticResource MoneyComverter}}"></TextBlock>
+                                        </StackPanel>
                                     </StackPanel>
-                                </StackPanel>
-
-                                <StackPanel Width="300" Orientation="Horizontal" DockPanel.Dock="Right">
-                                    <TextBox  
-                                      Margin="10 0"
-                                      Width="20" VerticalAlignment="Center" TextAlignment="Right"
-                                      materialDesign:HintAssist.Hint="Số lượng"
-                                      Text="{Binding Amount}">
-                                        <i:Interaction.Triggers>
-                                            <i:EventTrigger EventName="LostFocus">
-                                                <i:InvokeCommandAction Command="{Binding ElementName=Invoice, Path=DataContext.LoadPrice}"  CommandParameter="{Binding}"/>
-                                            </i:EventTrigger>
-                                        </i:Interaction.Triggers>
-                                    </TextBox>
-                                    <TextBox  
-                                      Margin="10 0"
-                                      Width="20" VerticalAlignment="Center" TextAlignment="Right"
-                                      materialDesign:HintAssist.Hint="Giảm giá"
-                                      Text="{Binding Discount}">
-                                        <i:Interaction.Triggers>
-                                            <i:EventTrigger EventName="LostFocus">
-                                                <i:InvokeCommandAction Command="{Binding ElementName=Invoice, Path=DataContext.LoadPrice}"  CommandParameter="{Binding}"/>
-                                            </i:EventTrigger>
-                                        </i:Interaction.Triggers>
-                                    </TextBox>
-                                    <TextBox  
-                                      Margin="10 0"
-                                      Width="20" VerticalAlignment="Center" TextAlignment="Right"
-                                      materialDesign:HintAssist.Hint="Tặng"
-                                      Text="{Binding GiftAmount}">
-                                    </TextBox>
-                                    <TextBlock Text="{Binding SummaryPrice, Converter={StaticResource MoneyComverter}}" VerticalAlignment="Center" FontSize="14" FontWeight="Medium"></TextBlock>
-                                    <Button Width="20" Height="20" Margin="5 0" Foreground="White" Background="Red" BorderThickness="0" Padding="0" HorizontalAlignment="Right"
-                                            Command="{Binding ElementName=Invoice, Path=DataContext.DeleteDetailInListCommand}" CommandParameter="{Binding}">
+                                    <Button Width="30" Height="30" Margin="5 0" Foreground="White" Background="Red" BorderThickness="0" Padding="0" DockPanel.Dock="Right"
+                                                    Command="{Binding ElementName=Invoice, Path=DataContext.DeleteDetailInListCommand}" CommandParameter="{Binding}">
                                         <materialDesign:PackIcon Kind="CartRemove" />
                                     </Button>
+                                </DockPanel>
+                                <StackPanel Orientation="Horizontal" Margin="10 0">
+                                    <StackPanel Orientation="Horizontal" Margin="5">
+                                        <materialDesign:PackIcon Kind="PackageVariantClosed" VerticalAlignment="Center" Width="20" Height="20" />
+                                        <TextBox  
+                                          Margin="10 0"
+                                          Width="50" VerticalAlignment="Center" TextAlignment="Right"
+                                          materialDesign:HintAssist.HelperText="Số lượng"
+                                            Text="{Binding Amount}">
+                                            <i:Interaction.Triggers>
+                                                <i:EventTrigger EventName="LostFocus">
+                                                    <i:InvokeCommandAction Command="{Binding ElementName=Invoice, Path=DataContext.LoadPrice}"  CommandParameter="{Binding}"/>
+                                                </i:EventTrigger>
+                                            </i:Interaction.Triggers>
+                                        </TextBox>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="5">
+                                        <materialDesign:PackIcon Kind="Sale" VerticalAlignment="Center" Width="20" Height="20" />
+                                        <TextBox  
+                                          Margin="10 0"
+                                          Width="50" VerticalAlignment="Center" TextAlignment="Right"
+                                          materialDesign:HintAssist.HelperText="Giảm giá"
+                                          Text="{Binding Discount}">
+                                            <i:Interaction.Triggers>
+                                                <i:EventTrigger EventName="LostFocus">
+                                                    <i:InvokeCommandAction Command="{Binding ElementName=Invoice, Path=DataContext.LoadPrice}"  CommandParameter="{Binding}"/>
+                                                </i:EventTrigger>
+                                            </i:Interaction.Triggers>
+                                        </TextBox>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="5">
+                                        <materialDesign:PackIcon Kind="GiftOutline" VerticalAlignment="Center" Width="20" Height="20" />
+                                        <TextBox  
+                                          Margin="10 0"
+                                          Width="50" VerticalAlignment="Center" TextAlignment="Right"
+                                          materialDesign:HintAssist.HelperText="Tặng"
+                                          Text="{Binding GiftAmount}">
+                                        </TextBox>
+                                    </StackPanel>
+                                    
                                 </StackPanel>
-                            </DockPanel>
+                                <Border Margin="0 20 0 0" BorderBrush="SaddleBrown" BorderThickness="2" HorizontalAlignment="Center">
+                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="10">
+                                        <TextBlock Text="Tổng: " FontSize="15" FontWeight="Medium" VerticalAlignment="Center"  ></TextBlock>
+                                        <TextBlock  Text="{Binding SummaryPrice, Converter={StaticResource MoneyComverter}}" VerticalAlignment="Center" FontSize="15" FontWeight="Medium" ></TextBlock>
+                                    </StackPanel>
+                                </Border>
+                            </StackPanel>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
