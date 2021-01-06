@@ -46,10 +46,11 @@
                 </Border>
             </DockPanel>
             <!--pick to bar-->
-            <ListView Margin="0 20 0 0" ItemsSource="{Binding Categories}" SelectedItem="{Binding SelectedCategory}" ScrollViewer.CanContentScroll="False">
+            <ListView Name="Categories" Margin="0 20 0 0" ItemsSource="{Binding Categories}" SelectedItem="{Binding SelectedCategory}" ScrollViewer.CanContentScroll="False">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <Button Background="{x:Null}" BorderBrush="{x:Null}"  Width="100" Height="150" Padding="0">
+                        <Button Background="{x:Null}" BorderBrush="{x:Null}"  Width="100" Height="150" Padding="0"
+                                 Command="{Binding ElementName=Categories, Path=DataContext.ChangeCategoryCommand}" CommandParameter="{Binding}">
                             <Border Background="White" CornerRadius="15" Margin="0">
                                 <StackPanel Orientation="Vertical" Width="100" Height="150">
                                     <Border Height="80" CornerRadius="10" Margin="10" BorderBrush="Gray" BorderThickness="1">
@@ -89,10 +90,11 @@
             </DockPanel>
 
             <!--List Item-->
-            <ListView ItemsSource="{Binding Products}" SelectedItem="{Binding SelectedProduct}" HorizontalAlignment="Left"  Width="660" Height="450" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+            <ListView Name="Products" ItemsSource="{Binding Products}" SelectedItem="{Binding SelectedProduct}" HorizontalAlignment="Left"  Width="660" Height="450" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <Button Background="{x:Null}" BorderBrush="{x:Null}"  Width="195" Height="250" Padding="0">
+                        <Button Background="{x:Null}" BorderBrush="{x:Null}"  Width="195" Height="250" Padding="0"
+                                 Command="{Binding ElementName=Products, Path=DataContext.AddToCartCommand}" CommandParameter="{Binding}">
                             <Border Background="White" CornerRadius="15" Margin="0" Width="195" Height="250">
                                 <Grid Width="195">
                                     <Border VerticalAlignment="Top" Height="170" CornerRadius="10" Margin="10" BorderBrush="Gray" BorderThickness="1">

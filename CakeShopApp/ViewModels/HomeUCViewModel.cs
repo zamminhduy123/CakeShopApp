@@ -50,19 +50,9 @@ namespace CakeShopApp.ViewModels
         public AsyncObservableCollection<string> Sorts { get => _sorts; set { _sorts = value; OnPropertyChanged(); } }
 
         private string _selectedSort;
-        public string SelectedSort
-        {
-            get => _selectedSort; set
-            {
-                _selectedSort = value;
-                if (SelectedCategory != null && SelectedSort != null)
-                {
-                    LoadProducts();
-                }
-                SelectedProduct = null;
-                OnPropertyChanged();
-            }
-        }
+        public string SelectedSort { get => _selectedSort; set { _selectedSort = value;
+                LoadProducts();
+                OnPropertyChanged(); } }
 
         // make invoice
 
@@ -70,31 +60,7 @@ namespace CakeShopApp.ViewModels
         public AsyncObservableCollection<dynamic> Products { get => _products; set { _products = value; OnPropertyChanged(); } }
 
         private dynamic _selectedProduct;
-        public dynamic SelectedProduct
-        {
-            get => _selectedProduct; set
-            {
-                _selectedProduct = value;
-                if (SelectedProduct != null)
-                {
-                    InvoiceDetails.Add(new DetailInList
-                    {
-                        ProductId = SelectedProduct.Id,
-                        ProductName = SelectedProduct.Name,
-                        ProductThumbnail = SelectedProduct.Thumbnail,
-                        ProductPrice = SelectedProduct.Price,
-                        Amount = 1,
-                        Discount = 0,
-                        GiftAmount = 0,
-                        SummaryPrice = SelectedProduct.Price,
-                    });
-                    DetailInListTotalPrice = (int.Parse(DetailInListTotalPrice) + int.Parse(SelectedProduct.Price)).ToString();
-                    Products.Remove(SelectedProduct);
-                    SelectedProduct = null;
-                }
-                OnPropertyChanged();
-            }
-        }
+        public dynamic SelectedProduct { get => _selectedProduct; set { _selectedProduct = value; OnPropertyChanged(); } }
 
         private AsyncObservableCollection<DetailInList> _invoiceDetails;
         public AsyncObservableCollection<DetailInList> InvoiceDetails { get => _invoiceDetails; set { _invoiceDetails = value; OnPropertyChanged(); } }
@@ -228,6 +194,8 @@ namespace CakeShopApp.ViewModels
         public ICommand DeleteDetailInListCommand { get; set; }
         public ICommand LoadPrice { get; set; }
         public ICommand AddInvoiceCommand { get; set; }
+        public ICommand AddToCartCommand { get; set; }
+        public ICommand ChangeCategoryCommand { get; set; }
         #endregion
 
         public static HomeUCViewModel GetInstance()
@@ -253,7 +221,8 @@ namespace CakeShopApp.ViewModels
             DetailInListTotalPrice = "0";
 
             Categories = new AsyncObservableCollection<dynamic>();
-            Categories.Add(new { 
+            Categories.Add(new
+            {
                 Id = 0,
                 Name = "Tất cả",
             });
@@ -287,12 +256,14 @@ namespace CakeShopApp.ViewModels
             //}
 
             // Commands
-            DeleteDetailInListCommand = new RelayCommand<DetailInList>((param) => { return true; }, (param) => {
+            DeleteDetailInListCommand = new RelayCommand<DetailInList>((param) => { return true; }, (param) =>
+            {
                 DetailInListTotalPrice = (int.Parse(DetailInListTotalPrice) - int.Parse(param.SummaryPrice)).ToString();
                 InvoiceDetails.Remove(param);
                 LoadProducts();
             });
-            LoadPrice = new RelayCommand<DetailInList>((param) => { return true; }, (param) => {
+            LoadPrice = new RelayCommand<DetailInList>((param) => { return true; }, (param) =>
+            {
                 DetailInListTotalPrice = "0";
                 param.SummaryPrice = (int.Parse(param.ProductPrice) * param.Amount * (100 - param.Discount) / 100).ToString();
                 foreach (var invoicedetail in InvoiceDetails)
@@ -300,7 +271,8 @@ namespace CakeShopApp.ViewModels
                     DetailInListTotalPrice = (int.Parse(DetailInListTotalPrice) + int.Parse(invoicedetail.SummaryPrice)).ToString();
                 }
             });
-            AddInvoiceCommand = new RelayCommand<string>((param) => { return true; }, (param) => {
+            AddInvoiceCommand = new RelayCommand<string>((param) => { return true; }, (param) =>
+            {
                 if (bool.Parse(param) == true)
                 {
                     Invoice newinvoice = DataProvider.Ins.DB.Invoices.Find(CheckOutId);
@@ -322,7 +294,8 @@ namespace CakeShopApp.ViewModels
                     }
                     foreach (var invoicedetail in InvoiceDetails)
                     {
-                        newinvoice.InvoiceDetails.Add(new InvoiceDetail { 
+                        newinvoice.InvoiceDetails.Add(new InvoiceDetail
+                        {
                             InvoiceId = CheckOutId,
                             ProductId = invoicedetail.ProductId,
                             Amount = invoicedetail.Amount,
@@ -334,9 +307,31 @@ namespace CakeShopApp.ViewModels
                     DataProvider.Ins.DB.SaveChanges();
                     InvoiceDetails = new AsyncObservableCollection<DetailInList>();
                     DetailInListTotalPrice = "0";
-                    LoadProducts(); 
+                    LoadProducts();
                 }
                 IsOpenCheckOutDialog = false;
+            });
+            AddToCartCommand = new RelayCommand<dynamic>((param) => { return true; }, (param) =>
+            {
+                InvoiceDetails.Add(new DetailInList
+                {
+                    ProductId = param.Id,
+                    ProductName = param.Name,
+                    ProductThumbnail = param.Thumbnail,
+                    ProductPrice = param.Price,
+                    Amount = 1,
+                    Discount = 0,
+                    GiftAmount = 0,
+                    SummaryPrice = param.Price,
+                });
+                DetailInListTotalPrice = (int.Parse(DetailInListTotalPrice) + int.Parse(param.Price)).ToString();
+                Products.Remove(param);
+                SelectedProduct = null;
+            });
+            ChangeCategoryCommand = new RelayCommand<dynamic>((param) => { return true; }, (param) => {
+                SelectedCategory = param;
+                LoadProducts();
+                SelectedProduct = null;
             });
         }
         void LoadProducts()
