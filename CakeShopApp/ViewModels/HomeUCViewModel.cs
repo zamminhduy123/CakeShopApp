@@ -120,6 +120,7 @@ namespace CakeShopApp.ViewModels
                     DataProvider.Ins.DB.SaveChanges();
                     CheckOutId = newinvoice.Id;
                     CheckOutDetails = new AsyncObservableCollection<dynamic>();
+                    CheckOutDateShip = DateTime.Now;
                     foreach (var invoicedetail in InvoiceDetails)
                     {
                         CheckOutDetails.Add(new { 

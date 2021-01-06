@@ -27,28 +27,23 @@ namespace CakeShopApp.ViewModels
                 Months = new AsyncObservableCollection<int>();
                 if (SelectedYear == FirstDay.Year)
                 {
+                    SelectedMonth = FirstDay.Month;
                     for (int i = FirstDay.Month; i < 13; i++)
                     {
                         Months.Add(i);
                     }
-                    if (SelectedMonth < FirstDay.Month)
-                    {
-                        SelectedMonth = FirstDay.Month;
-                    }
                 }
                 else if (SelectedYear == DateTime.Now.Year)
                 {
+                    SelectedMonth = 1;
                     for (int i = 1; i < DateTime.Now.Month + 1; i++)
                     {
                         Months.Add(i);
                     }
-                    if (SelectedMonth > DateTime.Now.Month)
-                    {
-                        SelectedMonth = DateTime.Now.Month;
-                    }
                 }
                 else
                 {
+                    SelectedMonth = 1;
                     for (int i = 1; i < 13; i++)
                     {
                         Months.Add(i);
