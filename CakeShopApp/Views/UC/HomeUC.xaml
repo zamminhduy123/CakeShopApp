@@ -20,7 +20,8 @@
 
     <UserControl.Resources>
         <models:BytesToBitMapConverter x:Key="ImageConverter"/>
-        <models:NumberToVNDConverter x:Key="MoneyComverter"/>
+        <models:NumberToVNDConverter x:Key="MoneyConverter"/>
+        <models:DateConverter x:Key="DateConverter"/>
     </UserControl.Resources>
 
     <Grid>
@@ -101,7 +102,7 @@
                                     </Border>
                                     <StackPanel VerticalAlignment="Bottom" Margin="0 0 0 5">
                                         <TextBlock Foreground="Black"  VerticalAlignment="Bottom" Text="{Binding Name}" HorizontalAlignment="Center" TextAlignment="Center" FontSize="15" TextWrapping="Wrap" FontWeight="Medium"></TextBlock>
-                                        <TextBlock Foreground="Black"  VerticalAlignment="Bottom" Text="{Binding Price, Converter={StaticResource MoneyComverter}}" HorizontalAlignment="Center" FontSize="15" FontWeight="Medium"></TextBlock>
+                                        <TextBlock Foreground="Black"  VerticalAlignment="Bottom" Text="{Binding Price, Converter={StaticResource MoneyConverter}}" HorizontalAlignment="Center" FontSize="15" FontWeight="Medium"></TextBlock>
                                     </StackPanel>
                                 </Grid>
                             </Border>
@@ -140,7 +141,7 @@
                                         </Border>
                                         <StackPanel Margin="10" Width="200">
                                             <TextBlock Text="{Binding ProductName}" FontWeight="Medium" TextWrapping="Wrap"></TextBlock>
-                                            <TextBlock Text="{Binding ProductPrice, Converter={StaticResource MoneyComverter}}"></TextBlock>
+                                            <TextBlock Text="{Binding ProductPrice, Converter={StaticResource MoneyConverter}}"></TextBlock>
                                         </StackPanel>
                                     </StackPanel>
                                     <Button Width="30" Height="30" Margin="5 0" Foreground="White" Background="Red" BorderThickness="0" Padding="0" DockPanel.Dock="Right"
@@ -191,7 +192,7 @@
                                 <Border Margin="0 20 0 0" BorderBrush="SaddleBrown" BorderThickness="2" HorizontalAlignment="Center">
                                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="10">
                                         <TextBlock Text="Tổng: " FontSize="15" FontWeight="Medium" VerticalAlignment="Center"  ></TextBlock>
-                                        <TextBlock  Text="{Binding SummaryPrice, Converter={StaticResource MoneyComverter}}" VerticalAlignment="Center" FontSize="15" FontWeight="Medium" ></TextBlock>
+                                        <TextBlock  Text="{Binding SummaryPrice, Converter={StaticResource MoneyConverter}}" VerticalAlignment="Center" FontSize="15" FontWeight="Medium" ></TextBlock>
                                     </StackPanel>
                                 </Border>
                             </StackPanel>
@@ -246,10 +247,10 @@
                                         DisplayMemberBinding="{Binding Quantity}"
                                         Header="Quantity" />
                                         <GridViewColumn
-                                            DisplayMemberBinding="{Binding Price}"
+                                            DisplayMemberBinding="{Binding Price, Converter={StaticResource MoneyConverter}}"
                                             Header="Price" />
                                         <GridViewColumn
-                                        DisplayMemberBinding="{Binding Total}"
+                                        DisplayMemberBinding="{Binding Total, Converter={StaticResource MoneyConverter}}"
                                         Header="Total">
                                             <GridViewColumn.CellTemplate>
                                                 <DataTemplate>
@@ -292,7 +293,7 @@
 
                                         <StackPanel Orientation="Horizontal" Margin="10">
                                             <TextBlock VerticalAlignment="Center" Text="Change: " FontSize="15" FontWeight="Medium"></TextBlock>
-                                            <TextBox Width="100" Text="{Binding CheckOutChange}"
+                                            <TextBox Width="100" Text="{Binding CheckOutChange, Converter={StaticResource MoneyConverter}}"
                                                   Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                                   VerticalAlignment="Center" IsReadOnly="True"/>
                                         </StackPanel>
@@ -366,7 +367,7 @@
                                           Margin="0 10 0 0">
                                             </TextBox>
                                             <TextBox
-                                          Grid.Row="4" Text="{Binding CheckOutPostPaid}"
+                                          Grid.Row="4" Text="{Binding CheckOutPostPaid, Converter={StaticResource MoneyConverter}}"
                                           materialDesign:HintAssist.Hint="PostPaid"
                                           materialDesign:HintAssist.IsFloating="True"
                                           Margin="0 10 0 0" IsReadOnly="True">
@@ -386,7 +387,7 @@
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="10">
                                     <TextBlock VerticalAlignment="Center" Text="Total: " FontSize="15" FontWeight="Medium"></TextBlock>
-                                    <TextBox Width="100" Text="{Binding CheckOutTotal, Converter={StaticResource MoneyComverter}}"
+                                    <TextBox Width="100" Text="{Binding CheckOutTotal, Converter={StaticResource MoneyConverter}}"
                                       Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                       VerticalAlignment="Center" IsReadOnly="True"/>
                                 </StackPanel>
@@ -422,7 +423,7 @@
                 <Border CornerRadius="10" Background="SaddleBrown">
                     <StackPanel Orientation="Horizontal" Margin="10">
                         <TextBlock Text="Check Out: " FontSize="25" ></TextBlock>
-                        <TextBlock Text="{Binding DetailInListTotalPrice, Converter={StaticResource MoneyComverter}}" FontSize="25" ></TextBlock>
+                        <TextBlock Text="{Binding DetailInListTotalPrice, Converter={StaticResource MoneyConverter}}" FontSize="25" ></TextBlock>
                     </StackPanel>
                     <Border.Effect>
                         <DropShadowEffect BlurRadius="10"></DropShadowEffect>

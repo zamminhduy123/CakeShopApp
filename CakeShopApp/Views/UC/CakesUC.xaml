@@ -24,6 +24,7 @@
     <UserControl.Resources>
         <models:BytesToBitMapConverter x:Key="ImageConverter"/>
         <models:NumberToVNDConverter x:Key="MoneyComverter"/>
+        <models:DateConverter x:Key="DateConverter"/>
         <ResourceDictionary x:Key="Dialogbox">
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Button.xaml" />
@@ -331,7 +332,7 @@
                                   materialDesign:HintAssist.Hint="Ngày tạo"
                                   Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                   VerticalAlignment="Center"
-                                  FontSize="15" Text="{Binding DetailProductCreateDate}" IsReadOnly="True">
+                                  FontSize="15" Text="{Binding DetailProductCreateDate, Converter={StaticResource DateConverter}}" IsReadOnly="True">
                                 </TextBox>
                                 <Grid>
                                     <Grid.ColumnDefinitions>
