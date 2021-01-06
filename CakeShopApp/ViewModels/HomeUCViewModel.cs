@@ -332,7 +332,8 @@ namespace CakeShopApp.ViewModels
                     }
                     DataProvider.Ins.DB.SaveChanges();
                     InvoiceDetails = new AsyncObservableCollection<DetailInList>();
-                    LoadProducts();
+                    DetailInListTotalPrice = "0";
+                    LoadProducts(); 
                 }
                 IsOpenCheckOutDialog = false;
             });

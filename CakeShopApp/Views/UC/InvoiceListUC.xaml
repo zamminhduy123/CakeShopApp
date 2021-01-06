@@ -17,6 +17,120 @@
 
             mc:Ignorable="d" 
             d:DesignHeight="850" d:DesignWidth="1100">
-    <Grid>
-    </Grid>
+    <UserControl.Resources>
+        <models:DateConverter x:Key="DateConverter"/>
+    </UserControl.Resources>
+    <DockPanel>
+        <!--Search Bar-->
+        <Border BorderThickness="1" BorderBrush="SaddleBrown" CornerRadius="10" Margin="5 10 20 10" DockPanel.Dock="Top" HorizontalAlignment="Left">
+            <StackPanel  Orientation="Horizontal" Margin="10" Width="300">
+                <materialDesign:PackIcon Foreground="Gray" VerticalAlignment="Center" Kind="Magnify" Width="30" Height="30" />
+                <TextBox DockPanel.Dock="Right"
+                            VerticalAlignment="Center"
+                            Width="250"
+                            Height="30"
+                            AcceptsReturn="True"
+                            materialDesign:HintAssist.Hint="Search for customer name"/>
+            </StackPanel>
+        </Border>
+        <ListView x:Name="ProductsListView" DockPanel.Dock="Left"
+            ItemsSource="{Binding Invoices}" SelectedItem="{Binding SelectedInvoice}" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Hidden" ScrollViewer.CanContentScroll="False">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn
+                        Header="ID" Width="80">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock TextWrapping="Wrap"  FontSize="15" FontWeight="Medium" Margin="10 5" Foreground="SaddleBrown" Text="{Binding Id}" ></TextBlock>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn
+                        Header="Customer Name" Width="150">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock TextWrapping="Wrap"  FontSize="15" FontWeight="Medium" Margin="10 5" Foreground="SaddleBrown" Text="{Binding CustomerName}" ></TextBlock>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn
+                        Header="Date" Width="160">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock TextWrapping="Wrap" HorizontalAlignment="Center" FontSize="20" FontWeight="Medium" Margin="10 0" Text="{Binding Date, Converter={StaticResource DateConverter}}"></TextBlock>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn
+                        Header="Status" Width="200">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock TextWrapping="Wrap" HorizontalAlignment="Center" FontSize="20" FontWeight="Medium" Margin="10 0" Text="{Binding Status}">
+                                    <TextBlock.Style>
+                                        <Style>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding = "{Binding Status}" Value = "Đã thanh toán">
+                                                    <Setter Property = "TextBlock.Foreground" Value = "Green"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding = "{Binding Status}" Value = "Chờ giao hàng">
+                                                    <Setter Property = "TextBlock.Foreground" Value = "Red"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn
+                        Header="Check" Width="100">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Margin="10 5" Height="auto" BorderBrush="Green" Background="Green" BorderThickness="1" Padding="0" HorizontalAlignment="Right"
+                                                Command="{Binding ElementName=ProductsListView, Path=DataContext.CheckShipCommand}" CommandParameter="{Binding}" ToolTip="Edit">
+                                    <materialDesign:PackIcon Width="40" Height="40" Kind="CheckBold"/>
+                                    <Button.Style>
+                                        <Style>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding = "{Binding Status}" Value = "Đã thanh toán">
+                                                    <Setter Property = "Button.IsEnabled" Value = "False"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding = "{Binding Status}" Value = "Chờ giao hàng">
+                                                    <Setter Property = "Button.IsEnabled" Value = "True"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
+                                </Button>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
+
+        <!--Status Bar-->
+        <Border BorderThickness="1" BorderBrush="SaddleBrown" CornerRadius="10" Margin="5 10 20 10" DockPanel.Dock="Top" HorizontalAlignment="Right" Width="290" Height="200">
+            <Grid Margin="10" Width="250" Height="100">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="Tổng số hóa đơn" FontSize="20"></TextBlock>
+                <TextBlock Grid.Row="0" Grid.Column="0" Text=":" FontSize="20" HorizontalAlignment="Right"></TextBlock>
+                <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding TotalInvoice}" Foreground="SaddleBrown" FontSize="20" HorizontalAlignment="Right"></TextBlock>
+                <TextBlock Grid.Row="1" Grid.Column="0" Text="Đã thanh toán" FontSize="20"></TextBlock>
+                <TextBlock Grid.Row="1" Grid.Column="0" Text=":" FontSize="20" HorizontalAlignment="Right"></TextBlock>
+                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding CheckedInvoice}" Foreground="Green" FontSize="20" HorizontalAlignment="Right"></TextBlock>
+                <TextBlock Grid.Row="2" Grid.Column="0" Text="Chờ giao hàng" FontSize="20"></TextBlock>
+                <TextBlock Grid.Row="2" Grid.Column="0" Text=":" FontSize="20" HorizontalAlignment="Right"></TextBlock>
+                <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding UnCheckedInvoice}" Foreground="Red" FontSize="20" HorizontalAlignment="Right"></TextBlock>
+            </Grid>
+        </Border>
+    </DockPanel>
 </UserControl>
