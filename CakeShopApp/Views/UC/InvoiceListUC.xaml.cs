@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CakeShopApp.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +21,12 @@ namespace CakeShopApp.Views.UC
     /// </summary>
     public partial class InvoiceListUC : UserControl
     {
+        private InvoiceListUCViewModel Viewmodel { get; set; }
         public InvoiceListUC()
         {
             InitializeComponent();
+            this.DataContext = Viewmodel = new InvoiceListUCViewModel();
         }
+
     }
 }

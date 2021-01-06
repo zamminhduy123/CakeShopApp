@@ -22,7 +22,7 @@
     </UserControl.Resources>
     <DockPanel>
         <!--Search Bar-->
-        <Border BorderThickness="1" BorderBrush="SaddleBrown" CornerRadius="10" Margin="5 10 20 10" DockPanel.Dock="Top" HorizontalAlignment="Left">
+        <Border BorderThickness="1" BorderBrush="SaddleBrown" CornerRadius="10" DockPanel.Dock="Top" HorizontalAlignment="Left" Margin="20 10">
             <StackPanel  Orientation="Horizontal" Margin="10" Width="300">
                 <materialDesign:PackIcon Foreground="Gray" VerticalAlignment="Center" Kind="Magnify" Width="30" Height="30" />
                 <TextBox DockPanel.Dock="Right"
@@ -33,7 +33,7 @@
                             materialDesign:HintAssist.Hint="Search for customer name"/>
             </StackPanel>
         </Border>
-        <ListView x:Name="ProductsListView" DockPanel.Dock="Left"
+        <ListView x:Name="ProductsListView" DockPanel.Dock="Left" Margin="20 0"
             ItemsSource="{Binding Invoices}" SelectedItem="{Binding SelectedInvoice}" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Hidden" ScrollViewer.CanContentScroll="False">
             <ListView.View>
                 <GridView>
@@ -110,7 +110,7 @@
         </ListView>
 
         <!--Status Bar-->
-        <Border BorderThickness="1" BorderBrush="SaddleBrown" CornerRadius="10" Margin="5 10 20 10" DockPanel.Dock="Top" HorizontalAlignment="Right" Width="290" Height="200">
+        <Border BorderThickness="1" VerticalAlignment="Top" BorderBrush="SaddleBrown" CornerRadius="10" Margin="5 10 20 10" DockPanel.Dock="Top" HorizontalAlignment="Right" Width="290" Height="200">
             <Grid Margin="10" Width="250" Height="100">
                 <Grid.RowDefinitions>
                     <RowDefinition/>
