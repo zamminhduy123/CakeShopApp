@@ -24,7 +24,24 @@ namespace CakeShopApp.ViewModels
             "Giá giảm dần",
         };
         #endregion
+        #region valid value
+        private bool _isValidName;
+        public bool IsValidName { get => _isValidName; set { _isValidName = value; OnPropertyChanged(); } }
+        private bool _isValidPhone;
+        public bool IsValidPhone { get => _isValidPhone; set { _isValidPhone = value; OnPropertyChanged(); } }
+        private bool _isValidCheckoutCash;
+        public bool IsValidCheckoutCash { get => _isValidCheckoutCash; set { _isValidCheckoutCash = value; OnPropertyChanged(); } }
+        private bool _isValidCheckoutOff;
+        public bool IsValidCheckoutOff { get => _isValidCheckoutOff; set { _isValidCheckoutOff = value; OnPropertyChanged(); } }
+        #endregion
+        #region enable button
+        private bool _isEnabledSecondCheckoutButton;
+        public bool IsEnabledSecondCheckoutButton { get => _isEnabledSecondCheckoutButton; set { _isEnabledSecondCheckoutButton = value; OnPropertyChanged(); } }
 
+        private bool _isEnabledFirstCheckoutButton;
+        public bool IsEnabledFirstCheckoutButton { get => _isEnabledFirstCheckoutButton; set { _isEnabledFirstCheckoutButton = value; OnPropertyChanged(); } }
+
+        #endregion
         #region properties
 
         private string _search;
@@ -115,25 +132,58 @@ namespace CakeShopApp.ViewModels
                     CheckOutPrePaid = null;
                     CheckOutTotal = null;
                 }
+                CheckOutCustomerName = null;
+                CheckOutPhone = null;
+                CheckOutCash = null;
+                CheckOutOff = 0;
+                IsEnabledSecondCheckoutButton = false;
                 OnPropertyChanged();
             }
         }
 
         private string _checkOutCustomerName;
-        public string CheckOutCustomerName { get => _checkOutCustomerName; set { _checkOutCustomerName = value; OnPropertyChanged(); } }
+        public string CheckOutCustomerName 
+        { 
+            get => _checkOutCustomerName; 
+            set 
+            { 
+                _checkOutCustomerName = value; 
+                if (CheckOutCustomerName != null && IsValidPhone == true && IsValidCheckoutCash == true && IsValidCheckoutOff == true)
+                {
+                    IsEnabledSecondCheckoutButton = true;
+                }
+                IsValidName = true;
+                OnPropertyChanged(); 
+            } 
+        }
 
         private string _checkOutPhone;
-        public string CheckOutPhone { get => _checkOutPhone; set { _checkOutPhone = value; OnPropertyChanged(); } }
+        public string CheckOutPhone 
+        { 
+            get => _checkOutPhone;
+            set 
+            { 
+                _checkOutPhone = value;
+                if (CheckOutPhone != null && IsValidName == true && IsValidCheckoutCash == true && IsValidCheckoutOff == true)
+                {
+                    IsEnabledSecondCheckoutButton = true;
+                }
+                IsValidPhone = true;
+                OnPropertyChanged(); 
+            } 
+        }
 
         private AsyncObservableCollection<dynamic> _checkOutDetails;
         public AsyncObservableCollection<dynamic> CheckOutDetails { get => _checkOutDetails; set { _checkOutDetails = value; OnPropertyChanged(); } }
 
         private string _checkOutCash;
         public string CheckOutCash { get => _checkOutCash; set { _checkOutCash = value;
-                if (CheckOutCash != null)
+                if (CheckOutCash != null && IsValidName == true && IsValidPhone == true && IsValidCheckoutOff == true)
                 {
+                    IsEnabledSecondCheckoutButton = true;
                     CheckOutChange = (int.Parse(CheckOutCash) - int.Parse(CheckOutTotal)).ToString();
                 }
+                IsValidCheckoutCash = true;
                 OnPropertyChanged(); } }
 
         private string _checkOutChange;
@@ -161,8 +211,9 @@ namespace CakeShopApp.ViewModels
 
         private int _checkOutOff;
         public int CheckOutOff { get => _checkOutOff; set { _checkOutOff = value;
-                if (CheckOutOff != null && IsOpenCheckOutDialog == true)
+                if (CheckOutOff != null && IsOpenCheckOutDialog == true && IsValidName == true && IsValidPhone == true && IsValidCheckoutCash == true)
                 {
+                    IsEnabledSecondCheckoutButton = true;
                     for (int i = 0; i < InvoiceDetails.Count(); i++)
                     {
                         var detail = InvoiceDetails.ElementAt(i);
@@ -186,6 +237,7 @@ namespace CakeShopApp.ViewModels
                     CheckOutCash = CheckOutCash;
                     CheckOutPrePaid = CheckOutPrePaid;
                 }
+                IsValidCheckoutOff = true;
                 OnPropertyChanged(); } }
 
         private string _checkOutTotal;
@@ -199,8 +251,15 @@ namespace CakeShopApp.ViewModels
         public ICommand AddInvoiceCommand { get; set; }
         public ICommand AddToCartCommand { get; set; }
         public ICommand ChangeCategoryCommand { get; set; }
-        #endregion
+        //disable command
+        public ICommand DisableName { get; set; }
+        public ICommand DisablePhone { get; set; }
+        public ICommand DisableCheckoutCash { get; set; }
+        public ICommand DisableCheckoutOff { get; set; }
+        public ICommand DisableSecondCheckout { get; set; }
         
+        #endregion
+
         public static HomeUCViewModel GetInstance()
         {
             // DoubleLock
@@ -263,6 +322,10 @@ namespace CakeShopApp.ViewModels
             {
                 DetailInListTotalPrice = (int.Parse(DetailInListTotalPrice) - int.Parse(param.SummaryPrice)).ToString();
                 InvoiceDetails.Remove(param);
+                if (InvoiceDetails.Count() == 0)
+                {
+                    IsEnabledFirstCheckoutButton = false;
+                }
                 CallSearch();
             });
             LoadPrice = new RelayCommand<DetailInList>((param) => { return true; }, (param) =>
@@ -335,6 +398,25 @@ namespace CakeShopApp.ViewModels
                 SelectedCategory = param;
                 CallSearch();
                 SelectedProduct = null;
+            });
+            DisableName = new RelayCommand<dynamic>((param) => { return true; }, (param) => {
+                IsValidName = false;
+                IsEnabledSecondCheckoutButton = false;
+            });
+            DisablePhone = new RelayCommand<dynamic>((param) => { return true; }, (param) => {
+                IsValidPhone = false;
+                IsEnabledSecondCheckoutButton = false;
+            });
+            DisableCheckoutCash = new RelayCommand<dynamic>((param) => { return true; }, (param) => {
+                IsValidCheckoutCash = false;
+                IsEnabledSecondCheckoutButton = false;
+            });
+            DisableCheckoutOff = new RelayCommand<dynamic>((param) => { return true; }, (param) => {
+                IsValidCheckoutOff = false;
+                IsEnabledSecondCheckoutButton = false;
+            });
+            DisableSecondCheckout = new RelayCommand<dynamic>((param) => { return true; }, (param) => {
+                IsEnabledSecondCheckoutButton = false;
             });
         }
         private void LoadProducts()
@@ -529,6 +611,27 @@ namespace CakeShopApp.ViewModels
     // tạo class hỗ trợ trình bày dữ liệu lên view
     public class DetailInList : BaseViewModel
     {
+        #region valid value
+        private bool _isValidAmount;
+        public bool IsValidAmount { get => _isValidAmount; set { _isValidAmount = value; OnPropertyChanged(); } }
+        private bool _isValidDiscount;
+        public bool IsValidDiscount { get => _isValidDiscount; set { _isValidDiscount = value; OnPropertyChanged(); } }
+        private bool _isValidGiftAmount;
+        public bool IsValidGiftAmount { get => _isValidGiftAmount; set { _isValidGiftAmount = value; OnPropertyChanged(); } }
+
+        #endregion
+        private bool _isEnabledCheckoutButton;
+        public bool IsEnabledCheckoutButton 
+        { 
+            get => _isEnabledCheckoutButton; 
+            set 
+            { 
+                _isEnabledCheckoutButton = value; 
+                HomeUCViewModel.GetInstance().IsEnabledFirstCheckoutButton = IsEnabledCheckoutButton; 
+                OnPropertyChanged(); 
+            } 
+        }
+        #region properties
         private int _productId;
         public int ProductId { get => _productId; set { _productId = value; OnPropertyChanged(); } }
 
@@ -542,16 +645,76 @@ namespace CakeShopApp.ViewModels
         public string ProductPrice { get => _productPrice; set { _productPrice = value; OnPropertyChanged(); } }
 
         private int _amount;
-        public int Amount { get => _amount; set { _amount = value; OnPropertyChanged(); } }
+        public int Amount 
+        { 
+            get => _amount; 
+            set 
+            { 
+                _amount = value;
+                if (IsValidDiscount == true && IsValidGiftAmount == true)
+                {
+                    IsEnabledCheckoutButton = true;
+                }
+                IsValidAmount = true;
+                OnPropertyChanged(); 
+            } 
+        }
 
         private int _discount;
-        public int Discount { get => _discount; set { _discount = value; OnPropertyChanged(); } }
+        public int Discount 
+        {
+            get => _discount; 
+            set
+            { 
+                _discount = value;
+                if (IsValidAmount == true && IsValidGiftAmount == true)
+                {
+                    IsEnabledCheckoutButton = true;
+                }
+                IsValidDiscount = true;
+                OnPropertyChanged(); 
+            } 
+        }
 
         private int _giftAmount;
-        public int GiftAmount { get => _giftAmount; set { _giftAmount = value; OnPropertyChanged(); } }
+        public int GiftAmount 
+        { 
+            get => _giftAmount; 
+            set 
+            { 
+                _giftAmount = value;
+                if (IsValidDiscount == true && IsValidAmount == true)
+                {
+                    IsEnabledCheckoutButton = true;
+                }
+                IsValidGiftAmount = true;
+                OnPropertyChanged(); 
+            } 
+        }
 
         private string _summaryPrice;
         public string SummaryPrice { get => _summaryPrice; set { _summaryPrice = value; OnPropertyChanged(); } }
+        #endregion
 
+        #region command
+        public ICommand DisableAmount { get; set; }
+        public ICommand DisableDiscount { get; set; }
+        public ICommand DisableGiftAmount { get; set; }
+        #endregion
+        public DetailInList()
+        {
+            DisableAmount = new RelayCommand<dynamic>((param) => { return true; }, (param) => {
+                IsValidAmount = false;
+                IsEnabledCheckoutButton = false;
+            });
+            DisableDiscount = new RelayCommand<dynamic>((param) => { return true; }, (param) => {
+                IsValidDiscount = false;
+                IsEnabledCheckoutButton = false;
+            });
+            DisableGiftAmount = new RelayCommand<dynamic>((param) => { return true; }, (param) => {
+                IsValidGiftAmount = false;
+                IsEnabledCheckoutButton = false;
+            });
+        }
     }
 }

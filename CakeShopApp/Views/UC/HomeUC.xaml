@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CakeShopApp.Views.UC"
+             xmlns:vm="clr-namespace:CakeShopApp.ViewModels"
              
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
              xmlns:models="clr-namespace:CakeShopApp.Models" xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
@@ -119,7 +120,6 @@
                 </ListView.ItemsPanel>
             </ListView>
         </StackPanel>
-
         <!--Right Panel-->
         <Grid Grid.Column="1">
             <StackPanel  VerticalAlignment="Top">
@@ -127,7 +127,7 @@
                 <DockPanel LastChildFill="False" Margin="20">
                     <TextBlock DockPanel.Dock="Left" Text="Cart" VerticalAlignment="Center" FontSize="30" Margin="20 0" FontWeight="Medium"></TextBlock>
                 </DockPanel>
-
+                
                 <!--Cart List-->
                 <ListView x:Name="Invoice" Margin="10" ScrollViewer.HorizontalScrollBarVisibility="Disabled" MaxHeight="600" ItemsSource="{Binding InvoiceDetails}" ScrollViewer.CanContentScroll="False">
                     <ListView.ItemTemplate>
@@ -148,7 +148,7 @@
                                         </StackPanel>
                                     </StackPanel>
                                     <Button Width="30" Height="30" Margin="5 0" Foreground="White" Background="Red" BorderThickness="0" Padding="0" DockPanel.Dock="Right"
-                                                    Command="{Binding ElementName=Invoice, Path=DataContext.DeleteDetailInListCommand}" CommandParameter="{Binding}">
+                                                    Command="{Binding ElementName=Invoice, Path=DataContext.DeleteDetailInListCommand}" CommandParameter="{Binding }">
                                         <materialDesign:PackIcon Kind="CartRemove" />
                                     </Button>
                                 </DockPanel>
@@ -158,9 +158,18 @@
                                         <TextBox  
                                           Margin="10 0"
                                           Width="50" VerticalAlignment="Center" TextAlignment="Right"
-                                          materialDesign:HintAssist.HelperText="Số lượng"
-                                            Text="{Binding Amount}">
+                                          materialDesign:HintAssist.HelperText="Số lượng">
+                                            <TextBox.Text>
+                                                <Binding Path="Amount" UpdateSourceTrigger="PropertyChanged" NotifyOnValidationError="True">
+                                                    <Binding.ValidationRules>
+                                                        <vm:IsOnlyContainNumberRule/>
+                                                    </Binding.ValidationRules>
+                                                </Binding>
+                                            </TextBox.Text>
                                             <i:Interaction.Triggers>
+                                                <vm:RoutedEventTrigger RoutedEvent="{x:Static Validation.ErrorEvent}">
+                                                    <i:InvokeCommandAction Command="{Binding DisableAmount}"/>
+                                                </vm:RoutedEventTrigger>
                                                 <i:EventTrigger EventName="LostFocus">
                                                     <i:InvokeCommandAction Command="{Binding ElementName=Invoice, Path=DataContext.LoadPrice}"  CommandParameter="{Binding}"/>
                                                 </i:EventTrigger>
@@ -172,9 +181,18 @@
                                         <TextBox  
                                           Margin="10 0"
                                           Width="50" VerticalAlignment="Center" TextAlignment="Right"
-                                          materialDesign:HintAssist.HelperText="Giảm giá"
-                                          Text="{Binding Discount}">
+                                          materialDesign:HintAssist.HelperText="Giảm giá">
+                                            <TextBox.Text>
+                                                <Binding Path="Discount" UpdateSourceTrigger="PropertyChanged" NotifyOnValidationError="True">
+                                                    <Binding.ValidationRules>
+                                                        <vm:IsOnlyContainNumberRule/>
+                                                    </Binding.ValidationRules>
+                                                </Binding>
+                                            </TextBox.Text>
                                             <i:Interaction.Triggers>
+                                                <vm:RoutedEventTrigger RoutedEvent="{x:Static Validation.ErrorEvent}">
+                                                    <i:InvokeCommandAction Command="{Binding DisableDiscount}"/>
+                                                </vm:RoutedEventTrigger>
                                                 <i:EventTrigger EventName="LostFocus">
                                                     <i:InvokeCommandAction Command="{Binding ElementName=Invoice, Path=DataContext.LoadPrice}"  CommandParameter="{Binding}"/>
                                                 </i:EventTrigger>
@@ -186,8 +204,19 @@
                                         <TextBox  
                                           Margin="10 0"
                                           Width="50" VerticalAlignment="Center" TextAlignment="Right"
-                                          materialDesign:HintAssist.HelperText="Tặng"
-                                          Text="{Binding GiftAmount}">
+                                          materialDesign:HintAssist.HelperText="Tặng">
+                                            <TextBox.Text>
+                                                <Binding Path="GiftAmount" UpdateSourceTrigger="PropertyChanged" NotifyOnValidationError="True">
+                                                    <Binding.ValidationRules>
+                                                        <vm:IsOnlyContainNumberRule/>
+                                                    </Binding.ValidationRules>
+                                                </Binding>
+                                            </TextBox.Text>
+                                            <i:Interaction.Triggers>
+                                                <vm:RoutedEventTrigger RoutedEvent="{x:Static Validation.ErrorEvent}">
+                                                    <i:InvokeCommandAction Command="{Binding DisableGiftAmount}"/>
+                                                </vm:RoutedEventTrigger>
+                                            </i:Interaction.Triggers>
                                         </TextBox>
                                     </StackPanel>
                                     
@@ -229,14 +258,36 @@
                         <TextBox
                               Margin="10"
                               x:Name="CusNameTextBox"
-                              materialDesign:HintAssist.Hint="Customer Name: "
-                                Text="{Binding CheckOutCustomerName}">
+                              materialDesign:HintAssist.Hint="Customer Name: ">
+                            <TextBox.Text>
+                                <Binding Path="CheckOutCustomerName" UpdateSourceTrigger="PropertyChanged" NotifyOnValidationError="True">
+                                    <Binding.ValidationRules>
+                                        <vm:IsNotNullStringRule/>
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </TextBox.Text>
+                            <i:Interaction.Triggers>
+                                <vm:RoutedEventTrigger RoutedEvent="{x:Static Validation.ErrorEvent}">
+                                    <i:InvokeCommandAction Command="{Binding DisableName}"/>
+                                </vm:RoutedEventTrigger>
+                            </i:Interaction.Triggers>
                         </TextBox>
                         <TextBox
                               Margin="10"
                               x:Name="CusPhoneTextBox"
-                              materialDesign:HintAssist.Hint="Phone: "
-                                Text="{Binding CheckOutPhone}">
+                              materialDesign:HintAssist.Hint="Phone: ">
+                            <TextBox.Text>
+                                <Binding Path="CheckOutPhone" UpdateSourceTrigger="PropertyChanged" NotifyOnValidationError="True">
+                                    <Binding.ValidationRules>
+                                        <vm:IsOnlyContainNumberRule/>
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </TextBox.Text>
+                            <i:Interaction.Triggers>
+                                <vm:RoutedEventTrigger RoutedEvent="{x:Static Validation.ErrorEvent}">
+                                    <i:InvokeCommandAction Command="{Binding DisablePhone}"/>
+                                </vm:RoutedEventTrigger>
+                            </i:Interaction.Triggers>
                         </TextBox>
                         <Border BorderBrush="SaddleBrown" BorderThickness="2" Padding="5" CornerRadius="10">
                             <ListView
@@ -289,9 +340,22 @@
 
                                         <StackPanel Orientation="Horizontal" Margin="10">
                                             <TextBlock VerticalAlignment="Center" Text="Cash: " FontSize="15" FontWeight="Medium"></TextBlock>
-                                            <TextBox Width="100" Text="{Binding CheckOutCash}"
+                                            <TextBox Width="100"
                                                   Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                                                  VerticalAlignment="Center" />
+                                                  VerticalAlignment="Center">
+                                                <TextBox.Text>
+                                                    <Binding Path="CheckOutCash" UpdateSourceTrigger="PropertyChanged" NotifyOnValidationError="True">
+                                                        <Binding.ValidationRules>
+                                                            <vm:IsOnlyContainNumberRule/>
+                                                        </Binding.ValidationRules>
+                                                    </Binding>
+                                                </TextBox.Text>
+                                                <i:Interaction.Triggers>
+                                                    <vm:RoutedEventTrigger RoutedEvent="{x:Static Validation.ErrorEvent}">
+                                                        <i:InvokeCommandAction Command="{Binding DisableCheckoutCash}"/>
+                                                    </vm:RoutedEventTrigger>
+                                                </i:Interaction.Triggers>
+                                            </TextBox>
                                         </StackPanel>
 
                                         <StackPanel Orientation="Horizontal" Margin="10">
@@ -384,15 +448,29 @@
                             <StackPanel Orientation="Vertical">
                                 <StackPanel Orientation="Horizontal" Margin="10">
                                     <TextBlock VerticalAlignment="Center" Text="% Off: " FontSize="15" FontWeight="Medium"></TextBlock>
-                                    <TextBox Width="100" Text="{Binding CheckOutOff}"
+                                    <TextBox Width="100"
                                       Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                                      VerticalAlignment="Center" />
+                                      VerticalAlignment="Center">
+                                        <TextBox.Text>
+                                            <Binding Path="CheckOutOff" UpdateSourceTrigger="PropertyChanged" NotifyOnValidationError="True">
+                                                <Binding.ValidationRules>
+                                                    <vm:IsOnlyContainNumberRule/>
+                                                </Binding.ValidationRules>
+                                            </Binding>
+                                        </TextBox.Text>
+                                        <i:Interaction.Triggers>
+                                            <vm:RoutedEventTrigger RoutedEvent="{x:Static Validation.ErrorEvent}">
+                                                <i:InvokeCommandAction Command="{Binding DisableCheckoutOff}"/>
+                                            </vm:RoutedEventTrigger>
+                                        </i:Interaction.Triggers>
+                                    </TextBox>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="10">
                                     <TextBlock VerticalAlignment="Center" Text="Total: " FontSize="15" FontWeight="Medium"></TextBlock>
                                     <TextBox Width="100" Text="{Binding CheckOutTotal, Converter={StaticResource MoneyConverter}}"
                                       Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                       VerticalAlignment="Center" IsReadOnly="True"/>
+
                                 </StackPanel>
                             </StackPanel>
                         </Border>
@@ -404,7 +482,8 @@
                                   IsDefault="True"
                                   Margin="0 8 8 0"
                                 FontSize="20"
-                                  Command="{Binding AddInvoiceCommand}"  CommandParameter="true">
+                                  Command="{Binding AddInvoiceCommand}"  CommandParameter="true"
+                                IsEnabled="{Binding IsEnabledSecondCheckoutButton}">
                             CHECKOUT
                         </Button>
                         <Button
@@ -418,10 +497,10 @@
                     </StackPanel>
                 </Grid>
             </materialDesign:DialogHost.DialogContent>
-
             <Button HorizontalAlignment="Right" VerticalAlignment="Bottom" Background="{x:Null}" BorderBrush="{x:Null}" Height="100"
                         Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}"
-                        ToolTip="Thêm 1 chuyến đi"
+                        ToolTip="Thanh toán đơn hàng"
+                    IsEnabled="{Binding IsEnabledFirstCheckoutButton}"
                     Margin="0 0 30 0">
                 <Border CornerRadius="10" Background="SaddleBrown">
                     <StackPanel Orientation="Horizontal" Margin="10">
@@ -433,7 +512,7 @@
                     </Border.Effect>
                 </Border>
             </Button>
-        </materialDesign:DialogHost>
 
+        </materialDesign:DialogHost>
     </Grid>
 </UserControl>
