@@ -4,12 +4,15 @@ using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Interactivity;
 using System.Windows.Media.Imaging;
 
 namespace CakeShopApp.ViewModels
@@ -21,6 +24,26 @@ namespace CakeShopApp.ViewModels
         Product _editProduct;
         private List<dynamic> _imageList;
         int _imageHolderNumber;
+        #endregion
+
+        #region valid value
+        private bool _isValidName;
+        public bool IsValidName { get => _isValidName; set { _isValidName = value; OnPropertyChanged(); } }
+        private bool _isValidAmount;
+        public bool IsValidAmount { get => _isValidAmount; set { _isValidAmount = value; OnPropertyChanged(); } }
+        private bool _isValidImportPrice;
+        public bool IsValidImportPrice { get => _isValidImportPrice; set { _isValidImportPrice = value; OnPropertyChanged(); } }
+        private bool _isValidSellPrice;
+        public bool IsValidSellPrice { get => _isValidSellPrice; set { _isValidSellPrice = value; OnPropertyChanged(); } }
+        #endregion
+
+        #region enable button
+        private bool _isEnabledSetImageButton;
+        public bool IsEnabledSetImageButton { get => _isEnabledSetImageButton; set { _isEnabledSetImageButton = value; OnPropertyChanged(); } }
+        private bool _isEnabledDeleteImageButton;
+        public bool IsEnabledDeleteImageButton { get => _isEnabledDeleteImageButton; set { _isEnabledDeleteImageButton = value; OnPropertyChanged(); } }
+        private bool _isEnabledAcceptButton;
+        public bool IsEnabledAcceptButton { get => _isEnabledAcceptButton; set { _isEnabledAcceptButton = value; OnPropertyChanged(); } }
         #endregion
 
         #region properties
@@ -146,25 +169,89 @@ namespace CakeShopApp.ViewModels
         // ADD NEW PRODUCT / UPDATE PRODUCT
 
         private dynamic _selectedNewProductCategory;
-        public dynamic SelectedNewProductCategory { get => _selectedNewProductCategory; set { _selectedNewProductCategory = value; OnPropertyChanged(); } }
+        public dynamic SelectedNewProductCategory 
+        { 
+            get => _selectedNewProductCategory; 
+            set 
+            { 
+                _selectedNewProductCategory = value; 
+                if (SelectedNewProductCategory != null && IsValidName == true && IsValidAmount == true && IsValidImportPrice == true && IsValidSellPrice == true)
+                {
+                    IsEnabledAcceptButton = true;
+                }
+                OnPropertyChanged(); 
+            } 
+        }
 
         private AsyncObservableCollection<dynamic> _newProductCategoriesList;
         public AsyncObservableCollection<dynamic> NewProductCategoriesList { get => _newProductCategoriesList; set { _newProductCategoriesList = value; OnPropertyChanged(); } }
 
         private string _newProductName;
-        public string NewProductName { get => _newProductName; set { _newProductName = value; OnPropertyChanged(); } }
+        public string NewProductName 
+        { 
+            get => _newProductName; 
+            set 
+            { 
+                _newProductName = value;
+                if (SelectedNewProductCategory != null && IsValidAmount == true && IsValidImportPrice == true && IsValidSellPrice == true)
+                {
+                    IsEnabledAcceptButton = true;
+                }
+                IsValidName = true;
+                OnPropertyChanged(); 
+            } 
+        }
 
         private string _newProductDescription;
         public string NewProductDescription { get => _newProductDescription; set { _newProductDescription = value; OnPropertyChanged(); } }
 
         private int _newProductImportAmount;
-        public int NewProductImportAmount { get => _newProductImportAmount; set { _newProductImportAmount = value; OnPropertyChanged(); } }
+        public int NewProductImportAmount 
+        { 
+            get => _newProductImportAmount; 
+            set
+            { 
+                _newProductImportAmount = value;
+                if (SelectedNewProductCategory != null && IsValidName == true && IsValidImportPrice == true && IsValidSellPrice == true)
+                {
+                    IsEnabledAcceptButton = true;
+                }
+                IsValidAmount = true;
+                OnPropertyChanged(); 
+            } 
+        }
 
         private int _newProductImportPrice;
-        public int NewProductImportPrice { get => _newProductImportPrice; set { _newProductImportPrice = value; OnPropertyChanged(); } }
+        public int NewProductImportPrice 
+        { 
+            get => _newProductImportPrice; 
+            set 
+            { 
+                _newProductImportPrice = value;
+                if (SelectedNewProductCategory != null && IsValidName == true && IsValidAmount == true && IsValidSellPrice == true)
+                {
+                    IsEnabledAcceptButton = true;
+                }
+                IsValidImportPrice = true;
+                OnPropertyChanged();
+            }
+        }
 
         private int _newProductSellPrice;
-        public int NewProductSellPrice { get => _newProductSellPrice; set { _newProductSellPrice = value; OnPropertyChanged(); } }
+        public int NewProductSellPrice 
+        { 
+            get => _newProductSellPrice; 
+            set 
+            { 
+                _newProductSellPrice = value;
+                if (SelectedNewProductCategory != null && IsValidName == true && IsValidAmount == true && IsValidImportPrice == true)
+                {
+                    IsEnabledAcceptButton = true;
+                }
+                IsValidSellPrice = true;
+                OnPropertyChanged(); 
+            }
+        }
 
         private bool _isOpenAddProductDialog;
         public bool IsOpenAddProductDialog
@@ -225,7 +312,19 @@ namespace CakeShopApp.ViewModels
         public AsyncObservableCollection<dynamic> NewProductImages { get => _newProductImages; set { _newProductImages = value; OnPropertyChanged(); } }
 
         private dynamic _selectedNewProductImage;
-        public dynamic SelectedNewProductImage { get => _selectedNewProductImage; set { _selectedNewProductImage = value; OnPropertyChanged(); } }
+        public dynamic SelectedNewProductImage 
+        { 
+            get => _selectedNewProductImage; 
+            set { 
+                _selectedNewProductImage = value; 
+                if (SelectedNewProductImage != null)
+                {
+                    IsEnabledSetImageButton = true;
+                    IsEnabledDeleteImageButton = true;
+                }
+                OnPropertyChanged(); 
+            } 
+        }
 
         #endregion
 
@@ -243,6 +342,11 @@ namespace CakeShopApp.ViewModels
         public ICommand NextImageCommand { get; set; }
         public ICommand CloseDetaiProductCommand { get; set; }
 
+        //disable command
+        public ICommand DisableName { get; set; }
+        public ICommand DisableAmount { get; set; }
+        public ICommand DisableImportPrice { get; set; }
+        public ICommand DisableSellPrice { get; set; }
         #endregion
 
         public CakesUCViewModel()
@@ -350,6 +454,7 @@ namespace CakeShopApp.ViewModels
                     }
                 }
                 IsOpenAddProductDialog = false;
+                IsEnabledAcceptButton = false;
             });
             ClickEditProductButtonCommand = new RelayCommand<dynamic>((param) => { return true; }, (param) => {
                 IsOpenUpdateProductDialog = true;
@@ -480,7 +585,7 @@ namespace CakeShopApp.ViewModels
                     bool hasthumbnail = (NewProductImages.Where(x => x.IsThumbnail == true).Count() == 1) ? true : false;
                     foreach (var absoluteLink in dialog.FileNames)
                     {
-                        byte[] newBytesImage = BitMapImageTOBytes(new BitmapImage(
+                        byte[] newBytesImage = BitMapImageToBytes(new BitmapImage(
                                                     new Uri(absoluteLink,
                                                     UriKind.Absolute)
                                                     ));
@@ -571,6 +676,22 @@ namespace CakeShopApp.ViewModels
             CloseDetaiProductCommand = new RelayCommand<dynamic>((param) => { return true; }, (param) => {
                 IsOpenProductDialog = false;
             });
+            DisableName = new RelayCommand<dynamic>((param) => { return true; }, (param) => {
+                IsValidName = false;
+                IsEnabledAcceptButton = false;
+            });
+            DisableAmount = new RelayCommand<dynamic>((param) => { return true; }, (param) => {
+                IsValidAmount = false;
+                IsEnabledAcceptButton = false;
+            });
+            DisableImportPrice = new RelayCommand<dynamic>((param) => { return true; }, (param) => {
+                IsValidImportPrice = false;
+                IsEnabledAcceptButton = false;
+            });
+            DisableSellPrice = new RelayCommand<dynamic>((param) => { return true; }, (param) => {
+                IsValidSellPrice = false;
+                IsEnabledAcceptButton = false;
+            });
         }
 
         private void LoadProducts()
@@ -615,7 +736,7 @@ namespace CakeShopApp.ViewModels
             LoadProducts();
             Products = SearchByName(Search, Products);
         }
-        public byte[] BitMapImageTOBytes(BitmapImage imageC)
+        public byte[] BitMapImageToBytes(BitmapImage imageC)
         {
             if (imageC == null) return null;
             MemoryStream memStream = new MemoryStream();
@@ -677,5 +798,92 @@ namespace CakeShopApp.ViewModels
         private string _name;
         public string Name { get => _name; set { _name = value; OnPropertyChanged(); } }
 
+    }
+
+    public class RoutedEventTrigger : EventTriggerBase<DependencyObject>
+    {
+        RoutedEvent _routedEvent;
+        public RoutedEvent RoutedEvent
+        {
+            get => _routedEvent;
+            set { _routedEvent = value; }
+        }
+        public RoutedEventTrigger() { }
+        protected override void OnAttached()
+        {
+            Behavior behavior = base.AssociatedObject as Behavior;
+            FrameworkElement associatedElement = base.AssociatedObject as FrameworkElement;
+            if (behavior != null)
+            {
+                associatedElement = ((IAttachedObject)behavior).AssociatedObject as FrameworkElement;
+            }
+            if (associatedElement == null)
+            {
+                throw new ArgumentException("Routed Event Trigger can only be associated to framework elements");
+            }
+            if (RoutedEvent != null)
+            {
+                associatedElement.AddHandler(RoutedEvent, new RoutedEventHandler(this.OnRoutedEvent));
+            }
+        }
+        void OnRoutedEvent(object sender, RoutedEventArgs args)
+        {
+            base.OnEvent(args);
+        }
+        protected override string GetEventName()
+        {
+            return RoutedEvent.Name;
+        }
+    }
+    public class IsNotNullStringRule : ValidationRule
+    {
+        public override ValidationResult Validate(object value, CultureInfo cultureInfo)
+        {
+            try
+            {
+                if (((string)value).Length > 0)
+                {
+                    return ValidationResult.ValidResult;
+                }
+                else
+                {
+                    return new ValidationResult(false, "Vui lòng không bỏ trống trường này");
+                }
+            }
+            catch (Exception e)
+            {
+                return new ValidationResult(false, e.Message);
+            }
+
+        }
+    }
+    public class IsOnlyContainNumberRule : ValidationRule
+    {
+        public override ValidationResult Validate(object value, CultureInfo cultureInfo)
+        {
+            try
+            {
+                if (((string)value).Length > 0)
+                {
+                    if (System.Text.RegularExpressions.Regex.IsMatch((string)value, "^[0-9]+$"))
+                    {
+                        return ValidationResult.ValidResult;
+                    }
+                    else
+                    {
+                        return new ValidationResult(false, "Vui lòng nhập trường này chỉ bao gồm kí tự số");
+                    }
+                }
+                else
+                {
+                    return new ValidationResult(false, "Vui lòng không bỏ trống trường này");
+                }
+            }
+            catch (Exception e)
+            {
+                return new ValidationResult(false, e.Message);
+            }
+
+        }
     }
 }

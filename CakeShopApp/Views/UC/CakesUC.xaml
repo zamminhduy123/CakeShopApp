@@ -73,12 +73,24 @@
                                   materialDesign:HintAssist.Hint="Tên bánh"
                                   Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                   VerticalAlignment="Center"
-                                  FontSize="20" Text="{Binding NewProductName}">
+                                  FontSize="20">
+                                <TextBox.Text>
+                                    <Binding Path="NewProductName" UpdateSourceTrigger="PropertyChanged" NotifyOnValidationError="True">
+                                        <Binding.ValidationRules>
+                                            <vm:IsNotNullStringRule/>
+                                        </Binding.ValidationRules>
+                                    </Binding>
+                                </TextBox.Text>
+                                <i:Interaction.Triggers>
+                                    <vm:RoutedEventTrigger RoutedEvent="{x:Static Validation.ErrorEvent}">
+                                        <i:InvokeCommandAction Command="{Binding DisableName}"/>
+                                    </vm:RoutedEventTrigger>
+                                </i:Interaction.Triggers>
                             </TextBox>
 
                             <ComboBox Margin="5 10"
                                   materialDesign:HintAssist.Hint="Loại bánh"
-                                  materialDesign:HintAssist.HintOpacity=".26" SelectedItem="{Binding SelectedNewProductCategory}" ItemsSource="{Binding NewProductCategoriesList}"
+                                  materialDesign:HintAssist.HintOpacity=".26" SelectedItem="{Binding SelectedNewProductCategory, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding NewProductCategoriesList}"
                                   IsEditable="True" DisplayMemberPath="Name">
                             </ComboBox>
 
@@ -86,21 +98,57 @@
                                   materialDesign:HintAssist.Hint="Số lượng nhập vào"
                                   Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                   VerticalAlignment="Center"
-                                  FontSize="20" Text="{Binding NewProductImportAmount}">
+                                  FontSize="20">
+                                <TextBox.Text>
+                                    <Binding Path="NewProductImportAmount" UpdateSourceTrigger="PropertyChanged" NotifyOnValidationError="True">
+                                        <Binding.ValidationRules>
+                                            <vm:IsOnlyContainNumberRule/>
+                                        </Binding.ValidationRules>
+                                    </Binding>
+                                </TextBox.Text>
+                                <i:Interaction.Triggers>
+                                    <vm:RoutedEventTrigger RoutedEvent="{x:Static Validation.ErrorEvent}">
+                                        <i:InvokeCommandAction Command="{Binding DisableAmount}"/>
+                                    </vm:RoutedEventTrigger>
+                                </i:Interaction.Triggers>
                             </TextBox>
 
                             <TextBox Margin="5 10"
                                   materialDesign:HintAssist.Hint="Giá nhập"
                                   Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                   VerticalAlignment="Center"
-                                  FontSize="20" Text="{Binding NewProductImportPrice}">
+                                  FontSize="20">
+                                <TextBox.Text>
+                                    <Binding Path="NewProductImportPrice" UpdateSourceTrigger="PropertyChanged" NotifyOnValidationError="True">
+                                        <Binding.ValidationRules>
+                                            <vm:IsOnlyContainNumberRule/>
+                                        </Binding.ValidationRules>
+                                    </Binding>
+                                </TextBox.Text>
+                                <i:Interaction.Triggers>
+                                    <vm:RoutedEventTrigger RoutedEvent="{x:Static Validation.ErrorEvent}">
+                                        <i:InvokeCommandAction Command="{Binding DisableImportPrice}"/>
+                                    </vm:RoutedEventTrigger>
+                                </i:Interaction.Triggers>
                             </TextBox>
 
                             <TextBox Margin="5 10"
                                   materialDesign:HintAssist.Hint="Giá bán"
                                   Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                   VerticalAlignment="Center"
-                                  FontSize="20" Text="{Binding NewProductSellPrice}">
+                                  FontSize="20">
+                                <TextBox.Text>
+                                    <Binding Path="NewProductSellPrice" UpdateSourceTrigger="PropertyChanged" NotifyOnValidationError="True">
+                                        <Binding.ValidationRules>
+                                            <vm:IsOnlyContainNumberRule/>
+                                        </Binding.ValidationRules>
+                                    </Binding>
+                                </TextBox.Text>
+                                <i:Interaction.Triggers>
+                                    <vm:RoutedEventTrigger RoutedEvent="{x:Static Validation.ErrorEvent}">
+                                        <i:InvokeCommandAction Command="{Binding DisableSellPrice}"/>
+                                    </vm:RoutedEventTrigger>
+                                </i:Interaction.Triggers>
                             </TextBox>
 
                         </StackPanel>
@@ -113,8 +161,8 @@
                                  VerticalAlignment="Center" Text="{Binding NewProductDescription}" Height="130" Width="450"/>
                             <StackPanel Orientation="Horizontal">
                                 <Button Background="SaddleBrown" BorderBrush="{x:Null}" Margin="5 20" Content="Thêm ảnh" Width="100"  Command="{Binding AddImageCommand}"></Button>
-                                <Button Background="SaddleBrown" BorderBrush="{x:Null}" Margin="5 20" Content="Đặt làm ảnh chính" Width="150"  Command="{Binding SetThumbnailCommand}"></Button>
-                                <Button Background="SaddleBrown" BorderBrush="{x:Null}" Margin="5 20" Content="Xóa" Width="60"  Command="{Binding DeleteImageCommand}"></Button>
+                                <Button Background="SaddleBrown" BorderBrush="{x:Null}" Margin="5 20" Content="Đặt làm ảnh chính" Width="150"  Command="{Binding SetThumbnailCommand}" IsEnabled="{Binding IsEnabledSetImageButton}"></Button>
+                                <Button Background="SaddleBrown" BorderBrush="{x:Null}" Margin="5 20" Content="Xóa" Width="60"  Command="{Binding DeleteImageCommand}" IsEnabled="{Binding IsEnabledDeleteImageButton}"></Button>
 
                             </StackPanel>
                             <ListView ItemsSource="{Binding NewProductImages}" SelectedItem="{Binding SelectedNewProductImage}" BorderBrush="SaddleBrown" BorderThickness="1" Background="LightGray">
@@ -156,7 +204,9 @@
                                   Style="{StaticResource MaterialDesignFlatButton}"
                                   IsDefault="True"
                                   Margin="0 8 8 0"
-                                  Command="{Binding AddProductCommand}"  CommandParameter="true">
+                                  Command="{Binding AddProductCommand}"  
+                                  CommandParameter="true"
+                                  IsEnabled="{Binding IsEnabledAcceptButton}">
                             ACCEPT
                         </Button>
                         <Button
@@ -195,7 +245,19 @@
                                                               materialDesign:HintAssist.Hint="Tên bánh"
                                                               Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                                               VerticalAlignment="Center"
-                                                              FontSize="20" Text="{Binding NewProductName}">
+                                                              FontSize="20">
+                                <TextBox.Text>
+                                    <Binding Path="NewProductName" UpdateSourceTrigger="PropertyChanged" NotifyOnValidationError="True">
+                                        <Binding.ValidationRules>
+                                            <vm:IsNotNullStringRule/>
+                                        </Binding.ValidationRules>
+                                    </Binding>
+                                </TextBox.Text>
+                                <i:Interaction.Triggers>
+                                    <vm:RoutedEventTrigger RoutedEvent="{x:Static Validation.ErrorEvent}">
+                                        <i:InvokeCommandAction Command="{Binding DisableName}"/>
+                                    </vm:RoutedEventTrigger>
+                                </i:Interaction.Triggers>
                             </TextBox>
 
                             <ComboBox Margin="5 10"
@@ -208,21 +270,57 @@
                                                               materialDesign:HintAssist.Hint="Số lượng nhập vào"
                                                               Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                                               VerticalAlignment="Center"
-                                                              FontSize="20" Text="{Binding NewProductImportAmount}">
+                                                              FontSize="20">
+                                <TextBox.Text>
+                                    <Binding Path="NewProductImportAmount" UpdateSourceTrigger="PropertyChanged" NotifyOnValidationError="True">
+                                        <Binding.ValidationRules>
+                                            <vm:IsOnlyContainNumberRule/>
+                                        </Binding.ValidationRules>
+                                    </Binding>
+                                </TextBox.Text>
+                                <i:Interaction.Triggers>
+                                    <vm:RoutedEventTrigger RoutedEvent="{x:Static Validation.ErrorEvent}">
+                                        <i:InvokeCommandAction Command="{Binding DisableAmount}"/>
+                                    </vm:RoutedEventTrigger>
+                                </i:Interaction.Triggers>
                             </TextBox>
 
                             <TextBox Margin="5 10"
                                                               materialDesign:HintAssist.Hint="Giá nhập"
                                                               Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                                               VerticalAlignment="Center"
-                                                              FontSize="20" Text="{Binding NewProductImportPrice}">
+                                                              FontSize="20">
+                                <TextBox.Text>
+                                    <Binding Path="NewProductImportPrice" UpdateSourceTrigger="PropertyChanged" NotifyOnValidationError="True">
+                                        <Binding.ValidationRules>
+                                            <vm:IsOnlyContainNumberRule/>
+                                        </Binding.ValidationRules>
+                                    </Binding>
+                                </TextBox.Text>
+                                <i:Interaction.Triggers>
+                                    <vm:RoutedEventTrigger RoutedEvent="{x:Static Validation.ErrorEvent}">
+                                        <i:InvokeCommandAction Command="{Binding DisableImportPrice}"/>
+                                    </vm:RoutedEventTrigger>
+                                </i:Interaction.Triggers>
                             </TextBox>
 
                             <TextBox Margin="5 10"
                                                               materialDesign:HintAssist.Hint="Giá bán"
                                                               Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                                               VerticalAlignment="Center"
-                                                              FontSize="20" Text="{Binding NewProductSellPrice}">
+                                                              FontSize="20">
+                                <TextBox.Text>
+                                    <Binding Path="NewProductSellPrice" UpdateSourceTrigger="PropertyChanged" NotifyOnValidationError="True">
+                                        <Binding.ValidationRules>
+                                            <vm:IsOnlyContainNumberRule/>
+                                        </Binding.ValidationRules>
+                                    </Binding>
+                                </TextBox.Text>
+                                <i:Interaction.Triggers>
+                                    <vm:RoutedEventTrigger RoutedEvent="{x:Static Validation.ErrorEvent}">
+                                        <i:InvokeCommandAction Command="{Binding DisableSellPrice}"/>
+                                    </vm:RoutedEventTrigger>
+                                </i:Interaction.Triggers>
                             </TextBox>
 
                         </StackPanel>
@@ -235,8 +333,8 @@
                                                              VerticalAlignment="Center" Text="{Binding NewProductDescription}" Height="130" Width="450"/>
                             <StackPanel Orientation="Horizontal">
                                 <Button Background="SaddleBrown" BorderBrush="{x:Null}" Margin="5 20" Content="Thêm ảnh" Width="100"  Command="{Binding AddImageCommand}"></Button>
-                                <Button Background="SaddleBrown" BorderBrush="{x:Null}" Margin="5 20" Content="Đặt làm ảnh chính" Width="150"  Command="{Binding SetThumbnailCommand}"></Button>
-                                <Button Background="SaddleBrown" BorderBrush="{x:Null}" Margin="5 20" Content="Xóa" Width="60"  Command="{Binding DeleteImageCommand}"></Button>
+                                <Button Background="SaddleBrown" BorderBrush="{x:Null}" Margin="5 20" Content="Đặt làm ảnh chính" Width="150"  Command="{Binding SetThumbnailCommand}" IsEnabled="{Binding IsEnabledSetImageButton}"></Button>
+                                <Button Background="SaddleBrown" BorderBrush="{x:Null}" Margin="5 20" Content="Xóa" Width="60"  Command="{Binding DeleteImageCommand}" IsEnabled="{Binding IsEnabledDeleteImageButton}"></Button>
 
                             </StackPanel>
                             <ListView ItemsSource="{Binding NewProductImages}" SelectedItem="{Binding SelectedNewProductImage}" BorderBrush="SaddleBrown" BorderThickness="1" Background="LightGray">
