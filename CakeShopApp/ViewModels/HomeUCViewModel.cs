@@ -26,6 +26,9 @@ namespace CakeShopApp.ViewModels
         #endregion
 
         #region properties
+
+        private string _search;
+        public string Search { get => _search; set { _search = value; CallSearch(); OnPropertyChanged(); } }
         // Sort & Sorting
 
         private AsyncObservableCollection<dynamic> _categories;
@@ -39,7 +42,7 @@ namespace CakeShopApp.ViewModels
                 _selectedCategory = value;
                 if (SelectedCategory != null && SelectedSort != null)
                 {
-                    LoadProducts();
+                    CallSearch();
                 }
                 SelectedProduct = null;
                 OnPropertyChanged();
@@ -51,7 +54,7 @@ namespace CakeShopApp.ViewModels
 
         private string _selectedSort;
         public string SelectedSort { get => _selectedSort; set { _selectedSort = value;
-                LoadProducts();
+                CallSearch();
                 OnPropertyChanged(); } }
 
         // make invoice
@@ -197,7 +200,7 @@ namespace CakeShopApp.ViewModels
         public ICommand AddToCartCommand { get; set; }
         public ICommand ChangeCategoryCommand { get; set; }
         #endregion
-
+        
         public static HomeUCViewModel GetInstance()
         {
             // DoubleLock
@@ -260,7 +263,7 @@ namespace CakeShopApp.ViewModels
             {
                 DetailInListTotalPrice = (int.Parse(DetailInListTotalPrice) - int.Parse(param.SummaryPrice)).ToString();
                 InvoiceDetails.Remove(param);
-                LoadProducts();
+                CallSearch();
             });
             LoadPrice = new RelayCommand<DetailInList>((param) => { return true; }, (param) =>
             {
@@ -307,7 +310,7 @@ namespace CakeShopApp.ViewModels
                     DataProvider.Ins.DB.SaveChanges();
                     InvoiceDetails = new AsyncObservableCollection<DetailInList>();
                     DetailInListTotalPrice = "0";
-                    LoadProducts();
+                    CallSearch();
                 }
                 IsOpenCheckOutDialog = false;
             });
@@ -330,11 +333,11 @@ namespace CakeShopApp.ViewModels
             });
             ChangeCategoryCommand = new RelayCommand<dynamic>((param) => { return true; }, (param) => {
                 SelectedCategory = param;
-                LoadProducts();
+                CallSearch();
                 SelectedProduct = null;
             });
         }
-        void LoadProducts()
+        private void LoadProducts()
         {
 
             Products = new AsyncObservableCollection<dynamic>();
@@ -516,6 +519,11 @@ namespace CakeShopApp.ViewModels
                     Products.Remove(product);
                 }
             }
+        }
+        private void CallSearch()
+        {
+            LoadProducts();
+            Products = SearchByName(Search, Products);
         }
     }
     // tạo class hỗ trợ trình bày dữ liệu lên view

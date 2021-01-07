@@ -437,7 +437,8 @@
                             Width="250"
                             Height="30"
                             AcceptsReturn="True"
-                            materialDesign:HintAssist.Hint="Search for cake"/>
+                            materialDesign:HintAssist.Hint="Search for cake"
+                            Text="{Binding Search,UpdateSourceTrigger=PropertyChanged}"/>
                     </StackPanel>
                 </Border>
 

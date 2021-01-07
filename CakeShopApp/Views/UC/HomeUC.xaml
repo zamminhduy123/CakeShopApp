@@ -41,12 +41,13 @@
                             Width="200"
                             Height="30"
                             AcceptsReturn="True"
-                            materialDesign:HintAssist.Hint="Search for cake"/>
+                            materialDesign:HintAssist.Hint="Search for cake"
+                            Text="{Binding Search,UpdateSourceTrigger=PropertyChanged}"/>
                     </StackPanel>
                 </Border>
             </DockPanel>
             <!--pick to bar-->
-            <ListView Name="Categories" Margin="0 20 0 0" ItemsSource="{Binding Categories}" SelectedItem="{Binding SelectedCategory}" ScrollViewer.CanContentScroll="False">
+            <ListView Name="Categories" Margin="0 20 0 0" ItemsSource="{Binding Categories}" SelectedItem="{Binding SelectedCategory, UpdateSourceTrigger=PropertyChanged}" ScrollViewer.CanContentScroll="False">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <Button Background="{x:Null}" BorderBrush="{x:Null}"  Width="100" Height="150" Padding="0"
