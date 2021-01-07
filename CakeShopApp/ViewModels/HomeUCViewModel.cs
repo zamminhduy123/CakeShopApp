@@ -343,7 +343,7 @@ namespace CakeShopApp.ViewModels
                 {
                     Invoice newinvoice = DataProvider.Ins.DB.Invoices.Find(CheckOutId);
                     newinvoice.Name = CheckOutCustomerName;
-                    newinvoice.Phone = CheckOutPhone;
+                    newinvoice.Phone = (CheckOutPhone == null) ? "" : CheckOutPhone;
                     newinvoice.CreatedDate = DateTime.Now;
                     newinvoice.PaymentMethod = (IsDelivery == true) ? 2 : 1;
                     newinvoice.Status = (IsDelivery == true) ? "Chờ giao hàng" : "Đã thanh toán";
@@ -374,6 +374,11 @@ namespace CakeShopApp.ViewModels
                     InvoiceDetails = new AsyncObservableCollection<DetailInList>();
                     DetailInListTotalPrice = "0";
                     CallSearch();
+                }
+                else
+                {
+                    DataProvider.Ins.DB.Invoices.Remove(DataProvider.Ins.DB.Invoices.Find(CheckOutId));
+                    DataProvider.Ins.DB.SaveChanges();
                 }
                 IsOpenCheckOutDialog = false;
             });

@@ -600,14 +600,14 @@ namespace CakeShopApp.ViewModels
             });
             DeleteImageCommand = new RelayCommand<dynamic>((param) => { return true; }, (param) =>
             {
-                if (SelectedNewProductImage.IsThumbnail == true && NewProductImages.Count != 0)
+                if (SelectedNewProductImage.IsThumbnail == true && NewProductImages.Count >= 2)
                 {
                     int setthumbnailindex = 0;
                     if (NewProductImages.IndexOf(SelectedNewProductImage) == 0)
                     {
                         setthumbnailindex = 1;
                     }
-                    dynamic tmp = new { IsThumbnail = true, ByteImage = NewProductImages.First().ByteImage };
+                    dynamic tmp = new { IsThumbnail = true, ByteImage = NewProductImages.ElementAt(setthumbnailindex).ByteImage };
                     NewProductImages.RemoveAt(setthumbnailindex);
                     NewProductImages.Insert(setthumbnailindex, tmp);
                 }
@@ -615,21 +615,24 @@ namespace CakeShopApp.ViewModels
             });
             SetThumbnailCommand = new RelayCommand<dynamic>((param) => { return true; }, (param) =>
             {
-                int index;
-                int hasThumbnail = NewProductImages.Where(x => x.IsThumbnail == true).Count();
-                dynamic tmp;
-                if (hasThumbnail != 0)
+                if (SelectedNewProductImage.IsThumbnail != true)
                 {
-                    tmp = NewProductImages.First(x => x.IsThumbnail == true);
-                    index = NewProductImages.IndexOf(tmp);
-                    dynamic changedtmp = new { IsThumbnail = false, ByteImage = tmp.ByteImage };
-                    NewProductImages.Remove(tmp);
-                    NewProductImages.Insert(index, changedtmp);
+                    int index;
+                    int hasThumbnail = NewProductImages.Where(x => x.IsThumbnail == true).Count();
+                    dynamic tmp;
+                    if (hasThumbnail != 0)
+                    {
+                        tmp = NewProductImages.First(x => x.IsThumbnail == true);
+                        index = NewProductImages.IndexOf(tmp);
+                        dynamic changedtmp = new { IsThumbnail = false, ByteImage = tmp.ByteImage };
+                        NewProductImages.Remove(tmp);
+                        NewProductImages.Insert(index, changedtmp);
+                    }
+                    tmp = new { IsThumbnail = true, ByteImage = SelectedNewProductImage.ByteImage };
+                    index = NewProductImages.IndexOf(SelectedNewProductImage);
+                    NewProductImages.Remove(SelectedNewProductImage);
+                    NewProductImages.Insert(index, tmp);
                 }
-                tmp = new { IsThumbnail = true, ByteImage = SelectedNewProductImage.ByteImage };
-                index = NewProductImages.IndexOf(SelectedNewProductImage);
-                NewProductImages.Remove(SelectedNewProductImage);
-                NewProductImages.Insert(index, tmp);
             });
 
             PrevImageCommand = new RelayCommand<dynamic>((param) => { return true; }, (param) =>
