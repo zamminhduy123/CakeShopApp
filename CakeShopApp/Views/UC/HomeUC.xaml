@@ -105,8 +105,8 @@
                                         </Border.Background>
                                     </Border>
                                     <StackPanel VerticalAlignment="Bottom" Margin="0 0 0 5">
-                                        <TextBlock Foreground="Black"  VerticalAlignment="Bottom" Text="{Binding Name}" HorizontalAlignment="Center" TextAlignment="Center" FontSize="15" TextWrapping="Wrap" FontWeight="Medium"></TextBlock>
-                                        <TextBlock Foreground="Black"  VerticalAlignment="Bottom" Text="{Binding Price, Converter={StaticResource MoneyConverter}}" HorizontalAlignment="Center" FontSize="15" FontWeight="Medium"></TextBlock>
+                                        <TextBlock Foreground="Black"  VerticalAlignment="Bottom" Text="{Binding Name}" HorizontalAlignment="Center" TextAlignment="Center" FontSize="13" TextWrapping="Wrap" FontWeight="Medium"></TextBlock>
+                                        <TextBlock Foreground="Black"  VerticalAlignment="Bottom" Text="{Binding Price, Converter={StaticResource MoneyConverter}}" HorizontalAlignment="Center" FontSize="12" FontWeight="Bold"></TextBlock>
                                     </StackPanel>
                                 </Grid>
                             </Border>

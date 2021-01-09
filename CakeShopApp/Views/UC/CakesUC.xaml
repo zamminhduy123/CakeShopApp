@@ -475,37 +475,32 @@
                                     BorderBrush="SaddleBrown"
                                     BorderThickness="2"
                                     CornerRadius="30" Margin="20" Height="300" Grid.Column="1">
+                                <StackPanel Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal">
+                                    <Button Background="{x:Null}" BorderBrush="{x:Null}" Padding="0" Margin="0" Command="{Binding PrevImageCommand}" CommandParameter="{Binding ElementName=ImageHolder}" Visibility="{Binding ChangeImageVisibility}">
+                                        <Border Style="{StaticResource HolderButton}">
+                                            <materialDesign:PackIcon Kind="ChevronLeft" Width="35" Height="35" Foreground="SaddleBrown" />
+                                        </Border>
+                                    </Button>
+                                    <Image x:Name="ImageHolder" Stretch="Uniform" RenderOptions.BitmapScalingMode="HighQuality" Source="{Binding ImageHolder, Converter={StaticResource ImageConverter}}" Width="330" Height="280"/>
+                                    <Button Background="{x:Null}" BorderBrush="{x:Null}" Padding="0" Command="{Binding NextImageCommand}"  CommandParameter="{Binding ElementName=ImageHolder}" Visibility="{Binding ChangeImageVisibility}">
+                                        <Border Style="{StaticResource HolderButton}">
+                                            <materialDesign:PackIcon Kind="ChevronRight" Width="35" Height="35" Foreground="SaddleBrown" />
+                                        </Border>
+                                    </Button>
+                                </StackPanel>
                             </Border>
-                            <StackPanel Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal">
-                                <Button Background="{x:Null}" BorderBrush="{x:Null}" Padding="0" Margin="0" Command="{Binding PrevImageCommand}" CommandParameter="{Binding ElementName=ImageHolder}" Visibility="{Binding ChangeImageVisibility}">
-                                    <Border Style="{StaticResource HolderButton}">
-                                        <materialDesign:PackIcon Kind="ChevronLeft" Width="35" Height="35" Foreground="SaddleBrown" />
-                                    </Border>
-                                </Button>
-                                <Image x:Name="ImageHolder" Stretch="None" RenderOptions.BitmapScalingMode="HighQuality" Source="{Binding ImageHolder, Converter={StaticResource ImageConverter}}" Width="330" Height="280"/>
-                                <Button Background="{x:Null}" BorderBrush="{x:Null}" Padding="0" Command="{Binding NextImageCommand}"  CommandParameter="{Binding ElementName=ImageHolder}" Visibility="{Binding ChangeImageVisibility}">
-                                    <Border Style="{StaticResource HolderButton}">
-                                        <materialDesign:PackIcon Kind="ChevronRight" Width="35" Height="35" Foreground="SaddleBrown" />
-                                    </Border>
-                                </Button>
-                                <StackPanel.OpacityMask>
-                                    <VisualBrush Visual="{Binding ElementName=Mask2}" />
-                                </StackPanel.OpacityMask>
-                            </StackPanel>
                         </Grid>
                         <TextBlock Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="20" FontWeight="Bold" Foreground="SaddleBrown">MÔ TẢ</TextBlock>
-                        <Grid Grid.Row="1">
+                        <Grid Grid.Row="1" Width="900">
                             <Border Name="Mask1"
                                     Background="White"
                                     BorderBrush="SaddleBrown"
                                     BorderThickness="2"
-                                    CornerRadius="30" Margin="20" Height="300" Grid.Row="0">
+                                    CornerRadius="30" Margin="20" Height="300" Grid.Row="0" Padding="10">
+                                <TextBlock Text="{Binding DetailProductDescription}" Grid.Row="0" FontSize="15" FontWeight="Medium" VerticalAlignment="Top" HorizontalAlignment="Left" TextWrapping="Wrap">
+                                </TextBlock>
                             </Border>
-                            <TextBlock Text="{Binding DetailProductDescription}" Grid.Row="0" VerticalAlignment="Center" TextWrapping="Wrap" >
-                                <TextBlock.OpacityMask>
-                                    <VisualBrush Visual="{Binding ElementName=Mask1}" />
-                                </TextBlock.OpacityMask>
-                            </TextBlock>
+
                         </Grid>
                         
                     </Grid>
