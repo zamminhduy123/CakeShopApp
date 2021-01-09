@@ -37,7 +37,7 @@
     <Border VerticalAlignment="Bottom" HorizontalAlignment="Center"
                         CornerRadius="10" Height="600" Width="900"  RenderOptions.BitmapScalingMode="HighQuality">
         <Border.Background>
-            <ImageBrush Stretch="Fill" RenderOptions.BitmapScalingMode="HighQuality" ImageSource="/Assets/SplashBG.png">
+            <ImageBrush Stretch="Fill" RenderOptions.BitmapScalingMode="HighQuality" ImageSource="{Binding ImageCover}">
                 <ImageBrush.RelativeTransform>
                     <RotateTransform CenterX="0.5" CenterY="0.5" Angle="0" />
                 </ImageBrush.RelativeTransform>
@@ -46,17 +46,17 @@
         
         <Grid Background="{x:Null}">
             <!--Middle Frame-->
-            <DockPanel HorizontalAlignment="Right" Margin="0 0 60 0" Background="White" Width="350">
-                <StackPanel Orientation="Vertical" DockPanel.Dock="Top">
+            <DockPanel HorizontalAlignment="Right" Margin="0 0 60 0" Background="Transparent" Width="350">
+                <StackPanel Orientation="Vertical" DockPanel.Dock="Top" Background="White">
                     <Image Source="/Assets/Icon.png" Width="120" Height="120" RenderOptions.BitmapScalingMode="Fant" VerticalAlignment="Top" Margin="0 50 0 0"/>
                     <TextBlock FontWeight="Bold" Text="Cake Shop" HorizontalAlignment="Center" Margin="0 20" VerticalAlignment="Top"  Foreground="SaddleBrown" FontSize="50"/>
-                    <!--Location description-->
-                    <!--<TextBlock Text="{Binding LocationName}" FontSize="25" FontWeight="Medium" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                    <Border HorizontalAlignment="Center" Width="400"  Height="210" CornerRadius="20" BorderThickness="2" Background="#010203" Padding="5">
+                    <!--Cake description-->
+                    <TextBlock Text="{Binding CakeName}" FontSize="25" FontWeight="Medium" Foreground="Black" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    <Border HorizontalAlignment="Center" Width="400"  Height="210" CornerRadius="20" BorderThickness="2" Background="Transparent" Padding="5">
                         <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-                            <TextBlock  FontWeight="Medium" Text="{Binding LocationDescription}" TextAlignment="Center"  Foreground="White" FontSize="17" TextWrapping="WrapWithOverflow"/>
+                            <TextBlock  FontWeight="Medium" Text="{Binding CakeDescription}" TextAlignment="Center"  Foreground="Black" FontSize="17" TextWrapping="WrapWithOverflow" Width="335"/>
                         </ScrollViewer>
-                    </Border>-->
+                    </Border>
                 </StackPanel>
                 <StackPanel Height="70" Margin="0 10 0 10" HorizontalAlignment="Center" DockPanel.Dock="Bottom">
                     <Border Background="#1c1c1c" Opacity="1" Height="50" CornerRadius="25"  Width="275" HorizontalAlignment="Center" Margin="0 0 0 5">
