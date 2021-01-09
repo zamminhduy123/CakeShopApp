@@ -287,6 +287,7 @@ namespace CakeShopApp.ViewModels
             {
                 Id = 0,
                 Name = "Tất cả",
+                PickIcon = "ArrowExpandAll"
             });
             foreach (var category in DataProvider.Ins.DB.Categories)
             {
@@ -294,6 +295,7 @@ namespace CakeShopApp.ViewModels
                 {
                     Id = category.Id,
                     Name = category.Name,
+                    PickIcon = "FoodCroissant"
                 });
             }
             SelectedCategory = Categories.ElementAt(0);
