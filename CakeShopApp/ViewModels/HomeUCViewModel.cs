@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using CakeShopApp.Models;
 using System.Windows.Input;
 using System.Data.Entity.Validation;
+using System.Windows.Controls;
+using System.Globalization;
 
 namespace CakeShopApp.ViewModels
 {
@@ -33,6 +35,12 @@ namespace CakeShopApp.ViewModels
         public bool IsValidCheckoutCash { get => _isValidCheckoutCash; set { _isValidCheckoutCash = value; OnPropertyChanged(); } }
         private bool _isValidCheckoutOff;
         public bool IsValidCheckoutOff { get => _isValidCheckoutOff; set { _isValidCheckoutOff = value; OnPropertyChanged(); } }
+        private bool _isValidCheckoutAdress;
+        public bool IsValidCheckoutAdress { get => _isValidCheckoutAdress; set { _isValidCheckoutAdress = value; OnPropertyChanged(); } }
+        private bool _isValidCheckoutPrePaid;
+        public bool IsValidCheckoutPrePaid { get => _isValidCheckoutPrePaid; set { _isValidCheckoutPrePaid = value; OnPropertyChanged(); } }
+        private bool _isValidCheckoutDate;
+        public bool IsValidCheckoutDate { get => _isValidCheckoutDate; set { _isValidCheckoutDate = value; OnPropertyChanged(); } }
         #endregion
         #region enable button
         private bool _isEnabledSecondCheckoutButton;
@@ -117,6 +125,14 @@ namespace CakeShopApp.ViewModels
                         });
                     }
                     CheckOutTotal = DetailInListTotalPrice;
+                    // valid
+                    IsValidName = false;
+                    IsValidPhone = false;
+                    IsValidCheckoutCash = false;
+                    IsValidCheckoutAdress = false;
+                    IsValidCheckoutPrePaid = false;
+                    IsValidCheckoutOff = true;
+                    IsValidCheckoutDate = true;
                 }
                 else
                 {
@@ -147,12 +163,12 @@ namespace CakeShopApp.ViewModels
             get => _checkOutCustomerName; 
             set 
             { 
-                _checkOutCustomerName = value; 
-                if (CheckOutCustomerName != null && IsValidPhone == true && IsValidCheckoutCash == true && IsValidCheckoutOff == true)
+                _checkOutCustomerName = value;
+                IsEnabledSecondCheckoutButton = IsCheckOut();
+                if (value != null)
                 {
-                    IsEnabledSecondCheckoutButton = true;
+                    IsValidName = true;
                 }
-                IsValidName = true;
                 OnPropertyChanged(); 
             } 
         }
@@ -164,11 +180,11 @@ namespace CakeShopApp.ViewModels
             set 
             { 
                 _checkOutPhone = value;
-                if (CheckOutPhone != null && IsValidName == true && IsValidCheckoutCash == true && IsValidCheckoutOff == true)
+                IsEnabledSecondCheckoutButton = IsCheckOut();
+                if (value != null)
                 {
-                    IsEnabledSecondCheckoutButton = true;
+                    IsValidPhone = true;
                 }
-                IsValidPhone = true;
                 OnPropertyChanged(); 
             } 
         }
@@ -180,40 +196,61 @@ namespace CakeShopApp.ViewModels
         public string CheckOutCash { get => _checkOutCash; set { _checkOutCash = value;
                 if (CheckOutCash != null && IsValidName == true && IsValidPhone == true && IsValidCheckoutOff == true)
                 {
-                    IsEnabledSecondCheckoutButton = true;
+                    IsEnabledSecondCheckoutButton = IsCheckOut();
                     CheckOutChange = (int.Parse(CheckOutCash) - int.Parse(CheckOutTotal)).ToString();
                 }
-                IsValidCheckoutCash = true;
+                if (value != null)
+                {
+                    IsValidCheckoutCash = true;
+                }
                 OnPropertyChanged(); } }
 
         private string _checkOutChange;
         public string CheckOutChange { get => _checkOutChange; set { _checkOutChange = value; OnPropertyChanged(); } }
 
         private DateTime _checkOutDateShip;
-        public DateTime CheckOutDateShip { get => _checkOutDateShip; set { _checkOutDateShip = value; OnPropertyChanged(); } }
+        public DateTime CheckOutDateShip { get => _checkOutDateShip; set { _checkOutDateShip = value;
+                IsEnabledSecondCheckoutButton = IsCheckOut();
+                OnPropertyChanged(); } }
 
         private string _checkOutAddress;
-        public string CheckOutAddress { get => _checkOutAddress; set { _checkOutAddress = value; OnPropertyChanged(); } }
+        public string CheckOutAddress { get => _checkOutAddress; set { _checkOutAddress = value;
+                if (value != null)
+                {
+                    IsValidCheckoutAdress = true;
+                }
+                IsEnabledSecondCheckoutButton = IsCheckOut();
+                OnPropertyChanged(); }
+        }
 
         private string _checkOutPrePaid;
         public string CheckOutPrePaid { get => _checkOutPrePaid; set { _checkOutPrePaid = value;
                 if (CheckOutPrePaid != null)
                 {
                     CheckOutPostPaid = (int.Parse(CheckOutTotal) - int.Parse(CheckOutPrePaid)).ToString();
+                    IsValidCheckoutPrePaid = true;
                 }
-                OnPropertyChanged(); } }
+                IsEnabledSecondCheckoutButton = IsCheckOut();
+                OnPropertyChanged(); }
+        }
 
         private string _checkOutPostPaid;
         public string CheckOutPostPaid { get => _checkOutPostPaid; set { _checkOutPostPaid = value; OnPropertyChanged(); } }
 
         private bool _isDelivery;
-        public bool IsDelivery { get => _isDelivery; set { _isDelivery = value; OnPropertyChanged(); } }
+        public bool IsDelivery { get => _isDelivery; set { _isDelivery = value;
+                IsEnabledSecondCheckoutButton = IsCheckOut();
+                OnPropertyChanged(); } }
 
         private int _checkOutOff;
         public int CheckOutOff { get => _checkOutOff; set { _checkOutOff = value;
+                if (value != null)
+                {
+                    IsValidCheckoutOff = true;
+                }
                 if (CheckOutOff != null && IsOpenCheckOutDialog == true && IsValidName == true && IsValidPhone == true && IsValidCheckoutCash == true)
                 {
-                    IsEnabledSecondCheckoutButton = true;
+                    IsEnabledSecondCheckoutButton = IsCheckOut();
                     for (int i = 0; i < InvoiceDetails.Count(); i++)
                     {
                         var detail = InvoiceDetails.ElementAt(i);
@@ -237,7 +274,6 @@ namespace CakeShopApp.ViewModels
                     CheckOutCash = CheckOutCash;
                     CheckOutPrePaid = CheckOutPrePaid;
                 }
-                IsValidCheckoutOff = true;
                 OnPropertyChanged(); } }
 
         private string _checkOutTotal;
@@ -257,7 +293,10 @@ namespace CakeShopApp.ViewModels
         public ICommand DisableCheckoutCash { get; set; }
         public ICommand DisableCheckoutOff { get; set; }
         public ICommand DisableSecondCheckout { get; set; }
-        
+        public ICommand DisableCheckoutAdress { get; set; }
+        public ICommand DisableCheckoutPrePaid { get; set; }
+        public ICommand DisableCheckoutDate { get; set; }
+
         #endregion
 
         public static HomeUCViewModel GetInstance()
@@ -423,6 +462,18 @@ namespace CakeShopApp.ViewModels
                 IsEnabledSecondCheckoutButton = false;
             });
             DisableSecondCheckout = new RelayCommand<dynamic>((param) => { return true; }, (param) => {
+                IsEnabledSecondCheckoutButton = false;
+            });
+            DisableCheckoutAdress = new RelayCommand<dynamic>((param) => { return true; }, (param) => {
+                IsValidCheckoutAdress = false;
+                IsEnabledSecondCheckoutButton = false;
+            });
+            DisableCheckoutPrePaid = new RelayCommand<dynamic>((param) => { return true; }, (param) => {
+                IsValidCheckoutPrePaid = false;
+                IsEnabledSecondCheckoutButton = false;
+            });
+            DisableCheckoutDate = new RelayCommand<dynamic>((param) => { return true; }, (param) => {
+                IsValidCheckoutDate = false;
                 IsEnabledSecondCheckoutButton = false;
             });
         }
@@ -609,6 +660,17 @@ namespace CakeShopApp.ViewModels
                 }
             }
         }
+        private bool IsCheckOut()
+        {
+            if (IsDelivery == true)
+            {
+                return (IsValidName && IsValidPhone && IsValidCheckoutOff && IsValidCheckoutPrePaid && IsValidCheckoutAdress && IsValidCheckoutDate);
+            }
+            else
+            {
+                return (IsValidName && IsValidPhone && IsValidCheckoutOff && IsValidCheckoutCash);
+            }
+        }
         private void CallSearch()
         {
             LoadProducts();
@@ -722,6 +784,64 @@ namespace CakeShopApp.ViewModels
                 IsValidGiftAmount = false;
                 IsEnabledCheckoutButton = false;
             });
+        }
+    }
+    public class IsPercentRule : ValidationRule
+    {
+        public override ValidationResult Validate(object value, CultureInfo cultureInfo)
+        {
+            try
+            {
+                if (((string)value).Length > 0)
+                {
+                    if (System.Text.RegularExpressions.Regex.IsMatch((string)value, "^[0-9]+$"))
+                    {
+                        if (((string)value).Length > 3 || (((string)value).Length == 3 && (string)value != "100"))
+                        {
+                            return new ValidationResult(false, "Vui lòng nhập số từ 0 đến 100");
+                        }
+                        else
+                        {
+                            return ValidationResult.ValidResult;
+                        }
+                    }
+                    else
+                    {
+                        return new ValidationResult(false, "Vui lòng nhập trường này chỉ bao gồm kí tự số");
+                    }
+                }
+                else
+                {
+                    return new ValidationResult(false, "Vui lòng không bỏ trống trường này");
+                }
+            }
+            catch (Exception e)
+            {
+                return new ValidationResult(false, e.Message);
+            }
+
+        }
+    }
+    public class IsNotNullRule : ValidationRule
+    {
+        public override ValidationResult Validate(object value, CultureInfo cultureInfo)
+        {
+            try
+            {
+                if (value != null)
+                {
+                    return ValidationResult.ValidResult;
+                }
+                else
+                {
+                    return new ValidationResult(false, "Vui lòng không bỏ trống trường này");
+                }
+            }
+            catch (Exception e)
+            {
+                return new ValidationResult(false, e.Message);
+            }
+
         }
     }
 }
