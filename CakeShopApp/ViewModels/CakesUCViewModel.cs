@@ -322,6 +322,11 @@ namespace CakeShopApp.ViewModels
                     IsEnabledSetImageButton = true;
                     IsEnabledDeleteImageButton = true;
                 }
+                else
+                {
+                    IsEnabledSetImageButton = false;
+                    IsEnabledDeleteImageButton = false;
+                }
                 OnPropertyChanged(); 
             } 
         }

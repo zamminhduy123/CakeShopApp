@@ -376,7 +376,7 @@
                                                           Style="{StaticResource MaterialDesignFlatButton}"
                                                           IsDefault="True"
                                                           Margin="0 8 8 0"
-                                                          Command="{Binding EditProductCommand}"  CommandParameter="true">
+                                                          Command="{Binding EditProductCommand}"  CommandParameter="true" IsEnabled="{Binding IsEnabledAcceptButton}">
                             ACCEPT
                         </Button>
                         <Button
