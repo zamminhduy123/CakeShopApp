@@ -337,8 +337,8 @@
                                           Width="190">
                                             DELIVERY...
                                         </Button>
-
                                         <StackPanel Orientation="Horizontal" Margin="10">
+
                                             <TextBlock VerticalAlignment="Center" Text="Cash: " FontSize="15" FontWeight="Medium"></TextBlock>
                                             <TextBox Width="100"
                                                   Style="{StaticResource MaterialDesignFloatingHintTextBox}"
@@ -419,8 +419,10 @@
                                             </StackPanel>
                                             <DatePicker Grid.Row="1"
                                                 Margin="5"
-                                              Width="auto" Height="50" FontSize="15"
+                                              Width="auto" FontSize="20"
                                               materialDesign:HintAssist.Hint="Create Date"
+                                                        Foreground="SaddleBrown"
+                                                        Background="White"
                                               Style="{StaticResource MaterialDesignOutlinedDatePicker}">
                                                 <DatePicker.SelectedDate>
                                                     <Binding Path="CheckOutDateShip" UpdateSourceTrigger="PropertyChanged" NotifyOnValidationError="True">

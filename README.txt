@@ -1,4 +1,4 @@
-I. Thông tin nhóm:
+﻿I. Thông tin nhóm:
 -------------------------------------------------------------------------------------------------------------------------
 -     MSSV     - 	     Họ và tên		-           Email cá nhân
 -   18120161   - 	Nguyễn Công Danh	- 	congdanh1392@gmail.com
@@ -51,7 +51,6 @@ III. Các chức năng đã làm thêm:
 	+ Cảnh giới 5: Thêm các từ khóa and, or, not.
 	+ Cảnh giới 6: dùng CSDL hỗ trợ sạch các cảnh giới trên. (dùng SQL và ADO.NET framework).
 - Kiểm tra các mục dữ liệu người dùng nhập vào có thỏa điều kiện cho trước hay không (Validation)
-- Animation FadeIn/Out
 
 - Invoice screen: Màn hình quản lý đơn hàng
 	+ Hiển thị danh sách đơn hàng (tên khách hàng, ngày thanh toán/ giao hàng, trạng thái đơn hàng, check hoàn thành đơn hàng)
