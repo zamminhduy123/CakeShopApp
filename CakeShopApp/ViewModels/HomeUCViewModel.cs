@@ -210,6 +210,7 @@ namespace CakeShopApp.ViewModels
 
         private DateTime _checkOutDateShip;
         public DateTime CheckOutDateShip { get => _checkOutDateShip; set { _checkOutDateShip = value;
+                IsValidCheckoutDate = true;
                 IsEnabledSecondCheckoutButton = IsCheckOut();
                 OnPropertyChanged(); } }
 
@@ -287,6 +288,7 @@ namespace CakeShopApp.ViewModels
         public ICommand AddInvoiceCommand { get; set; }
         public ICommand AddToCartCommand { get; set; }
         public ICommand ChangeCategoryCommand { get; set; }
+        public ICommand ChangedFlippedCommand { get; set; }
         //disable command
         public ICommand DisableName { get; set; }
         public ICommand DisablePhone { get; set; }
@@ -439,6 +441,9 @@ namespace CakeShopApp.ViewModels
                 DetailInListTotalPrice = (int.Parse(DetailInListTotalPrice) + int.Parse(param.Price)).ToString();
                 Products.Remove(param);
                 SelectedProduct = null;
+            });
+            ChangedFlippedCommand = new RelayCommand<object>((param) => { return true; }, (param) => {
+                IsDelivery = !IsDelivery;
             });
             ChangeCategoryCommand = new RelayCommand<dynamic>((param) => { return true; }, (param) => {
                 SelectedCategory = param;
@@ -822,19 +827,20 @@ namespace CakeShopApp.ViewModels
 
         }
     }
-    public class IsNotNullRule : ValidationRule
+    public class IsFutureRule : ValidationRule
     {
         public override ValidationResult Validate(object value, CultureInfo cultureInfo)
         {
             try
             {
-                if (value != null)
+                var tmp = value.ToString();
+                if (DateTime.Parse(tmp) >= DateTime.Now)
                 {
                     return ValidationResult.ValidResult;
                 }
                 else
                 {
-                    return new ValidationResult(false, "Vui lòng không bỏ trống trường này");
+                    return new ValidationResult(false, "Vui lòng chọn ngày trong tương lai");
                 }
             }
             catch (Exception e)
